@@ -1,0 +1,200 @@
+/* remove tw-animate-css import and use @theme (not inline) */
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #050816;
+    --foreground: #ffffff;
+    --card: #0B1120;
+    --card-foreground: #ffffff;
+    --popover: #111827;
+    --popover-foreground: #ffffff;
+    --primary: #1B8354;
+    --primary-foreground: #ffffff;
+    --secondary: #0B1120;
+    --secondary-foreground: #ffffff;
+    --muted: #111827;
+    --muted-foreground: #9ca3af;
+    --accent: #1B8354;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(255, 255, 255, 0.05);
+    --ring: #1B8354;
+    --radius: 1rem;
+  }
+}
+
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* smooth scroll for in-page anchor navigation */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom gradient classes for enhanced UI elements */
+.light-gradient-bg {
+  background: linear-gradient(135deg, hsl(var(--secondary) / 0.1) 0%, hsl(var(--background)) 100%);
+  transition: all 0.3s ease;
+}
+
+.light-gradient-bg:hover {
+  background: linear-gradient(135deg, hsl(var(--secondary) / 0.2) 0%, hsl(var(--background)) 100%);
+  transform: scale(1.01);
+}
+
+.light-gradient-card {
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--secondary) / 0.05) 100%);
+  transition: all 0.3s ease;
+}
+
+.light-gradient-card:hover {
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--secondary) / 0.1) 100%);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.gradient-button {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover {
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.9) 0%, hsl(var(--primary) / 0.7) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced hover effects for skill tags */
+.skill-tag {
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transform: scale(1.05);
+}
+
+/* Enhanced project card animations */
+.project-card {
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.project-card:hover {
+  transform: translateY(-8px) translateZ(10px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.project-image {
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.05);
+}
+
+/* Enhanced tag hover effects */
+.project-tag {
+  transition: all 0.3s ease;
+}
+
+.project-tag:hover {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced button hover effects */
+.project-button {
+  transition: all 0.3s ease;
+}
+
+.project-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Section background enhancement */
+.projects-background {
+  background: linear-gradient(135deg, hsl(var(--secondary) / 0.1) 0%, hsl(var(--background)) 100%);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem 0;
+  transition: all 0.3s ease;
+}
+
+.projects-background:hover {
+  background: linear-gradient(135deg, hsl(var(--secondary) / 0.2) 0%, hsl(var(--background)) 100%);
+  transform: scale(1.01);
+}
+
+/* Animation for skill carousel */
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-fast {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll-fast {
+  animation: scroll-fast 15s linear infinite;
+}
+
+.animate-pause {
+  animation-play-state: paused;
+}

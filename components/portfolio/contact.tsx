@@ -11,7 +11,7 @@ import { Mail, Send, Linkedin, Instagram, Sparkles } from "lucide-react"
 
 export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle")
-  const [errors, setErrors] = useState<{[key: string]: string}>({})
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [errorMessage, setErrorMessage] = useState<string>("")
 
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,22 +19,22 @@ export function Contact() {
     const form = e.currentTarget
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
-    
-    const newErrors: {[key: string]: string} = {}
+
+    const newErrors: { [key: string]: string } = {}
     if (!data.from_name) newErrors.from_name = "Name is required"
     if (!data.from_email) newErrors.from_email = "Email is required"
     if (!data.message) newErrors.message = "Message is required"
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
-    
+
     try {
       setStatus("loading")
       setErrors({})
       setErrorMessage("")
-      
+
       const apiData = {
         name: data.from_name,
         email: data.from_email,
@@ -55,11 +55,11 @@ export function Contact() {
       const contentType = res.headers.get("content-type")
       if (contentType && contentType.includes("application/json")) {
         const result = await res.json()
-        
+
         if (!res.ok || !result.ok) {
           throw new Error(result.message || "Failed to send message")
         }
-        
+
         setStatus("sent")
         setErrorMessage("")
         form.reset()
@@ -188,7 +188,7 @@ export function Contact() {
             </div>
           </motion.div>
 
-          {/* Form Panel */}
+{/* Form Panel */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -197,19 +197,9 @@ export function Contact() {
             className="lg:col-span-2 rounded-2xl border border-white/[0.05] bg-[#0B1120]/40 p-6 sm:p-8 shadow-2xl backdrop-blur-md"
           >
             <form
-              name="contact"
-              method="POST"
-              data-netlify="true"
-              data-netlify-honeypot="bot-field"
               onSubmit={onSubmit}
               className="space-y-5"
             >
-              <input type="hidden" name="form-name" value="contact" />
-              <div hidden>
-                <label>
-                  Don't fill this out if you're human: <input name="bot-field" />
-                </label>
-              </div>
 
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-1.5">

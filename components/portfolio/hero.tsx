@@ -53,7 +53,7 @@ export function Hero() {
       className="relative overflow-hidden min-h-screen flex items-center justify-center bg-background pt-16 group"
     >
       {/* 3D Cyberpunk Grid Overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-50" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none opacity-20 dark:opacity-50" />
 
       {/* Dynamic Lighting Mouse Glow */}
       <motion.div
@@ -70,8 +70,8 @@ export function Hero() {
       />
 
       {/* Static Glow Lights */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-r from-primary/10 to-transparent blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-gradient-to-l from-purple-500/10 to-transparent blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-r from-primary/5 dark:from-primary/10 to-transparent blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-gradient-to-l from-slate-200/50 dark:from-purple-500/10 to-transparent blur-[100px] rounded-full pointer-events-none" />
 
       {/* Futuristic Floating Particles */}
       <div className="absolute inset-0 pointer-events-none">
@@ -106,7 +106,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl"
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/60 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl"
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -167,7 +167,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.5 }}
-          className="inline-flex items-center gap-3 rounded-xl border border-border bg-card/80 px-5 py-3 text-sm font-mono backdrop-blur-md shadow-2xl"
+          className="inline-flex items-center gap-3 rounded-xl border border-border bg-white dark:bg-card/80 px-5 py-3 text-sm font-mono backdrop-blur-md shadow-md dark:shadow-2xl"
         >
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Terminal size={14} className="text-primary" />
@@ -192,7 +192,7 @@ export function Hero() {
             whileTap={{ scale: 0.98 }}
             className="w-full sm:w-auto"
           >
-            <Button className="w-full sm:w-auto h-12 px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-[0_0_20px_rgba(27,131,84,0.3)] transition-all font-mono font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2">
+            <Button className="w-full sm:w-auto h-12 px-8 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-md hover:shadow-lg dark:shadow-[0_0_20px_rgba(27,131,84,0.3)] transition-all font-mono font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2">
               Hire Me Now
               <Sparkles size={16} />
             </Button>
@@ -204,20 +204,20 @@ export function Hero() {
             whileTap={{ scale: 0.98 }}
             className="w-full sm:w-auto"
           >
-            <Button variant="outline" className="w-full sm:w-auto h-12 px-8 border-border bg-muted/50 hover:bg-muted text-foreground rounded-xl font-mono text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2">
+            <Button variant="outline" className="w-full sm:w-auto h-12 px-8 border-border bg-white dark:bg-muted/50 hover:bg-slate-50 dark:hover:bg-muted text-foreground rounded-xl font-mono text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-sm dark:shadow-none">
               View Projects
               <Code size={16} />
             </Button>
           </motion.a>
 
           <motion.a
-            href="/Mohammad Sinan Saudi.pdf"
+            href="/Mohammad_Sinan_UI_Engineer_Resume.pdf"
             target="_blank"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
             className="w-full sm:w-auto"
           >
-            <Button variant="outline" className="w-full sm:w-auto h-12 px-8 border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary rounded-xl font-mono text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2">
+            <Button variant="outline" className="w-full sm:w-auto h-12 px-8 border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary rounded-xl font-mono text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2 shadow-sm dark:shadow-none">
               Resume
               <ArrowUpRight size={16} />
             </Button>

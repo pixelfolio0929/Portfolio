@@ -111,7 +111,7 @@ export function SkillCarousel() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: idx * 0.05 }}
             whileHover={{ y: -5, scale: 1.01 }}
-            className={`group relative rounded-2xl border border-border bg-card/80 p-6 flex flex-col justify-between overflow-hidden transition-all duration-300 ${category.borderColor} ${category.glowColor}`}
+            className={`group relative rounded-2xl border border-border bg-white dark:bg-card/80 p-6 flex flex-col justify-between overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-none ${category.borderColor} ${category.glowColor}`}
           >
             <div>
               {/* Header */}
@@ -137,7 +137,7 @@ export function SkillCarousel() {
                 return (
                   <div
                     key={sIdx}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono border border-border bg-muted/50 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono border border-transparent dark:border-border bg-slate-100 dark:bg-muted/50 text-slate-700 dark:text-muted-foreground hover:text-slate-900 dark:hover:text-foreground hover:bg-slate-200 dark:hover:border-primary/30 dark:hover:bg-primary/5 transition-all duration-200"
                   >
                     {IconComponent && <IconComponent size={12} className="text-muted-foreground" />}
                     {skill.name}

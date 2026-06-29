@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ExternalLink, Github, FolderGit, Sparkles, LayoutDashboard } from "lucide-react"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Hover3DCard } from "@/components/ui/hover-3d-card"
 
 type Project = {
   title: string
@@ -198,7 +199,7 @@ export function Projects() {
     <Section id="projects" className="relative overflow-hidden bg-background py-24" variant="project">
       {/* Visual background details */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:30px_30px] opacity-20" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.05),transparent_60%)] pointer-events-none" />
+      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.05),transparent_60%)] pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
@@ -208,7 +209,7 @@ export function Projects() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
             >
               <LayoutDashboard size={12} className="text-primary" />
               <span>Showcase Showcase</span>
@@ -222,7 +223,7 @@ export function Projects() {
             </p>
           </div>
           <a href="#contact">
-            <Button className="h-11 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
+            <Button className="h-11 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-md hover:shadow-lg dark:shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
               <span>Work With Me</span>
               <ExternalLink size={12} />
             </Button>
@@ -231,14 +232,15 @@ export function Projects() {
 
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-10 pb-2 border-b border-border">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-300 ${
+{categories.map((cat) => (
+           <button
+             key={cat}
+             onClick={() => setFilter(cat)}
+             suppressHydrationWarning
+             className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-300 ${
                 filter === cat
-                  ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(27,131,84,0.3)]"
-                  : "border border-border bg-muted/40 text-muted-foreground hover:text-foreground hover:border-primary/30"
+                  ? "bg-primary text-primary-foreground shadow-md dark:shadow-[0_0_15px_rgba(27,131,84,0.3)]"
+                  : "bg-slate-100 dark:bg-muted/40 border border-transparent dark:border-border text-slate-700 dark:text-muted-foreground hover:bg-slate-200 dark:hover:bg-muted/40 hover:text-slate-900 dark:hover:text-foreground dark:hover:border-primary/30"
               }`}
             >
               {cat}
@@ -260,14 +262,15 @@ export function Projects() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4 }}
-                className="group relative rounded-2xl border border-border bg-gradient-to-b from-card/80 to-background/90 p-[1px] cursor-pointer overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md"
+                className="w-full h-full cursor-pointer"
                 onClick={() => handleProjectClick(project)}
               >
-                {/* Visual Glow */}
+                <Hover3DCard className="w-full h-full" contentClassName="group relative rounded-2xl border border-border bg-white dark:bg-gradient-to-b dark:from-card/80 dark:to-background/90 p-[1px] overflow-hidden shadow-sm hover:shadow-md dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md transition-all duration-300">
+                  {/* Visual Glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent pointer-events-none rounded-2xl group-hover:from-primary/10 transition-colors duration-500" />
 
                 {/* Card Body */}
-                <div className="relative h-full rounded-2xl bg-card/95 flex flex-col justify-between overflow-hidden">
+                <div className="relative h-full rounded-2xl bg-white dark:bg-card/95 flex flex-col justify-between overflow-hidden">
                   <div className="relative aspect-video overflow-hidden">
                     <Image
                       src={project.image || "/placeholder.svg"}
@@ -311,12 +314,12 @@ export function Projects() {
                   </div>
 
                   {/* Card Actions */}
-                  <div className="p-5 pt-3 flex gap-2 border-t border-border bg-muted/30">
+                  <div className="p-5 pt-3 flex gap-2 border-t border-border bg-slate-50 dark:bg-muted/30">
                     {project.live && (
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 border-border bg-muted/50 hover:bg-primary/10 hover:border-primary/40 hover:text-foreground text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg"
+                        className="h-8 border border-transparent dark:border-border bg-slate-200/50 dark:bg-muted/50 hover:bg-slate-200 dark:hover:bg-primary/10 hover:text-slate-900 dark:hover:border-primary/40 dark:hover:text-foreground text-slate-700 dark:text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg transition-colors"
                         onClick={(e) => {
                           e.stopPropagation()
                           window.open(project.live, "_blank")
@@ -330,7 +333,7 @@ export function Projects() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 border-border bg-muted/50 hover:bg-primary/10 hover:border-primary/40 hover:text-foreground text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg"
+                        className="h-8 border border-transparent dark:border-border bg-slate-200/50 dark:bg-muted/50 hover:bg-slate-200 dark:hover:bg-primary/10 hover:text-slate-900 dark:hover:border-primary/40 dark:hover:text-foreground text-slate-700 dark:text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg transition-colors"
                         onClick={(e) => {
                           e.stopPropagation()
                           window.open(project.repo, "_blank")
@@ -342,6 +345,7 @@ export function Projects() {
                     )}
                   </div>
                 </div>
+                </Hover3DCard>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -350,7 +354,7 @@ export function Projects() {
 
       {/* Case-Study Dialog Detail */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl border border-border bg-card/95 backdrop-blur-xl shadow-2xl p-0 rounded-2xl overflow-hidden max-h-[85vh] flex flex-col">
+        <DialogContent className="max-w-3xl border border-border bg-white dark:bg-card/95 backdrop-blur-xl shadow-2xl p-0 rounded-2xl overflow-hidden max-h-[85vh] flex flex-col">
           {selectedProject && (
             <>
               {/* Header Banner */}
@@ -360,10 +364,11 @@ export function Projects() {
                   <span>{selectedProject.title}</span>
                 </DialogTitle>
                 <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleCloseDialog}
-                    className="w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors border border-border"
-                  >
+<button
+                     onClick={handleCloseDialog}
+                     suppressHydrationWarning
+                     className="w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors border border-border"
+                   >
                     ✕
                   </button>
                 </div>
@@ -384,7 +389,7 @@ export function Projects() {
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
                       <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Problem Statement</span>
@@ -392,7 +397,7 @@ export function Projects() {
                       <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.problemStatement}</p>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
                       <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Solution</span>
@@ -402,7 +407,7 @@ export function Projects() {
                   </div>
 
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
                       <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Key Features</span>
@@ -414,7 +419,7 @@ export function Projects() {
                       </ul>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
                       <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Role Contribution</span>
@@ -424,7 +429,7 @@ export function Projects() {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-border bg-muted/30 p-4">
+                <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
                   <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-3">Technology Stack & Tags</h4>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedProject.techStack.map((tech) => (
@@ -453,7 +458,7 @@ export function Projects() {
                 )}
                 {selectedProject.repo && (
                   <a href={selectedProject.repo} target="_blank" rel="noreferrer">
-                    <Button variant="outline" className="h-10 px-5 border-border bg-muted/50 hover:bg-muted text-foreground rounded-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                    <Button variant="outline" className="h-10 px-5 border-border bg-white dark:bg-muted/50 hover:bg-slate-50 dark:hover:bg-muted text-foreground rounded-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
                       <Github size={12} />
                       <span>View Code</span>
                     </Button>

@@ -29,32 +29,38 @@ const skillCategories: SkillCategory[] = [
       { name: "React.js", icon: "Code" },
       { name: "Vue.js (Options API)", icon: "Code" },
       { name: "Tailwind CSS", icon: "Wind" },
+      { name: "Bootstrap", icon: "Layout" },
+      { name: "CSS Grid & Flexbox", icon: "LayoutGrid" },
+      { name: "RTL Arabic Support", icon: "AlignRight" },
+      { name: "Cross-browser Compatibility", icon: "Globe" },
+      { name: "Semantic HTML", icon: "FileCode2" },
+      { name: "Responsive Web Design", icon: "Smartphone" },
     ],
     color: "text-blue-500",
     bgColor: "bg-blue-500/5",
     borderColor: "border-blue-500/20"
   },
   {
-    name: "UI Development & Architecture",
-    description: "Building scalable, reusable UI components and systems",
+    name: "ASP.NET Frontend Integration",
+    description: "Frontend implementation inside ASP.NET projects (foundational knowledge — HTML/CSS/JS focus)",
     skills: [
-      { name: "Responsive Design", icon: "Smartphone" },
-      { name: "Mobile-First UI", icon: "Monitor" },
-      { name: "Dashboard UI", icon: "LayoutDashboard" },
-      { name: "Reusable Components", icon: "Blocks" },
-      { name: "Component-Based Architecture", icon: "Component" },
-      { name: "Cross-Browser Compatibility", icon: "Globe" },
+      { name: "ASP.NET Web Forms (Frontend)", icon: "FileCode" },
+      { name: "Styling Web Forms Controls", icon: "Paintbrush" },
+      { name: "CSS Integration in ASP.NET", icon: "Layout" },
+      { name: "UI Enhancement (Frontend Only)", icon: "Monitor" },
     ],
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/5",
-    borderColor: "border-purple-500/20"
+    color: "text-violet-500",
+    bgColor: "bg-violet-500/5",
+    borderColor: "border-violet-500/20"
   },
   {
     name: "UI/UX & Design Tools",
     description: "Design tools for creating and implementing UI/UX concepts",
     skills: [
       { name: "Figma", icon: "PenTool" },
-      { name: "Framer", icon: "Layout" },
+      { name: "Wireframing", icon: "Layout" },
+      { name: "Prototyping", icon: "Layers" },
+      { name: "Design Systems", icon: "Blocks" },
       { name: "Adobe Photoshop", icon: "Image" },
       { name: "Canva", icon: "Palette" },
     ],
@@ -64,13 +70,15 @@ const skillCategories: SkillCategory[] = [
   },
   {
     name: "Backend Support & Workflow",
-    description: "API integration and development workflow tools",
+    description: "API integration, databases, and development workflow tools",
     skills: [
       { name: "Firebase", icon: "Database" },
+      { name: "REST APIs", icon: "Network" },
+      { name: "Python (Basics)", icon: "Terminal" },
       { name: "MySQL (Basics)", icon: "Database" },
       { name: "Git & GitHub", icon: "GitBranch" },
+      { name: "VS Code", icon: "Code2" },
       { name: "Debugging", icon: "Bug" },
-      { name: "Version Control", icon: "History" },
     ],
     color: "text-emerald-500",
     bgColor: "bg-emerald-500/5",
@@ -86,7 +94,7 @@ export function SkillsShowcase() {
         {skillCategories.map((category, index) => (
           <div 
             key={index}
-            className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:border-opacity-40 hover:-translate-y-1 hover:scale-[1.02] group cursor-pointer"
+            className="bg-white dark:bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-xl hover:border-opacity-40 hover:-translate-y-1 hover:scale-[1.02] group cursor-pointer"
           >
             <div className="mb-4">
               <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">{category.name}</h3>

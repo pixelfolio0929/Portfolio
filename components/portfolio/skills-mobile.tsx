@@ -112,7 +112,7 @@ export function SkillsMobile() {
           return (
             <div
               key={index}
-              className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-xl p-3 transition-all duration-300 hover:shadow-md"
+              className="bg-white dark:bg-card/30 backdrop-blur-xl border border-border/50 rounded-xl p-3 transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none"
             >
               <div className="mb-3">
                 <h3 className="text-base font-semibold text-foreground mb-1 flex items-center gap-2">

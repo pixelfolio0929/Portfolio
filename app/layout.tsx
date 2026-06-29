@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-      <body className="font-sans">
+      <body className="font-sans" suppressHydrationWarning>
         <Suspense fallback={null}>
           <ThemeProvider
             attribute="class"

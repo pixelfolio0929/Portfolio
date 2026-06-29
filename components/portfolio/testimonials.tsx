@@ -2,6 +2,7 @@
 
 import { Section } from "./section"
 import { motion } from "framer-motion"
+import { Hover3DCard } from "@/components/ui/hover-3d-card"
 import { Quote, MessageSquare, Star } from "lucide-react"
 
 interface Testimonial {
@@ -43,7 +44,7 @@ export function Testimonials() {
   return (
     <Section id="testimonials" className="relative overflow-hidden bg-background py-24">
       {/* Background glow visual */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.03),transparent_60%)] pointer-events-none" />
+      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.03),transparent_60%)] pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 relative z-10">
         {/* Header */}
@@ -53,7 +54,7 @@ export function Testimonials() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
           >
             <MessageSquare size={12} className="text-primary" />
             <span>Client Endorsements</span>
@@ -93,10 +94,7 @@ export function Testimonials() {
             className="flex gap-6 w-max"
           >
             {scrollItems.map((item, idx) => (
-              <div
-                key={idx}
-                className="w-[350px] rounded-2xl border border-border bg-card/40 p-6 shadow-xl backdrop-blur-md flex flex-col justify-between shrink-0 hover:border-primary/30 hover:bg-card/60 transition-all duration-300 group cursor-default"
-              >
+              <Hover3DCard key={idx} className="w-[350px]" contentClassName="h-full rounded-2xl border border-border bg-white dark:bg-card/40 p-6 shadow-sm backdrop-blur-md flex flex-col justify-between group cursor-default">
                 <div>
                   {/* Rating Stars & Quote Icon */}
                   <div className="flex items-center justify-between mb-4">
@@ -119,7 +117,7 @@ export function Testimonials() {
                     {item.role} @ {item.company}
                   </p>
                 </div>
-              </div>
+              </Hover3DCard>
             ))}
           </motion.div>
         </div>

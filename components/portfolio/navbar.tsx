@@ -55,55 +55,63 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? "py-3 bg-background/75 backdrop-blur-xl border-b border-border shadow-2xl"
-          : "py-5 bg-transparent"
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? "bg-white/80 dark:bg-background/80 backdrop-blur-xl border-b border-border shadow-sm dark:shadow-2xl"
+          : "bg-transparent"
+      }`}
     >
-      <div className="mx-auto max-w-6xl px-6 flex items-center justify-between">
-        {/* Left Section - Logo */}
-        <div className="flex items-center gap-3">
-          <MobileNav />
-          <a href="#">
-            <span className="font-mono text-base font-bold bg-gradient-to-r from-emerald-400 to-primary bg-clip-text text-transparent tracking-widest">
-              {"<dev-portfolio />"}
-            </span>
-          </a>
-        </div>
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          
+          {/* Left Section - Logo (flex-1 to ensure center nav is perfectly centered) */}
+          <div className="flex-1 flex items-center justify-start gap-3">
+            <MobileNav />
+            <a href="#" className="group flex items-center">
+              <span className="font-mono text-base md:text-lg font-bold text-foreground tracking-tight group-hover:opacity-80 transition-opacity">
+                {"<"}<span className="text-primary">dev</span>{"-portfolio />"}
+              </span>
+            </a>
+          </div>
 
-        {/* Center Section - Premium Hover Desktop Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-muted/30 border border-border p-1 rounded-full backdrop-blur-md shadow-2xl">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.slice(1) || (activeSection === "Workflow" && item.name === "Experience")
-            return (
-              <a
-                key={item.name}
-                href={item.href}
-                className={`relative px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="activeNavIndicator"
-                    className="absolute inset-0 bg-primary/10 border border-primary/20 rounded-full -z-10 shadow-[0_0_10px_rgba(27,131,84,0.15)]"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-                {item.name}
-              </a>
-            )
-          })}
-        </nav>
+          {/* Center Section - Floating Nav Pill */}
+          <div className="hidden lg:flex items-center justify-center">
+            <nav className="flex items-center gap-1 bg-white/70 dark:bg-muted/30 border border-border p-1.5 rounded-full backdrop-blur-md shadow-sm dark:shadow-2xl transition-all">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.href.slice(1) || (activeSection === "Workflow" && item.name === "Experience")
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className={`relative px-4 py-2 rounded-full text-[13px] font-sans font-medium transition-colors duration-300 ${
+                      isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeNavIndicator"
+                        className="absolute inset-0 bg-slate-100 dark:bg-white/10 rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{item.name}</span>
+                  </a>
+                )
+              })}
+            </nav>
+          </div>
 
-        {/* Right Section - CTA & Theme Toggle */}
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          <a
-            href="#contact"
-            className="hidden sm:inline-flex h-9 items-center rounded-xl bg-primary hover:bg-primary/90 px-5 text-xs font-mono font-bold text-primary-foreground shadow-xl hover:shadow-[0_0_15px_rgba(27,131,84,0.3)] transition-all uppercase tracking-wider shrink-0"
-          >
-            Hire Me
-          </a>
+          {/* Right Section - CTA & Theme (flex-1 to match left side) */}
+          <div className="flex-1 flex items-center justify-end gap-2 sm:gap-4">
+            <ThemeToggle />
+            <a
+              href="#contact"
+              className="hidden sm:inline-flex h-10 items-center justify-center rounded-full bg-foreground hover:bg-foreground/90 px-6 text-[13px] font-sans font-medium text-background shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all shrink-0"
+            >
+              Hire Me
+            </a>
+          </div>
+
         </div>
       </div>
     </header>

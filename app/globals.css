@@ -1,22 +1,22 @@
-/* remove tw-animate-css import and use @theme (not inline) */
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #09090b;
-    --card: #f8fafc;
-    --card-foreground: #09090b;
+    --foreground: #111827;
+    --card: #ffffff;
+    --card-foreground: #111827;
     --popover: #ffffff;
-    --popover-foreground: #09090b;
+    --popover-foreground: #111827;
     --primary: #1B8354;
     --primary-foreground: #ffffff;
-    --secondary: #f1f5f9;
-    --secondary-foreground: #0f172a;
+    --secondary: #f8fafc;
+    --secondary-foreground: #475569;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #f1f5f9;
-    --accent-foreground: #0f172a;
+    --accent: #f8fafc;
+    --accent-foreground: #111827;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
     --border: #e2e8f0;
@@ -113,12 +113,12 @@
 }
 
 .gradient-button {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
   transition: all 0.3s ease;
 }
 
 .gradient-button:hover {
-  background: linear-gradient(135deg, hsl(var(--primary) / 0.9) 0%, hsl(var(--primary) / 0.7) 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }

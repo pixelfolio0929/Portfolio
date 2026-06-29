@@ -7,30 +7,31 @@ import { Calendar, Briefcase, Sparkles, Code2 } from "lucide-react"
 const experiences = [
   {
     company: "Saudi Broadcasting Authority (SBA)",
-    role: "SBA UI Developer",
+    role: "UI Engineer / Frontend Developer",
     period: "DEC 2025 - PRESENT",
-    description: "Leading the development of highly responsive and fully compliant portal user interfaces. Harmonizing digital platforms with DGA design systems and structural navigation frameworks. Engineering semantic component architectures, FAQ workflows, and sitemap synchronization, ensuring premium RTL support, search optimization, and seamless user journeys.",
-    tools: ["React.js", "Next.js", "Tailwind CSS", "DGA Design System", "RTL Arabic Support", "Figma", "Git"]
+    location: "Riyadh, Saudi Arabia",
+    description: "Developing responsive user interfaces for enterprise web applications aligned with the Saudi Government Design System (DGA). Translating Figma designs into production-ready, pixel-accurate interfaces. Building reusable frontend components and maintaining consistency across enterprise applications. Supporting Arabic RTL interfaces and optimizing layouts across desktop, tablet, and mobile. Working within ASP.NET Web Forms projects with a focus on frontend implementation — styling existing controls with modern CSS and enhancing user experience without affecting backend functionality. Collaborating with UI/UX designers, backend developers, and stakeholders throughout the product lifecycle. Improving accessibility, usability, and maintaining a scalable CSS architecture.",
+    tools: ["HTML5", "CSS3", "JavaScript", "ASP.NET Web Forms (Frontend)", "DGA Design System", "Figma", "Responsive Design", "RTL Arabic Support", "Git", "Tailwind CSS"]
   },
   {
     company: "Almasons, Mangalore",
-    role: "Software Developer",
+    role: "Frontend Developer",
     period: "FEB 2025 - DEC 2025",
     description: "Architected modern frontend systems using Vue.js and React.js. Engineered responsive, high-performance dashboards, integrated complex REST APIs, built scalable component libraries, and optimized build configurations. Collaborated closely with UI/UX designers to translate high-fidelity designs into pixel-perfect code.",
-    tools: ["Vue.js", "React.js", "GitLab", "Python", "Backend Dynamic", "SQL", "Figma", "GitHub"]
+    tools: ["Vue.js", "React.js", "GitLab", "REST APIs", "SQL", "Figma", "GitHub"]
   },
   {
     company: "Whitebook World, Bangalore",
-    role: "UI - Graphic Designer",
+    role: "UI Designer",
     period: "SEP 2024 - FEB 2025",
     description: "Designed high-fidelity user interface concepts, interactive prototypes, and layouts using Figma and Adobe Photoshop. Established coherent styling standards, visual systems, and asset packs, streamlining the handover process to developers.",
-    tools: ["Adobe Photoshop", "Canva", "Figma"]
+    tools: ["Figma", "Adobe Photoshop", "Canva"]
   },
   {
     company: "Freelance",
     role: "Graphic Designer",
     period: "Near 2022 - 2025",
-    description: "Delivered state-of-the-art visual assets, brand identity materials, and motion designs using Premiere Pro, Figma, and Canva. Managed client communications, scoped delivery timelines, and prepared UI mockups aligned with conversion and brand strategy.",
+    description: "Delivered visual assets, brand identity materials, and motion designs. Managed client communications, scoped delivery timelines, and prepared UI mockups aligned with conversion and brand strategy.",
     tools: ["Adobe Photoshop", "Figma", "Adobe Premiere Pro", "Canva"]
   },
 ]
@@ -39,7 +40,7 @@ export function Workflow() {
   return (
     <Section id="Workflow" className="relative overflow-hidden bg-background py-24">
       {/* Visual background details */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(27,131,84,0.06),transparent_40%)] pointer-events-none" />
+      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_bottom_left,rgba(27,131,84,0.06),transparent_40%)] pointer-events-none" />
 
       {/* Header */}
       <div className="text-center mb-16 relative z-10">
@@ -48,7 +49,7 @@ export function Workflow() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
         >
           <Briefcase size={12} className="text-primary" />
           <span>Professional Milestones</span>
@@ -94,7 +95,7 @@ export function Workflow() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="rounded-2xl border border-border bg-card/40 p-6 shadow-2xl backdrop-blur-md hover:border-primary/30 hover:bg-card/60 transition-all duration-300 group cursor-default"
+                    className="rounded-2xl border border-border bg-white dark:bg-card/40 p-6 shadow-sm hover:shadow-md dark:shadow-2xl backdrop-blur-md hover:border-primary/30 dark:hover:bg-card/60 transition-all duration-300 group cursor-default"
                   >
                     {/* Role & Company */}
                     <div className="flex flex-col gap-1 mb-3">
@@ -120,7 +121,7 @@ export function Workflow() {
                       {exp.tools.map((tool) => (
                         <span
                           key={tool}
-                          className="text-[10px] font-mono border border-border bg-muted/50 hover:border-primary/30 hover:bg-primary/5 text-muted-foreground hover:text-foreground px-2.5 py-1 rounded-full transition-all duration-300"
+                          className="text-[10px] font-mono border border-transparent dark:border-border bg-slate-100 dark:bg-muted/50 hover:bg-slate-200 dark:hover:border-primary/30 dark:hover:bg-primary/5 text-slate-700 dark:text-muted-foreground hover:text-slate-900 dark:hover:text-foreground px-2.5 py-1 rounded-full transition-all duration-300"
                         >
                           {tool}
                         </span>
@@ -133,7 +134,7 @@ export function Workflow() {
                 <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 z-20 md:order-2 flex items-center justify-center">
                   <motion.div
                     whileHover={{ scale: 1.2 }}
-                    className="w-10 h-10 rounded-full border border-primary bg-background shadow-[0_0_15px_rgba(27,131,84,0.4)] flex items-center justify-center text-primary"
+                    className="w-10 h-10 rounded-full border border-primary bg-white dark:bg-background shadow-sm hover:shadow-md dark:shadow-[0_0_15px_rgba(27,131,84,0.4)] flex items-center justify-center text-primary transition-all"
                   >
                     <Code2 size={16} />
                   </motion.div>

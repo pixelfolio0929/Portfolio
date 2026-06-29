@@ -22,7 +22,7 @@ function WorkflowSkeleton() {
     <div className="mt-12 grid gap-8 md:grid-cols-3">
       {[1, 2, 3].map((item) => (
         <div key={item} className="rounded-3xl p-1">
-          <div className="rounded-2xl bg-white/90 dark:bg-black/10 backdrop-blur p-6">
+          <div className="rounded-2xl bg-white dark:bg-black/10 backdrop-blur p-6 border border-border">
             <Skeleton className="h-6 w-24 rounded-full" />
             <Skeleton className="mt-4 h-6 w-3/4" />
             <Skeleton className="mt-2 h-4 w-1/2" />
@@ -47,7 +47,7 @@ function AIToolsSkeleton() {
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-12">
         {[1, 2, 3].map((item) => (
-          <div key={item} className="rounded-2xl border p-6">
+          <div key={item} className="rounded-2xl border border-border bg-white dark:bg-transparent p-6">
             <Skeleton className="h-8 w-8 rounded-lg" />
             <Skeleton className="mt-4 h-6 w-3/4" />
             <Skeleton className="mt-2 h-4 w-full" />
@@ -61,7 +61,7 @@ function AIToolsSkeleton() {
 
 export default function Page() {
   return (
-    <main className="relative bg-background">
+    <main className="relative bg-slate-50 dark:bg-background">
       {/* Premium Cinematic Mouse reactive Glow Cursor */}
       <CustomCursor />
 
@@ -91,7 +91,7 @@ export default function Page() {
       <Contact />
 
       {/* Footer */}
-      <footer className="border-t border-border mt-24 bg-gradient-to-b from-background to-secondary">
+      <footer className="border-t border-border mt-24 bg-white dark:bg-gradient-to-b dark:from-background dark:to-secondary">
         <div className="mx-auto max-w-6xl px-6 py-12 text-sm flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
             <p className="text-muted-foreground font-mono text-xs">{"<dev-portfolio />"}</p>

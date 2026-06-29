@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Section } from "./section"
+import { Hover3DCard } from "@/components/ui/hover-3d-card"
 import * as Icons from "lucide-react"
 
 interface Feature {
@@ -72,23 +73,16 @@ export function WhyChooseMe() {
           {features.map((feature, index) => {
             const IconComponent = Icons[feature.icon as keyof typeof Icons];
             return (
-              <motion.div
-                key={index}
-                className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-opacity-40 hover:-translate-y-1"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                    {/* @ts-ignore */}
-                    {IconComponent && <IconComponent size={24} />}
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+              <Hover3DCard key={feature.title} className="w-full" contentClassName="flex flex-col h-full p-6 sm:p-8 rounded-3xl border border-border bg-white dark:bg-card/40 backdrop-blur-sm shadow-sm hover:shadow-md dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all duration-300">
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-primary/10 flex items-center justify-center text-primary mb-6">
+                  {/* @ts-ignore */}
+                  {IconComponent && <IconComponent size={24} />}
                 </div>
-              </motion.div>
+                <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed flex-grow">
+                  {feature.description}
+                </p>
+              </Hover3DCard>
             )
           })}
         </div>

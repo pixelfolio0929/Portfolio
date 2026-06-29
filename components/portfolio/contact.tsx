@@ -77,7 +77,7 @@ export function Contact() {
   return (
     <Section id="contact" className="relative overflow-hidden bg-background py-24">
       {/* Background details */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(27,131,84,0.05),transparent_40%)] pointer-events-none" />
+      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_top_left,rgba(27,131,84,0.05),transparent_40%)] pointer-events-none" />
 
       <div className="mx-auto max-w-4xl px-6 relative z-10">
         {/* Header */}
@@ -87,7 +87,7 @@ export function Contact() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
           >
             <Mail size={12} className="text-primary" />
             <span>Connect With Me</span>
@@ -123,7 +123,7 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-1 flex flex-col justify-between gap-6 rounded-2xl border border-border bg-card/40 p-6 shadow-2xl backdrop-blur-md"
+            className="lg:col-span-1 flex flex-col justify-between gap-6 rounded-2xl border border-border bg-white dark:bg-card/40 p-6 shadow-sm hover:shadow-md dark:shadow-2xl backdrop-blur-md"
           >
             <div className="space-y-6">
               <h3 className="text-lg font-mono font-bold text-foreground flex items-center gap-2">
@@ -136,9 +136,9 @@ export function Contact() {
                   href="https://www.linkedin.com/in/mohammad-sinan-8864b722a"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3.5 rounded-xl border border-border bg-muted/30 hover:bg-primary/5 hover:border-primary/30 p-3.5 transition-all duration-300 group"
+                  className="flex items-center gap-3.5 rounded-xl border border-transparent dark:border-border bg-slate-100 dark:bg-muted/30 hover:bg-slate-200 dark:hover:bg-primary/5 hover:border-transparent dark:hover:border-primary/30 p-3.5 transition-all duration-300 group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-background group-hover:bg-primary/10 flex items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors duration-300 shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-white dark:bg-background group-hover:bg-primary/10 flex items-center justify-center text-slate-700 dark:text-muted-foreground group-hover:text-primary dark:group-hover:text-foreground transition-colors duration-300 shrink-0">
                     <Linkedin size={18} />
                   </div>
                   <div className="overflow-hidden">
@@ -151,9 +151,9 @@ export function Contact() {
                   href="https://www.instagram.com/sinan_kota/"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3.5 rounded-xl border border-border bg-muted/30 hover:bg-purple-500/5 hover:border-purple-500/30 p-3.5 transition-all duration-300 group"
+                  className="flex items-center gap-3.5 rounded-xl border border-transparent dark:border-border bg-slate-100 dark:bg-muted/30 hover:bg-slate-200 dark:hover:bg-purple-500/5 hover:border-transparent dark:hover:border-purple-500/30 p-3.5 transition-all duration-300 group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-background group-hover:bg-purple-500/10 flex items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors duration-300 shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-white dark:bg-background group-hover:bg-purple-500/10 flex items-center justify-center text-slate-700 dark:text-muted-foreground group-hover:text-purple-600 dark:group-hover:text-foreground transition-colors duration-300 shrink-0">
                     <Instagram size={18} />
                   </div>
                   <div className="overflow-hidden">
@@ -164,9 +164,9 @@ export function Contact() {
 
                 <a
                   href="mailto:mhdsinan004@gmail.com"
-                  className="flex items-center gap-3.5 rounded-xl border border-border bg-muted/30 hover:bg-cyan-500/5 hover:border-cyan-500/30 p-3.5 transition-all duration-300 group"
+                  className="flex items-center gap-3.5 rounded-xl border border-transparent dark:border-border bg-slate-100 dark:bg-muted/30 hover:bg-slate-200 dark:hover:bg-cyan-500/5 hover:border-transparent dark:hover:border-cyan-500/30 p-3.5 transition-all duration-300 group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-background group-hover:bg-cyan-500/10 flex items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors duration-300 shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-white dark:bg-background group-hover:bg-cyan-500/10 flex items-center justify-center text-slate-700 dark:text-muted-foreground group-hover:text-cyan-600 dark:group-hover:text-foreground transition-colors duration-300 shrink-0">
                     <Mail size={18} />
                   </div>
                   <div className="overflow-hidden">
@@ -194,7 +194,7 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-2 rounded-2xl border border-border bg-card/40 p-6 sm:p-8 shadow-2xl backdrop-blur-md"
+            className="lg:col-span-2 rounded-2xl border border-border bg-white dark:bg-card/40 p-6 sm:p-8 shadow-sm hover:shadow-md dark:shadow-2xl backdrop-blur-md transition-all duration-300"
           >
             <form
               onSubmit={onSubmit}
@@ -207,7 +207,7 @@ export function Contact() {
                     name="from_name"
                     placeholder="Your name"
                     required
-                    className="h-11 rounded-xl border border-border bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
+                    className="h-11 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
                   />
                   {errors.from_name && <p className="text-[10px] font-mono text-red-500">{errors.from_name}</p>}
                 </div>
@@ -218,7 +218,7 @@ export function Contact() {
                     type="email"
                     placeholder="Your email"
                     required
-                    className="h-11 rounded-xl border border-border bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
+                    className="h-11 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
                   />
                   {errors.from_email && <p className="text-[10px] font-mono text-red-500">{errors.from_email}</p>}
                 </div>
@@ -228,7 +228,7 @@ export function Contact() {
                 <Input
                   name="subject"
                   placeholder="Subject"
-                  className="h-11 rounded-xl border border-border bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
+                  className="h-11 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
                 />
               </div>
 
@@ -237,7 +237,7 @@ export function Contact() {
                   name="message"
                   placeholder="Your message"
                   required
-                  className="min-h-[140px] rounded-xl border border-border bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
+                  className="min-h-[140px] rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-background/60 focus:border-primary focus:ring-1 focus:ring-primary text-foreground font-mono text-xs placeholder:text-muted-foreground transition-all"
                 />
                 {errors.message && <p className="text-[10px] font-mono text-red-500">{errors.message}</p>}
               </div>
@@ -246,7 +246,7 @@ export function Contact() {
                 <Button
                   type="submit"
                   disabled={status === "loading"}
-                  className="w-full sm:w-auto h-11 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto h-11 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-md hover:shadow-lg dark:shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2"
                 >
                   {status === "loading" ? (
                     <span className="animate-pulse">Transmission Active...</span>

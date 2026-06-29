@@ -48,11 +48,14 @@ function Button({
   }) {
   const Comp = asChild ? Slot : 'button'
 
+  const { 'jf-ext-button-ct': _, ...restProps } = props as Record<string, unknown>
+
   return (
     <Comp
       data-slot="button"
+      suppressHydrationWarning
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...restProps}
     />
   )
 }

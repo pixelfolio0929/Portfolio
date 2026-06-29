@@ -42,11 +42,12 @@ export function MobileNav() {
   return (
     <>
       {/* Mobile menu button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="md:hidden p-2 rounded-md hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
-        aria-label="Open menu"
-      >
+<button
+         onClick={() => setIsOpen(true)}
+         suppressHydrationWarning
+         className="md:hidden p-2 rounded-md hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
+         aria-label="Open menu"
+       >
         <Menu className="h-6 w-6" />
       </button>
 
@@ -72,11 +73,12 @@ export function MobileNav() {
                 <span className="font-mono text-base font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
                   {"<dev />"}
                 </span>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-md hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
-                  aria-label="Close menu"
-                >
+<button
+                   onClick={() => setIsOpen(false)}
+                   suppressHydrationWarning
+                   className="p-1.5 rounded-md hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
+                   aria-label="Close menu"
+                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>

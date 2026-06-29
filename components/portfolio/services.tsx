@@ -2,6 +2,7 @@
 
 import { Section } from "./section"
 import { motion } from "framer-motion"
+import { Hover3DCard } from "@/components/ui/hover-3d-card"
 import * as Icons from "lucide-react"
 
 interface Service {
@@ -64,7 +65,7 @@ export function Services() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
           >
             <Icons.Sparkles size={12} className="text-primary" />
             <span>Scope Of Services</span>
@@ -103,15 +104,15 @@ export function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
-                whileHover={{ y: -5, scale: 1.01 }}
-                className={`group relative rounded-2xl border border-border bg-gradient-to-b from-card/80 to-background/90 p-[1px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md transition-all duration-300 ${service.borderColor} ${service.glowColor}`}
+                className="w-full h-full"
               >
-                {/* Cybernetic Accent lines */}
-                <div className="absolute top-0 left-0 w-8 h-[1px] bg-primary/40" />
-                <div className="absolute top-0 left-0 w-[1px] h-8 bg-primary/40" />
+                <Hover3DCard className="w-full h-full" contentClassName={`group relative rounded-2xl border border-border bg-white dark:bg-gradient-to-b dark:from-card/80 dark:to-background/90 p-[1px] overflow-hidden shadow-sm hover:shadow-md dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md transition-all duration-300 ${service.borderColor} ${service.glowColor}`}>
+                  {/* Cybernetic Accent lines */}
+                <div className="absolute top-0 left-0 w-8 h-[1px] bg-primary/40 hidden dark:block" />
+                <div className="absolute top-0 left-0 w-[1px] h-8 bg-primary/40 hidden dark:block" />
 
                 {/* Inner Body */}
-                <div className="relative rounded-2xl bg-card/95 p-6 h-full flex flex-col justify-between overflow-hidden">
+                <div className="relative rounded-2xl bg-white dark:bg-card/95 p-6 h-full flex flex-col justify-between overflow-hidden">
                   <div>
                     {/* Icon Wrap */}
                     <div className="w-12 h-12 rounded-xl bg-muted/50 border border-border flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-all duration-300 mb-6 shrink-0 shadow-inner">
@@ -133,6 +134,7 @@ export function Services() {
                     <span>0{idx + 1}</span>
                   </div>
                 </div>
+                </Hover3DCard>
               </motion.div>
             )
           })}

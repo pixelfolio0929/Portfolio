@@ -61,7 +61,7 @@ function AIToolsSkeleton() {
 
 export default function Page() {
   return (
-    <main className="relative bg-[#050816]">
+    <main className="relative bg-background">
       {/* Premium Cinematic Mouse reactive Glow Cursor */}
       <CustomCursor />
 
@@ -91,22 +91,22 @@ export default function Page() {
       <Contact />
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.05] mt-24 bg-gradient-to-b from-[#050816] to-[#0B1120]">
+      <footer className="border-t border-border mt-24 bg-gradient-to-b from-background to-secondary">
         <div className="mx-auto max-w-6xl px-6 py-12 text-sm flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
-            <p className="text-gray-400 font-mono text-xs">{"<dev-portfolio />"}</p>
-            <p className="text-gray-500 text-xs">{"Crafting digital experiences with code & creativity"}</p>
+            <p className="text-muted-foreground font-mono text-xs">{"<dev-portfolio />"}</p>
+            <p className="text-muted-foreground/80 text-xs">{"Crafting digital experiences with code & creativity"}</p>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#projects" className="hover:text-[#1B8354] text-gray-400 transition-colors font-mono text-xs uppercase tracking-wider">
+            <a href="#projects" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
               View Projects
             </a>
-            <a href="#contact" className="hover:text-[#1B8354] text-gray-400 transition-colors font-mono text-xs uppercase tracking-wider">
+            <a href="#contact" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
               Get in touch
             </a>
           </div>
         </div>
-        <div className="mx-auto max-w-6xl px-6 pb-8 text-center text-[10px] font-mono text-gray-600">
+        <div className="mx-auto max-w-6xl px-6 pb-8 text-center text-[10px] font-mono text-muted-foreground/60">
           © {new Date().getFullYear()} Built with React and AI by Mohammad Sinan
         </div>
       </footer>

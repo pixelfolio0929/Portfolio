@@ -66,9 +66,7 @@ const skillCategories: SkillCategory[] = [
     name: "Backend Support & Workflow",
     description: "API integration and development workflow tools",
     skills: [
-      { name: "REST API Integration", icon: "Network" },
       { name: "Firebase", icon: "Database" },
-      { name: "Python (Basics)", icon: "Code" },
       { name: "MySQL (Basics)", icon: "Database" },
       { name: "Git & GitHub", icon: "GitBranch" },
       { name: "Debugging", icon: "Bug" },

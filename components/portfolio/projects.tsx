@@ -195,9 +195,9 @@ export function Projects() {
   })
 
   return (
-    <Section id="projects" className="relative overflow-hidden bg-[#050816] py-24" variant="project">
+    <Section id="projects" className="relative overflow-hidden bg-background py-24" variant="project">
       {/* Visual background details */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:30px_30px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:30px_30px] opacity-20" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.05),transparent_60%)] pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 relative z-10">
@@ -208,21 +208,21 @@ export function Projects() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.05] bg-[#0B1120]/80 px-4 py-1.5 text-xs font-mono font-medium text-gray-300 backdrop-blur-md shadow-2xl mb-4"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
             >
-              <LayoutDashboard size={12} className="text-[#1B8354]" />
+              <LayoutDashboard size={12} className="text-primary" />
               <span>Showcase Showcase</span>
             </motion.div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
               Professional Projects
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-gray-400 font-light max-w-2xl leading-relaxed">
+            <p className="mt-4 text-sm sm:text-base text-muted-foreground font-light max-w-2xl leading-relaxed">
               Business-focused solutions demonstrating problem-solving and technical expertise.
             </p>
           </div>
           <a href="#contact">
-            <Button className="h-11 px-6 bg-[#1B8354] hover:bg-[#1B8354]/90 text-white rounded-xl shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
+            <Button className="h-11 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
               <span>Work With Me</span>
               <ExternalLink size={12} />
             </Button>
@@ -230,15 +230,15 @@ export function Projects() {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-2 mb-10 pb-2 border-b border-white/[0.05]">
+        <div className="flex flex-wrap gap-2 mb-10 pb-2 border-b border-border">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
               className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-300 ${
                 filter === cat
-                  ? "bg-[#1B8354] text-white shadow-[0_0_15px_rgba(27,131,84,0.3)]"
-                  : "border border-white/[0.05] bg-[#0B1120]/40 text-gray-400 hover:text-white hover:border-[#1B8354]/30"
+                  ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(27,131,84,0.3)]"
+                  : "border border-border bg-muted/40 text-muted-foreground hover:text-foreground hover:border-primary/30"
               }`}
             >
               {cat}
@@ -260,14 +260,14 @@ export function Projects() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4 }}
-                className="group relative rounded-2xl border border-white/[0.05] bg-gradient-to-b from-[#0B1120]/80 to-[#050816]/90 p-[1px] cursor-pointer overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md"
+                className="group relative rounded-2xl border border-border bg-gradient-to-b from-card/80 to-background/90 p-[1px] cursor-pointer overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md"
                 onClick={() => handleProjectClick(project)}
               >
                 {/* Visual Glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none rounded-2xl group-hover:from-[#1B8354]/10 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent pointer-events-none rounded-2xl group-hover:from-primary/10 transition-colors duration-500" />
 
                 {/* Card Body */}
-                <div className="relative h-full rounded-2xl bg-[#0B1120]/95 flex flex-col justify-between overflow-hidden">
+                <div className="relative h-full rounded-2xl bg-card/95 flex flex-col justify-between overflow-hidden">
                   <div className="relative aspect-video overflow-hidden">
                     <Image
                       src={project.image || "/placeholder.svg"}
@@ -278,20 +278,20 @@ export function Projects() {
                       priority={index < 3}
                       sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-transparent opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
 
                     {/* Left/Right Accent */}
-                    <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-[#050816]/80 backdrop-blur-md flex items-center justify-center border border-white/[0.05]">
-                      <FolderGit size={14} className="text-[#1B8354]" />
+                    <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-background/80 backdrop-blur-md flex items-center justify-center border border-border">
+                      <FolderGit size={14} className="text-primary" />
                     </div>
                   </div>
 
                   {/* Header */}
                   <div className="p-5 flex-grow">
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#1B8354] transition-colors duration-300">
+                    <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                       {project.title}
                     </h3>
-                    <p className="text-xs text-gray-400 font-light leading-relaxed line-clamp-3">
+                    <p className="text-xs text-muted-foreground font-light leading-relaxed line-clamp-3">
                       {project.problemStatement}
                     </p>
                   </div>
@@ -302,7 +302,7 @@ export function Projects() {
                       {project.tags.slice(0, 2).map((tag, tagIndex) => (
                         <Badge
                           key={`${project.title}-${tagIndex}`}
-                          className="bg-white/[0.02] border border-white/[0.04] text-gray-400 text-[10px] font-mono font-medium rounded-full px-2 py-0.5"
+                          className="bg-muted/50 border border-border text-muted-foreground text-[10px] font-mono font-medium rounded-full px-2 py-0.5"
                         >
                           {tag}
                         </Badge>
@@ -311,12 +311,12 @@ export function Projects() {
                   </div>
 
                   {/* Card Actions */}
-                  <div className="p-5 pt-3 flex gap-2 border-t border-white/[0.04] bg-[#050816]/30">
+                  <div className="p-5 pt-3 flex gap-2 border-t border-border bg-muted/30">
                     {project.live && (
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 border-white/[0.08] bg-white/[0.02] hover:bg-[#1B8354]/10 hover:border-[#1B8354]/40 hover:text-white text-gray-300 font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg"
+                        className="h-8 border-border bg-muted/50 hover:bg-primary/10 hover:border-primary/40 hover:text-foreground text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg"
                         onClick={(e) => {
                           e.stopPropagation()
                           window.open(project.live, "_blank")
@@ -330,7 +330,7 @@ export function Projects() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-8 border-white/[0.08] bg-white/[0.02] hover:bg-[#1B8354]/10 hover:border-[#1B8354]/40 hover:text-white text-gray-300 font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg"
+                        className="h-8 border-border bg-muted/50 hover:bg-primary/10 hover:border-primary/40 hover:text-foreground text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg"
                         onClick={(e) => {
                           e.stopPropagation()
                           window.open(project.repo, "_blank")
@@ -350,19 +350,19 @@ export function Projects() {
 
       {/* Case-Study Dialog Detail */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl border border-white/[0.08] bg-[#0B1120]/95 backdrop-blur-xl shadow-2xl p-0 rounded-2xl overflow-hidden max-h-[85vh] flex flex-col">
+        <DialogContent className="max-w-3xl border border-border bg-card/95 backdrop-blur-xl shadow-2xl p-0 rounded-2xl overflow-hidden max-h-[85vh] flex flex-col">
           {selectedProject && (
             <>
               {/* Header Banner */}
-              <div className="bg-[#050816] p-6 border-b border-white/[0.05] flex items-center justify-between shrink-0">
-                <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">
-                  <FolderGit className="text-[#1B8354]" size={20} />
+              <div className="bg-background p-6 border-b border-border flex items-center justify-between shrink-0">
+                <DialogTitle className="text-xl font-bold text-foreground flex items-center gap-2">
+                  <FolderGit className="text-primary" size={20} />
                   <span>{selectedProject.title}</span>
                 </DialogTitle>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCloseDialog}
-                    className="w-8 h-8 rounded-lg bg-white/[0.02] hover:bg-white/[0.08] text-gray-400 hover:text-white flex items-center justify-center transition-colors border border-white/[0.05]"
+                    className="w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors border border-border"
                   >
                     ✕
                   </button>
@@ -371,7 +371,7 @@ export function Projects() {
 
               {/* Scrollable Content */}
               <div className="flex-grow overflow-y-auto p-6 space-y-6">
-                <div className="aspect-video relative rounded-xl overflow-hidden border border-white/[0.08]">
+                <div className="aspect-video relative rounded-xl overflow-hidden border border-border">
                   <Image
                     src={selectedProject.image || "/placeholder.svg"}
                     alt={selectedProject.title}
@@ -379,61 +379,61 @@ export function Projects() {
                     height={540}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] to-transparent opacity-40" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-40" />
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-white/[0.04] bg-[#050816]/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-[#1B8354] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Problem Statement</span>
                       </h4>
-                      <p className="text-xs text-gray-300 font-light leading-relaxed">{selectedProject.problemStatement}</p>
+                      <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.problemStatement}</p>
                     </div>
 
-                    <div className="rounded-xl border border-white/[0.04] bg-[#050816]/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-[#1B8354] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Solution</span>
                       </h4>
-                      <p className="text-xs text-gray-300 font-light leading-relaxed">{selectedProject.solution}</p>
+                      <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.solution}</p>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="rounded-xl border border-white/[0.04] bg-[#050816]/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-[#1B8354] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Key Features</span>
                       </h4>
-                      <ul className="list-disc pl-4 space-y-1 text-xs text-gray-300 font-light">
+                      <ul className="list-disc pl-4 space-y-1 text-xs text-muted-foreground font-light">
                         {selectedProject.keyFeatures.map((f, i) => (
                           <li key={i}>{f}</li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="rounded-xl border border-white/[0.04] bg-[#050816]/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-[#1B8354] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <div className="rounded-xl border border-border bg-muted/30 p-4">
+                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Sparkles size={12} />
                         <span>Role Contribution</span>
                       </h4>
-                      <p className="text-xs text-gray-300 font-light leading-relaxed">{selectedProject.roleContribution}</p>
+                      <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.roleContribution}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-white/[0.04] bg-[#050816]/30 p-4">
-                  <h4 className="text-xs font-mono font-bold text-[#1B8354] uppercase tracking-wider mb-3">Technology Stack & Tags</h4>
+                <div className="rounded-xl border border-border bg-muted/30 p-4">
+                  <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-3">Technology Stack & Tags</h4>
                   <div className="flex flex-wrap gap-1.5">
                     {selectedProject.techStack.map((tech) => (
-                      <Badge key={tech} className="bg-[#1B8354]/10 border border-[#1B8354]/20 hover:bg-[#1B8354]/20 text-[#1B8354] text-[10px] font-mono rounded-full px-2.5 py-0.5 transition-colors">
+                      <Badge key={tech} className="bg-primary/10 border border-primary/20 hover:bg-primary/20 text-primary text-[10px] font-mono rounded-full px-2.5 py-0.5 transition-colors">
                         {tech}
                       </Badge>
                     ))}
                     {selectedProject.tags.map((tag) => (
-                      <Badge key={tag} className="bg-white/[0.02] border border-white/[0.05] text-gray-400 text-[10px] font-mono rounded-full px-2.5 py-0.5">
+                      <Badge key={tag} className="bg-muted/50 border border-border text-muted-foreground text-[10px] font-mono rounded-full px-2.5 py-0.5">
                         {tag}
                       </Badge>
                     ))}
@@ -442,10 +442,10 @@ export function Projects() {
               </div>
 
               {/* Banner Footer Actions */}
-              <div className="bg-[#050816] p-6 border-t border-white/[0.05] flex justify-end gap-3 shrink-0">
+              <div className="bg-background p-6 border-t border-border flex justify-end gap-3 shrink-0">
                 {selectedProject.live && (
                   <a href={selectedProject.live} target="_blank" rel="noreferrer">
-                    <Button className="h-10 px-5 bg-[#1B8354] hover:bg-[#1B8354]/90 text-white rounded-lg shadow-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                    <Button className="h-10 px-5 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
                       <ExternalLink size={12} />
                       <span>Live Demo</span>
                     </Button>
@@ -453,7 +453,7 @@ export function Projects() {
                 )}
                 {selectedProject.repo && (
                   <a href={selectedProject.repo} target="_blank" rel="noreferrer">
-                    <Button variant="outline" className="h-10 px-5 border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.08] text-white rounded-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                    <Button variant="outline" className="h-10 px-5 border-border bg-muted/50 hover:bg-muted text-foreground rounded-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
                       <Github size={12} />
                       <span>View Code</span>
                     </Button>

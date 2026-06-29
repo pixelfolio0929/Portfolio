@@ -46,7 +46,7 @@ const stats: StatItem[] = [
 
 export function Achievements() {
   return (
-    <Section id="achievements" className="relative overflow-hidden bg-[#050816] py-20">
+    <Section id="achievements" className="relative overflow-hidden bg-background py-20">
       {/* Background glow visual */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.04),transparent_60%)] pointer-events-none" />
 
@@ -94,35 +94,35 @@ function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: idx * 0.1 }}
-      className="relative rounded-2xl border border-white/[0.05] bg-[#0B1120]/40 p-6 shadow-2xl backdrop-blur-md flex flex-col justify-between overflow-hidden group"
+      className="relative rounded-2xl border border-border bg-card/40 p-6 shadow-2xl backdrop-blur-md flex flex-col justify-between overflow-hidden group"
     >
       {/* Visual Accent glow */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none rounded-2xl group-hover:from-[#1B8354]/5 transition-colors duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent pointer-events-none rounded-2xl group-hover:from-primary/5 transition-colors duration-500" />
 
       <div className="flex items-center justify-between mb-4">
-        <div className="w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-[#1B8354] shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-muted/50 border border-border flex items-center justify-center text-primary shrink-0">
           <IconComponent size={18} />
         </div>
-        <span className="text-[10px] font-mono text-gray-600">MILESTONE 0{idx + 1}</span>
+        <span className="text-[10px] font-mono text-muted-foreground/60">MILESTONE 0{idx + 1}</span>
       </div>
 
       <div>
-        <h3 className="text-3xl sm:text-4xl font-mono font-bold text-white tracking-tight flex items-baseline">
+        <h3 className="text-3xl sm:text-4xl font-mono font-bold text-foreground tracking-tight flex items-baseline">
           <span>{count}</span>
-          <span className="text-[#1B8354]">{stat.suffix}</span>
+          <span className="text-primary">{stat.suffix}</span>
         </h3>
         
-        <p className="text-sm font-bold text-white mt-2">
+        <p className="text-sm font-bold text-foreground mt-2">
           {stat.label}
         </p>
         
-        <p className="text-xs text-gray-400 font-light mt-1">
+        <p className="text-xs text-muted-foreground font-light mt-1">
           {stat.desc}
         </p>
       </div>
 
       {/* Cyberpunk corner indicator */}
-      <div className="absolute right-3 bottom-3 w-1.5 h-1.5 rounded-full bg-[#1B8354]/40" />
+      <div className="absolute right-3 bottom-3 w-1.5 h-1.5 rounded-full bg-primary/40" />
     </motion.div>
   )
 }

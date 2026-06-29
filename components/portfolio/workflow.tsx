@@ -37,7 +37,7 @@ const experiences = [
 
 export function Workflow() {
   return (
-    <Section id="Workflow" className="relative overflow-hidden bg-[#050816] py-24">
+    <Section id="Workflow" className="relative overflow-hidden bg-background py-24">
       {/* Visual background details */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(27,131,84,0.06),transparent_40%)] pointer-events-none" />
 
@@ -48,9 +48,9 @@ export function Workflow() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-white/[0.05] bg-[#0B1120]/80 px-4 py-1.5 text-xs font-mono font-medium text-gray-300 backdrop-blur-md shadow-2xl mb-4"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
         >
-          <Briefcase size={12} className="text-[#1B8354]" />
+          <Briefcase size={12} className="text-primary" />
           <span>Professional Milestones</span>
         </motion.div>
         
@@ -59,18 +59,18 @@ export function Workflow() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight"
+          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight"
         >
           Professional Experience
         </motion.h2>
-        <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-[#1B8354] to-transparent mx-auto mt-4"></div>
+        <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-4"></div>
         
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 text-base sm:text-lg text-gray-400 font-light max-w-2xl mx-auto leading-relaxed"
+          className="mt-6 text-base sm:text-lg text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed"
         >
           Roles, responsibilities, and the tools I use for each experience.
         </motion.p>
@@ -79,8 +79,8 @@ export function Workflow() {
       {/* Timeline Section */}
       <div className="relative max-w-4xl mx-auto px-6 z-10">
         {/* Glow Line */}
-        <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#1B8354]/20 via-[#1B8354] to-[#1B8354]/20 transform -translate-x-1/2 hidden md:block" />
-        <div className="absolute left-8 top-4 bottom-4 w-[2px] bg-gradient-to-b from-[#1B8354]/20 via-[#1B8354] to-[#1B8354]/20 transform -translate-x-1/2 md:hidden" />
+        <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-[2px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 transform -translate-x-1/2 hidden md:block" />
+        <div className="absolute left-8 top-4 bottom-4 w-[2px] bg-gradient-to-b from-primary/20 via-primary to-primary/20 transform -translate-x-1/2 md:hidden" />
 
         <div className="space-y-16">
           {experiences.map((exp, idx) => {
@@ -94,24 +94,24 @@ export function Workflow() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="rounded-2xl border border-white/[0.05] bg-[#0B1120]/40 p-6 shadow-2xl backdrop-blur-md hover:border-[#1B8354]/30 hover:bg-[#0B1120]/60 transition-all duration-300 group cursor-default"
+                    className="rounded-2xl border border-border bg-card/40 p-6 shadow-2xl backdrop-blur-md hover:border-primary/30 hover:bg-card/60 transition-all duration-300 group cursor-default"
                   >
                     {/* Role & Company */}
                     <div className="flex flex-col gap-1 mb-3">
-                      <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#1B8354] justify-start md:justify-end md:group-hover:justify-end md:group-hover:text-[#1B8354] transition-all">
+                      <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-primary justify-start md:justify-end md:group-hover:justify-end md:group-hover:text-primary transition-all">
                         <Calendar size={12} />
                         <span>{exp.period}</span>
                       </div>
-                      <h3 className="text-xl font-bold text-white mt-1 group-hover:text-[#1B8354] transition-colors">
+                      <h3 className="text-xl font-bold text-foreground mt-1 group-hover:text-primary transition-colors">
                         {exp.role}
                       </h3>
-                      <p className="text-sm font-mono font-medium text-gray-400">
+                      <p className="text-sm font-mono font-medium text-muted-foreground">
                         {exp.company}
                       </p>
                     </div>
 
                     {/* Wording description */}
-                    <p className="text-xs text-gray-400 font-light leading-relaxed mb-5 md:text-right text-left">
+                    <p className="text-xs text-muted-foreground font-light leading-relaxed mb-5 md:text-right text-left">
                       {exp.description}
                     </p>
 
@@ -120,7 +120,7 @@ export function Workflow() {
                       {exp.tools.map((tool) => (
                         <span
                           key={tool}
-                          className="text-[10px] font-mono border border-white/[0.03] bg-white/[0.02] hover:border-[#1B8354]/30 hover:bg-[#1B8354]/5 text-gray-300 hover:text-white px-2.5 py-1 rounded-full transition-all duration-300"
+                          className="text-[10px] font-mono border border-border bg-muted/50 hover:border-primary/30 hover:bg-primary/5 text-muted-foreground hover:text-foreground px-2.5 py-1 rounded-full transition-all duration-300"
                         >
                           {tool}
                         </span>
@@ -133,7 +133,7 @@ export function Workflow() {
                 <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 z-20 md:order-2 flex items-center justify-center">
                   <motion.div
                     whileHover={{ scale: 1.2 }}
-                    className="w-10 h-10 rounded-full border border-[#1B8354] bg-[#050816] shadow-[0_0_15px_rgba(27,131,84,0.4)] flex items-center justify-center text-[#1B8354]"
+                    className="w-10 h-10 rounded-full border border-primary bg-background shadow-[0_0_15px_rgba(27,131,84,0.4)] flex items-center justify-center text-primary"
                   >
                     <Code2 size={16} />
                   </motion.div>

@@ -55,40 +55,37 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? "py-3 bg-[#050816]/75 backdrop-blur-xl border-b border-white/[0.05] shadow-2xl"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+          ? "py-3 bg-background/75 backdrop-blur-xl border-b border-border shadow-2xl"
           : "py-5 bg-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto max-w-6xl px-6 flex items-center justify-between">
         {/* Left Section - Logo */}
         <div className="flex items-center gap-3">
           <MobileNav />
-          <a
-            href="#"
-            className="font-mono text-base font-bold bg-gradient-to-r from-emerald-400 to-[#1B8354] bg-clip-text text-transparent tracking-widest"
-          >
-            {"<dev-portfolio />"}
+          <a href="#">
+            <span className="font-mono text-base font-bold bg-gradient-to-r from-emerald-400 to-primary bg-clip-text text-transparent tracking-widest">
+              {"<dev-portfolio />"}
+            </span>
           </a>
         </div>
 
         {/* Center Section - Premium Hover Desktop Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-white/[0.02] border border-white/[0.04] p-1 rounded-full backdrop-blur-md shadow-2xl">
+        <nav className="hidden lg:flex items-center gap-1 bg-muted/30 border border-border p-1 rounded-full backdrop-blur-md shadow-2xl">
           {navItems.map((item) => {
             const isActive = activeSection === item.href.slice(1) || (activeSection === "Workflow" && item.name === "Experience")
             return (
               <a
                 key={item.name}
                 href={item.href}
-                className={`relative px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 ${
-                  isActive ? "text-white" : "text-gray-400 hover:text-white"
-                }`}
+                className={`relative px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="activeNavIndicator"
-                    className="absolute inset-0 bg-[#1B8354]/10 border border-[#1B8354]/20 rounded-full -z-10 shadow-[0_0_10px_rgba(27,131,84,0.15)]"
+                    className="absolute inset-0 bg-primary/10 border border-primary/20 rounded-full -z-10 shadow-[0_0_10px_rgba(27,131,84,0.15)]"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
@@ -103,7 +100,7 @@ export function Navbar() {
           <ThemeToggle />
           <a
             href="#contact"
-            className="hidden sm:inline-flex h-9 items-center rounded-xl bg-[#1B8354] hover:bg-[#1B8354]/95 px-5 text-xs font-mono font-bold text-white shadow-xl hover:shadow-[0_0_15px_rgba(27,131,84,0.3)] transition-all uppercase tracking-wider shrink-0"
+            className="hidden sm:inline-flex h-9 items-center rounded-xl bg-primary hover:bg-primary/90 px-5 text-xs font-mono font-bold text-primary-foreground shadow-xl hover:shadow-[0_0_15px_rgba(27,131,84,0.3)] transition-all uppercase tracking-wider shrink-0"
           >
             Hire Me
           </a>

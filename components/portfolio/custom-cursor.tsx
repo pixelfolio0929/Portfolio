@@ -91,7 +91,7 @@ export function CustomCursor() {
         animate={{
           width: isHovered ? 8 : 4,
           height: isHovered ? 8 : 4,
-          backgroundColor: "#1B8354",
+          backgroundColor: "hsl(var(--primary))",
           opacity: isVisible ? 1 : 0,
         }}
         className="fixed rounded-full pointer-events-none"

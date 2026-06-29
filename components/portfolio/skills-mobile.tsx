@@ -19,80 +19,83 @@ interface SkillCategory {
 
 const skillCategories: SkillCategory[] = [
   {
-    name: "Frontend Foundations",
-    description: "Building robust, semantic web foundations with clean, accessible code that ensures cross-browser compatibility and optimal performance",
+    name: "UI Engineering & Design Systems",
+    description: "Architecting scalable design systems and translating complex designs into pixel-perfect, accessible components.",
     skills: [
-      { name: "HTML5", icon: "FileCode" },
-      { name: "CSS3", icon: "Paintbrush" },
-      { name: "JavaScript (ES6+)", icon: "Braces" },
-      { name: "TypeScript", icon: "Code" },
+      { name: "UI Engineering", icon: "Code" },
+      { name: "Design Systems", icon: "Component" },
+      { name: "Design-to-Code", icon: "PenTool" },
+      { name: "Component Architecture", icon: "Blocks" },
     ],
     color: "text-blue-500",
     bgColor: "bg-blue-500/5",
     borderColor: "border-blue-500/20"
   },
   {
-    name: "Frameworks & Libraries",
-    description: "Developing dynamic, scalable applications using component-based architecture with React and Vue for maintainable, reusable code",
+    name: "Frontend Development",
+    description: "Building highly interactive, state-driven web applications using modern JavaScript ecosystems.",
     skills: [
-      { name: "React.js", icon: "Code" },
-      { name: "Vue.js (Options API)", icon: "Code" },
+      { name: "React.js", icon: "Atom" },
+      { name: "Vue.js", icon: "Code" },
+
+      { name: "JavaScript (ES6+)", icon: "Braces" },
+      { name: "HTML5 / CSS3", icon: "FileCode" },
     ],
     color: "text-purple-500",
     bgColor: "bg-purple-500/5",
     borderColor: "border-purple-500/20"
   },
   {
-    name: "Styling & UI Engineering",
-    description: "Creating responsive, pixel-perfect interfaces with modern styling solutions and component libraries for consistent, maintainable UI systems",
+    name: "Styling & Layout Systems",
+    description: "Crafting fluid, responsive interfaces with utility-first frameworks and modern CSS architecture.",
     skills: [
       { name: "Tailwind CSS", icon: "Wind" },
+      { name: "Sass (SCSS)", icon: "Paintbrush" },
       { name: "Responsive Design", icon: "Smartphone" },
-      { name: "Mobile-First UI", icon: "Monitor" },
-      { name: "Reusable Components", icon: "Blocks" },
-      { name: "Component-Based Architecture", icon: "Component" },
+      { name: "Pixel-Perfect UI", icon: "Target" },
+      { name: "Bootstrap", icon: "Layout" },
     ],
     color: "text-amber-500",
     bgColor: "bg-amber-500/5",
     borderColor: "border-amber-500/20"
   },
   {
-    name: "Development Tools & Workflow",
-    description: "Managing efficient development workflows with version control, API integration, and deployment tools to streamline the development process",
+    name: "UI/UX & Prototyping",
+    description: "Creating user-centered experiences, wireframes, and managing design tokens for consistent UI.",
     skills: [
-      { name: "Git & GitHub", icon: "GitBranch" },
-      { name: "REST API Integration", icon: "Network" },
-      { name: "Firebase", icon: "Database" },
-      { name: "Webpack", icon: "Settings" },
-      { name: "npm/yarn", icon: "Package" },
+      { name: "UI & UX Design", icon: "Palette" },
+      { name: "Figma & Framer", icon: "PenTool" },
+      { name: "Design Tokens", icon: "Hash" },
+      { name: "Prototyping", icon: "MousePointerClick" },
+      { name: "Interaction Design", icon: "MousePointer2" },
     ],
     color: "text-emerald-500",
     bgColor: "bg-emerald-500/5",
     borderColor: "border-emerald-500/20"
   },
   {
-    name: "UI/UX & Design Tools",
-    description: "Designing user-centered interfaces and collaborating with design teams using industry-standard tools for prototyping and asset creation",
+    name: "Enterprise & Gov Platforms",
+    description: "Developing secure, compliant interfaces for large-scale government and enterprise applications.",
     skills: [
-      { name: "Figma", icon: "PenTool" },
-      { name: "Adobe Photoshop", icon: "Image" },
-      { name: "Framer", icon: "Layout" },
-      { name: "UI/UX Design", icon: "Palette" },
-      { name: "Prototyping", icon: "MousePointerClick" },
+      { name: "Gov Digital Platforms", icon: "Landmark" },
+      { name: "Enterprise UI", icon: "Building2" },
+      { name: "ASP.NET (Learning)", icon: "BookOpen" },
+      { name: "SQL & MySQL", icon: "Database" },
+      { name: "Master Pages", icon: "Layout" },
     ],
     color: "text-violet-500",
     bgColor: "bg-violet-500/5",
     borderColor: "border-violet-500/20"
   },
   {
-    name: "Performance & Responsiveness",
-    description: "Optimizing user experiences with responsive layouts, performance monitoring, and accessibility compliance to ensure quality across all devices",
+    name: "Workflow & Optimization",
+    description: "Utilizing modern deployment pipelines, version control, and optimizing frontend performance.",
     skills: [
-      { name: "Responsive Design", icon: "Smartphone" },
-      { name: "Cross-Browser Compatibility", icon: "Globe" },
-      { name: "Performance Optimization", icon: "Rocket" },
-      { name: "Accessibility (WCAG)", icon: "Accessibility" },
-      { name: "SEO Best Practices", icon: "Search" },
+      { name: "Git & GitHub", icon: "GitBranch" },
+      { name: "Vercel & Netlify", icon: "Cloud" },
+      { name: "Render Deployment", icon: "Server" },
+      { name: "Performance Tuning", icon: "Zap" },
+      { name: "Cross-Browser Sync", icon: "Globe" },
     ],
     color: "text-rose-500",
     bgColor: "bg-rose-500/5",
@@ -107,7 +110,7 @@ export function SkillsMobile() {
       <div className="space-y-6">
         {skillCategories.map((category, index) => {
           return (
-            <div 
+            <div
               key={index}
               className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-xl p-3 transition-all duration-300 hover:shadow-md"
             >
@@ -118,17 +121,17 @@ export function SkillsMobile() {
                 </h3>
                 <p className="text-xs text-muted-foreground mb-2">{category.description}</p>
               </div>
-              
+
               {/* Skills as static tags */}
               <div className="flex flex-wrap gap-1.5">
                 {category.skills.map((skill, skillIndex) => {
                   const SkillIconComponent = Icons[skill.icon]
                   return (
-                    <div 
+                    <div
                       key={skillIndex}
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium ${category.bgColor} border ${category.borderColor}`}
                     >
-                      
+
                       {/* @ts-ignore */}
                       {SkillIconComponent && <SkillIconComponent size={10} className={`text-current ${category.color}`} />}
                       {skill.name}

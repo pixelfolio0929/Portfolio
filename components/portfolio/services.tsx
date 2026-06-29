@@ -17,7 +17,7 @@ const services: Service[] = [
     title: "Frontend Development",
     description: "Crafting extremely performant, high-fidelity applications with robust structures using React, Next.js, and Vue.",
     icon: "Code2",
-    borderColor: "group-hover:border-[#1B8354]/50",
+    borderColor: "group-hover:border-primary/50",
     glowColor: "group-hover:shadow-[0_0_20px_rgba(27,131,84,0.15)]",
   },
   {
@@ -52,7 +52,7 @@ const services: Service[] = [
 
 export function Services() {
   return (
-    <Section id="services" className="relative overflow-hidden bg-[#050816] py-24">
+    <Section id="services" className="relative overflow-hidden bg-background py-24">
       {/* Background visual detail */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.04),transparent_60%)] pointer-events-none" />
 
@@ -64,9 +64,9 @@ export function Services() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/[0.05] bg-[#0B1120]/80 px-4 py-1.5 text-xs font-mono font-medium text-gray-300 backdrop-blur-md shadow-2xl mb-4"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-2xl mb-4"
           >
-            <Icons.Sparkles size={12} className="text-[#1B8354]" />
+            <Icons.Sparkles size={12} className="text-primary" />
             <span>Scope Of Services</span>
           </motion.div>
 
@@ -75,18 +75,18 @@ export function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight"
           >
             Premium Solutions
           </motion.h2>
-          <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-[#1B8354] to-transparent mx-auto mt-4"></div>
+          <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-4"></div>
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-base sm:text-lg text-gray-400 font-light max-w-2xl mx-auto leading-relaxed"
+            className="mt-6 text-base sm:text-lg text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed"
           >
             Enterprise-grade frontend engineering and visual experiences designed for 2026.
           </motion.p>
@@ -104,31 +104,31 @@ export function Services() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
                 whileHover={{ y: -5, scale: 1.01 }}
-                className={`group relative rounded-2xl border border-white/[0.05] bg-gradient-to-b from-[#0B1120]/80 to-[#050816]/90 p-[1px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md transition-all duration-300 ${service.borderColor} ${service.glowColor}`}
+                className={`group relative rounded-2xl border border-border bg-gradient-to-b from-card/80 to-background/90 p-[1px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md transition-all duration-300 ${service.borderColor} ${service.glowColor}`}
               >
                 {/* Cybernetic Accent lines */}
-                <div className="absolute top-0 left-0 w-8 h-[1px] bg-[#1B8354]/40" />
-                <div className="absolute top-0 left-0 w-[1px] h-8 bg-[#1B8354]/40" />
+                <div className="absolute top-0 left-0 w-8 h-[1px] bg-primary/40" />
+                <div className="absolute top-0 left-0 w-[1px] h-8 bg-primary/40" />
 
                 {/* Inner Body */}
-                <div className="relative rounded-2xl bg-[#0B1120]/95 p-6 h-full flex flex-col justify-between overflow-hidden">
+                <div className="relative rounded-2xl bg-card/95 p-6 h-full flex flex-col justify-between overflow-hidden">
                   <div>
                     {/* Icon Wrap */}
-                    <div className="w-12 h-12 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-gray-400 group-hover:text-[#1B8354] group-hover:border-[#1B8354]/30 transition-all duration-300 mb-6 shrink-0 shadow-inner">
+                    <div className="w-12 h-12 rounded-xl bg-muted/50 border border-border flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-all duration-300 mb-6 shrink-0 shadow-inner">
                       {IconComponent && <IconComponent size={22} />}
                     </div>
 
-                    <h3 className="text-lg font-bold text-white mb-3 group-hover:text-[#1B8354] transition-colors duration-300">
+                    <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
                       {service.title}
                     </h3>
                     
-                    <p className="text-xs text-gray-400 font-light leading-relaxed">
+                    <p className="text-xs text-muted-foreground font-light leading-relaxed">
                       {service.description}
                     </p>
                   </div>
 
                   {/* Small sci-fi footer accent */}
-                  <div className="mt-8 pt-4 border-t border-white/[0.03] flex items-center justify-between text-[9px] font-mono text-gray-600">
+                  <div className="mt-8 pt-4 border-t border-border flex items-center justify-between text-[9px] font-mono text-muted-foreground/60">
                     <span>SYSTEM // SECURE</span>
                     <span>0{idx + 1}</span>
                   </div>

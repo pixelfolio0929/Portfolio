@@ -131,9 +131,10 @@ export function Hero() {
         }}
       />
 
-      {/* Ambient Lighting Accents */}
-      <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-primary/10 dark:bg-primary/15 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[380px] h-[380px] bg-emerald-500/5 dark:bg-emerald-500/10 blur-[110px] rounded-full pointer-events-none" />
+      {/* Ambient Lighting Accents (Multi-color in Light & Dark Mode) */}
+      <div className="absolute top-1/6 left-1/6 w-[450px] h-[450px] bg-emerald-500/15 dark:bg-primary/15 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 right-1/6 w-[400px] h-[400px] bg-amber-500/10 dark:bg-amber-500/5 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-1/6 left-1/4 w-[380px] h-[380px] bg-sky-500/10 dark:bg-sky-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* 3D Main Stage Container */}
       <motion.div

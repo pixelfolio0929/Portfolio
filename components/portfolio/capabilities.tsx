@@ -20,7 +20,7 @@ export function Capabilities() {
       tags: ["Design-to-Code", "Responsive UI", "Component Logic", "RTL Mirroring"],
       color: "from-emerald-500/15 to-teal-500/5",
       border: "hover:border-emerald-500/40",
-      accent: "text-emerald-500"
+      accent: "text-emerald-600 dark:text-emerald-400"
     },
     {
       id: "frontend-dev",
@@ -32,7 +32,7 @@ export function Capabilities() {
       tags: ["React.js", "Vue.js", "Tailwind CSS", "REST APIs"],
       color: "from-cyan-500/15 to-blue-500/5",
       border: "hover:border-cyan-500/40",
-      accent: "text-cyan-400"
+      accent: "text-cyan-600 dark:text-cyan-400"
     },
     {
       id: "design-systems",
@@ -44,7 +44,7 @@ export function Capabilities() {
       tags: ["Token Hierarchy", "DGA Standards", "Reusable Units", "WCAG 2.1 AA"],
       color: "from-amber-500/15 to-orange-500/5",
       border: "hover:border-amber-500/40",
-      accent: "text-amber-400"
+      accent: "text-amber-600 dark:text-amber-400"
     },
     {
       id: "ui-ux",
@@ -56,7 +56,7 @@ export function Capabilities() {
       tags: ["Figma Wireframes", "User Flows", "Interactive Prototypes", "Visual Hierarchy"],
       color: "from-purple-500/15 to-pink-500/5",
       border: "hover:border-purple-500/40",
-      accent: "text-purple-400"
+      accent: "text-purple-600 dark:text-purple-400"
     },
   ]
 

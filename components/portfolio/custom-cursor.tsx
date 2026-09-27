@@ -1,20 +1,30 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { motion, useMotionValue, useSpring } from "framer-motion"
+import { useLanguage } from "./language-context"
 
 export function CustomCursor() {
+  const { isRTL } = useLanguage()
   const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const [isHovered, setIsHovered] = useState(false)
-  
+  const [cursorType, setCursorType] = useState<"default" | "pointer" | "project" | "view">("default")
+  const [label, setLabel] = useState("")
+
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
-  
-  const ringX = useSpring(cursorX, { stiffness: 250, damping: 25 })
-  const ringY = useSpring(cursorY, { stiffness: 250, damping: 25 })
+
+  // Silky smooth trailing spring
+  const springConfig = { stiffness: 350, damping: 28, mass: 0.6 }
+  const ringX = useSpring(cursorX, springConfig)
+  const ringY = useSpring(cursorY, springConfig)
 
   useEffect(() => {
+    // Disable on touch / mobile devices or reduced motion
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0
+    const mediaReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (isTouch || mediaReduced) return
+
     setMounted(true)
 
     const moveCursor = (e: MouseEvent) => {
@@ -26,28 +36,41 @@ export function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false)
     const handleMouseEnter = () => setIsVisible(true)
 
-    window.addEventListener("mousemove", moveCursor)
+    window.addEventListener("mousemove", moveCursor, { passive: true })
     document.addEventListener("mouseleave", handleMouseLeave)
     document.addEventListener("mouseenter", handleMouseEnter)
 
-    // Detect clickable elements
+    // Detect contextual target states
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      if (
-        target.tagName === "A" || 
-        target.tagName === "BUTTON" || 
-        target.closest("a") || 
-        target.closest("button") || 
+      if (!target) return
+
+      const projectCard = target.closest("[data-cursor='project']") || target.closest(".project-card-interactive")
+      const liveBtn = target.closest("[data-cursor='view']")
+      const isClickable =
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.closest("a") ||
+        target.closest("button") ||
         target.closest("[role='button']") ||
         target.classList.contains("cursor-pointer")
-      ) {
-        setIsHovered(true)
+
+      if (projectCard) {
+        setCursorType("project")
+        setLabel(isRTL ? "استعراض" : "VIEW")
+      } else if (liveBtn) {
+        setCursorType("view")
+        setLabel(isRTL ? "فتح" : "OPEN")
+      } else if (isClickable) {
+        setCursorType("pointer")
+        setLabel("")
       } else {
-        setIsHovered(false)
+        setCursorType("default")
+        setLabel("")
       }
     }
 
-    window.addEventListener("mouseover", handleMouseOver)
+    window.addEventListener("mouseover", handleMouseOver, { passive: true })
 
     return () => {
       window.removeEventListener("mousemove", moveCursor)
@@ -55,13 +78,13 @@ export function CustomCursor() {
       document.removeEventListener("mouseenter", handleMouseEnter)
       window.removeEventListener("mouseover", handleMouseOver)
     }
-  }, [cursorX, cursorY, isVisible])
+  }, [cursorX, cursorY, isVisible, isRTL])
 
   if (!mounted) return null
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999] hidden lg:block">
-      {/* Outer Glow Ring */}
+    <div className="pointer-events-none fixed inset-0 z-[99999] hidden lg:block overflow-hidden">
+      {/* Outer Spring Glow Ring / Contextual Badge */}
       <motion.div
         style={{
           x: ringX,
@@ -70,17 +93,33 @@ export function CustomCursor() {
           translateY: "-50%",
         }}
         animate={{
-          width: isHovered ? 48 : 24,
-          height: isHovered ? 48 : 24,
-          borderColor: isHovered ? "rgba(27, 131, 84, 0.8)" : "rgba(255, 255, 255, 0.3)",
-          backgroundColor: isHovered ? "rgba(27, 131, 84, 0.1)" : "rgba(255, 255, 255, 0)",
+          width: cursorType === "project" ? 68 : cursorType === "pointer" ? 44 : 26,
+          height: cursorType === "project" ? 68 : cursorType === "pointer" ? 44 : 26,
+          borderColor:
+            cursorType === "project"
+              ? "rgba(27, 131, 84, 0.9)"
+              : cursorType === "pointer"
+              ? "rgba(27, 131, 84, 0.7)"
+              : "rgba(100, 116, 139, 0.4)",
+          backgroundColor:
+            cursorType === "project"
+              ? "rgba(27, 131, 84, 0.9)"
+              : cursorType === "pointer"
+              ? "rgba(27, 131, 84, 0.12)"
+              : "rgba(255, 255, 255, 0)",
           opacity: isVisible ? 1 : 0,
         }}
-        transition={{ type: "tween", ease: "backOut", duration: 0.2 }}
-        className="fixed rounded-full border border-solid pointer-events-none mix-blend-difference"
-      />
+        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+        className="fixed rounded-full border border-solid pointer-events-none flex items-center justify-center backdrop-blur-[1px] shadow-sm"
+      >
+        {label && (
+          <span className="text-[10px] font-mono font-bold tracking-widest text-white uppercase select-none">
+            {label}
+          </span>
+        )}
+      </motion.div>
 
-      {/* Inner Dot */}
+      {/* Center Precision Dot */}
       <motion.div
         style={{
           x: cursorX,
@@ -89,11 +128,12 @@ export function CustomCursor() {
           translateY: "-50%",
         }}
         animate={{
-          width: isHovered ? 8 : 4,
-          height: isHovered ? 8 : 4,
+          width: cursorType === "project" ? 0 : cursorType === "pointer" ? 6 : 4,
+          height: cursorType === "project" ? 0 : cursorType === "pointer" ? 6 : 4,
           backgroundColor: "hsl(var(--primary))",
-          opacity: isVisible ? 1 : 0,
+          opacity: isVisible && cursorType !== "project" ? 1 : 0,
         }}
+        transition={{ duration: 0.15 }}
         className="fixed rounded-full pointer-events-none"
       />
     </div>

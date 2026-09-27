@@ -2,18 +2,20 @@
 
 import { Hero } from "@/components/portfolio/hero"
 import { About } from "@/components/portfolio/about"
-import { Skills } from "@/components/portfolio/skills"
-import { Services } from "@/components/portfolio/services"
-import { Achievements } from "@/components/portfolio/stats"
+import { Capabilities } from "@/components/portfolio/capabilities"
 import { Projects } from "@/components/portfolio/projects"
+import { SBACaseStudy } from "@/components/portfolio/sba-case-study"
+import { DesignSystemPlayground } from "@/components/portfolio/design-system-playground"
+import { RTLResponsiveShowcase } from "@/components/portfolio/rtl-responsive-showcase"
+import { FinalStatement } from "@/components/portfolio/final-statement"
 import { Workflow } from "@/components/portfolio/workflow"
-import { WhyChooseMe } from "@/components/portfolio/why-choose-me"
-import { Testimonials } from "@/components/portfolio/testimonials"
+import { Skills } from "@/components/portfolio/skills"
 import { AITools } from "@/components/portfolio/ai-tools"
 import { Contact } from "@/components/portfolio/contact"
 import { Navbar } from "@/components/portfolio/navbar"
 import { ChatBubble } from "@/components/portfolio/chat-bubble"
 import { CustomCursor } from "@/components/portfolio/custom-cursor"
+import { useLanguage } from "@/components/portfolio/language-context"
 import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -38,80 +40,93 @@ function WorkflowSkeleton() {
   )
 }
 
-function AIToolsSkeleton() {
-  return (
-    <div className="mt-16">
-      <div className="text-center mb-6">
-        <Skeleton className="h-10 w-64 mx-auto" />
-        <Skeleton className="h-1 w-24 mt-3 mx-auto" />
-      </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-12">
-        {[1, 2, 3].map((item) => (
-          <div key={item} className="rounded-2xl border border-border bg-white dark:bg-transparent p-6">
-            <Skeleton className="h-8 w-8 rounded-lg" />
-            <Skeleton className="mt-4 h-6 w-3/4" />
-            <Skeleton className="mt-2 h-4 w-full" />
-            <Skeleton className="mt-2 h-4 w-2/3" />
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 export default function Page() {
+  const { isRTL, t } = useLanguage()
+
   return (
-    <main className="relative bg-slate-50 dark:bg-background">
-      {/* Premium Cinematic Mouse reactive Glow Cursor */}
+    <main className="relative bg-slate-50 dark:bg-background transition-colors duration-300">
+      {/* Studio Cursor Spotlight */}
       <CustomCursor />
 
-      {/* Floating Glass Navbar */}
+      {/* Floating Dynamic Navbar */}
       <Navbar />
 
-      {/* Sections */}
+      {/* 1. HERO: UI Engineer · Frontend Developer */}
       <Hero />
+
+      {/* 2. PROFILE / ABOUT: Bridging Visual Design & Frontend Engineering */}
       <About />
-      <Skills />
-      <Services />
-      
-      <Achievements />
+
+      {/* 3. FOCUS / CAPABILITIES: 4 Core Capability Areas */}
+      <Capabilities />
+
+      {/* 4. SELECTED WORK: Clean Project Cards with direct links */}
       <Projects />
-      <WhyChooseMe />
-      
+
+      {/* 5. SBA / GOVERNMENT DIGITAL EXPERIENCE: Public-safe Enterprise & DGA Standards */}
+      <SBACaseStudy />
+
+      {/* 6. DESIGN SYSTEMS: Design → System → Components → Code Live Tokens */}
+      <DesignSystemPlayground />
+
+      {/* 7. ARABIC RTL & RESPONSIVE MATRIX: Live Direction & Viewport Simulator */}
+      <RTLResponsiveShowcase />
+
+      {/* 8. HOW I WORK & EDITORIAL PHILOSOPHY: 5-Step Process (Understand → Design → Systemize → Develop → Refine) */}
+      <FinalStatement />
+
+      {/* 9. EXPERIENCE TIMELINE: SBA 2026-Present, Almasons, Whitebook World, Freelance */}
       <Suspense fallback={<WorkflowSkeleton />}>
         <Workflow />
       </Suspense>
-      
-      <Testimonials />
-      
-      <Suspense fallback={<AIToolsSkeleton />}>
-        <AITools />
-      </Suspense>
-      
+
+      {/* 10. SKILLS / STACK: Categorized Stack + Currently Learning Angular */}
+      <Skills />
+
+      {/* 11. AI-ASSISTED WORKFLOW: Secondary Tooling Accelerators */}
+      <AITools />
+
+      {/* 12. CONTACT & HIRE: Clean Directory & Message Form */}
       <Contact />
 
-      {/* Footer */}
-      <footer className="border-t border-border mt-24 bg-white dark:bg-gradient-to-b dark:from-background dark:to-secondary">
+      {/* Clean Professional Footer */}
+      <footer className="border-t border-border mt-16 sm:mt-20 bg-white dark:bg-gradient-to-b dark:from-background dark:to-secondary">
         <div className="mx-auto max-w-6xl px-6 py-12 text-sm flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col items-center md:items-start gap-2">
-            <p className="text-muted-foreground font-mono text-xs">{"<dev-portfolio />"}</p>
-            <p className="text-muted-foreground/80 text-xs">{"Crafting digital experiences with code & creativity"}</p>
+          <div className="flex flex-col items-center md:items-start gap-1.5 text-center md:text-left">
+            <p className="text-muted-foreground font-mono text-xs">{"<sinan-ui-Devevloper />"}</p>
+            <p className="text-muted-foreground/80 text-xs font-light">
+              {isRTL
+                ? "تصميم الواجهات. هندسة النظم البرمجية والتجارب الرقمية. الرياض، المملكة العربية السعودية."
+                : "Designing interfaces. Engineering systems. Building for the real world in Riyadh, Saudi Arabia."}
+            </p>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-5">
+            <a href="#about" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
+              {t("nav.about")}
+            </a>
+            <a href="#capabilities" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
+              {t("nav.capabilities")}
+            </a>
             <a href="#projects" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
-              View Projects
+              {t("nav.projects")}
+            </a>
+            <a href="#government-ui" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
+              {t("nav.gov")}
+            </a>
+            <a href="#experience" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
+              {t("nav.experience")}
             </a>
             <a href="#contact" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
-              Get in touch
+              {t("nav.contact")}
             </a>
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-6 pb-8 text-center text-[10px] font-mono text-muted-foreground/60">
-          © {new Date().getFullYear()} Built with React and AI by Mohammad Sinan
+          © {new Date().getFullYear()} {isRTL ? "محمد سنان • مهندس واجهات مستخدم، الرياض" : "Mohammad Sinan • UI Engineer, Riyadh"}
         </div>
       </footer>
 
-      {/* Futuristic floating chat assistant bubble */}
+      {/* Interactive Floating Assistant */}
       <ChatBubble />
     </main>
   )

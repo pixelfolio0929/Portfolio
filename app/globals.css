@@ -3,20 +3,20 @@
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #111827;
+    --background: #f8fafc;
+    --foreground: #0f172a;
     --card: #ffffff;
-    --card-foreground: #111827;
+    --card-foreground: #0f172a;
     --popover: #ffffff;
-    --popover-foreground: #111827;
+    --popover-foreground: #0f172a;
     --primary: #1B8354;
     --primary-foreground: #ffffff;
-    --secondary: #f8fafc;
-    --secondary-foreground: #475569;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #334155;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #f8fafc;
-    --accent-foreground: #111827;
+    --accent: #e2e8f0;
+    --accent-foreground: #0f172a;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
     --border: #e2e8f0;
@@ -27,31 +27,31 @@
 
   .dark {
     --background: #050816;
-    --foreground: #ffffff;
-    --card: #0B1120;
-    --card-foreground: #ffffff;
-    --popover: #111827;
-    --popover-foreground: #ffffff;
+    --foreground: #f8fafc;
+    --card: #0c1222;
+    --card-foreground: #f8fafc;
+    --popover: #0c1222;
+    --popover-foreground: #f8fafc;
     --primary: #1B8354;
     --primary-foreground: #ffffff;
-    --secondary: #0B1120;
-    --secondary-foreground: #ffffff;
-    --muted: #111827;
-    --muted-foreground: #9ca3af;
-    --accent: #1B8354;
-    --accent-foreground: #ffffff;
+    --secondary: #111a2e;
+    --secondary-foreground: #cbd5e1;
+    --muted: #111a2e;
+    --muted-foreground: #94a3b8;
+    --accent: #162238;
+    --accent-foreground: #f8fafc;
     --destructive: #ef4444;
     --destructive-foreground: #ffffff;
-    --border: rgba(255, 255, 255, 0.08);
-    --input: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.09);
+    --input: rgba(255, 255, 255, 0.06);
     --ring: #1B8354;
   }
 }
 
-
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-arabic: var(--font-arabic);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -82,141 +82,137 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground selection:bg-primary/20 selection:text-primary;
+    overflow-x: hidden;
   }
-  /* smooth scroll for in-page anchor navigation */
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  html[dir="rtl"],
+  html[dir="rtl"] body {
+    font-family: var(--font-arabic), var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   }
 }
 
-/* Custom gradient classes for enhanced UI elements */
-.light-gradient-bg {
-  background: linear-gradient(135deg, hsl(var(--secondary) / 0.1) 0%, hsl(var(--background)) 100%);
-  transition: all 0.3s ease;
-}
-
-.light-gradient-bg:hover {
-  background: linear-gradient(135deg, hsl(var(--secondary) / 0.2) 0%, hsl(var(--background)) 100%);
-  transform: scale(1.01);
-}
-
-.light-gradient-card {
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--secondary) / 0.05) 100%);
-  transition: all 0.3s ease;
-}
-
-.light-gradient-card:hover {
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--secondary) / 0.1) 100%);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.gradient-button {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
-  transition: all 0.3s ease;
-}
-
-.gradient-button:hover {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Enhanced hover effects for skill tags */
-.skill-tag {
-  transition: all 0.2s ease;
-}
-
-.skill-tag:hover {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  transform: scale(1.05);
-}
-
-/* Enhanced project card animations */
-.project-card {
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-style: preserve-3d;
+/* 3D Perspective and Transform Utilities */
+.perspective-1000 {
   perspective: 1000px;
 }
 
-.project-card:hover {
-  transform: translateY(-8px) translateZ(10px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+.perspective-1200 {
+  perspective: 1200px;
 }
 
-.project-image {
-  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+.perspective-2000 {
+  perspective: 2000px;
 }
 
-.project-card:hover .project-image {
-  transform: scale(1.05);
+.preserve-3d {
+  transform-style: preserve-3d;
 }
 
-/* Enhanced tag hover effects */
-.project-tag {
-  transition: all 0.3s ease;
+.backface-hidden {
+  backface-visibility: hidden;
 }
 
-.project-tag:hover {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+/* Glassmorphism Styles */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Enhanced button hover effects */
-.project-button {
-  transition: all 0.3s ease;
+.dark .glass-panel {
+  background: rgba(12, 18, 34, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.project-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+.glass-pill {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
 }
 
-/* Section background enhancement */
-.projects-background {
-  background: linear-gradient(135deg, hsl(var(--secondary) / 0.1) 0%, hsl(var(--background)) 100%);
-  border-radius: 1rem;
-  padding: 2rem;
-  margin: 2rem 0;
-  transition: all 0.3s ease;
+.dark .glass-pill {
+  background: rgba(17, 26, 46, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.projects-background:hover {
-  background: linear-gradient(135deg, hsl(var(--secondary) / 0.2) 0%, hsl(var(--background)) 100%);
-  transform: scale(1.01);
+/* Ambient Studio Glows */
+.studio-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(27, 131, 84, 0.12), transparent 70%);
 }
 
-/* Animation for skill carousel */
-@keyframes scroll {
-  0% {
-    transform: translateX(0%);
+.dark .studio-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(27, 131, 84, 0.15), transparent 70%);
+}
+
+/* Subtle 3D Card Hover Styles */
+.card-3d {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.12), 0 0 25px -5px rgba(27, 131, 84, 0.15);
+}
+
+.dark .card-3d:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px -5px rgba(27, 131, 84, 0.25);
+}
+
+/* Project Card 3D Depth Layering */
+.project-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card-3d:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+}
+
+/* Custom Scroll Animations */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
   }
-  100% {
-    transform: translateX(-50%);
+  50% {
+    transform: translateY(-12px) rotate(1deg);
   }
 }
 
-@keyframes scroll-fast {
-  0% {
-    transform: translateX(0%);
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
   }
-  100% {
-    transform: translateX(-50%);
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
   }
 }
 
-.animate-scroll {
-  animation: scroll 30s linear infinite;
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
 }
 
-.animate-scroll-fast {
-  animation: scroll-fast 15s linear infinite;
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
 }
 
-.animate-pause {
-  animation-play-state: paused;
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

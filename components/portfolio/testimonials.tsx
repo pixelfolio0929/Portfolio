@@ -32,90 +32,96 @@ const testimonials: Testimonial[] = [
     name: "Independent SaaS Founder",
     role: "Founder",
     company: "PixelResume Project",
-    text: "He delivered an absolute masterpieces. Real-time ATS compatible Arabic RTL support was crucial and Mohammad solved it beautifully with neat, clean CSS structures.",
+    text: "He delivered an absolute masterpiece. Real-time ATS compatible Arabic RTL support was crucial and Mohammad solved it beautifully with neat, clean CSS structures.",
     stars: 5,
   },
 ]
 
 export function Testimonials() {
-  // Triple the list to create a seamless infinite scroll loop
   const scrollItems = [...testimonials, ...testimonials, ...testimonials]
 
   return (
-    <Section id="testimonials" className="relative overflow-hidden bg-background py-24">
+    <Section id="testimonials" className="relative overflow-hidden bg-background py-24 sm:py-32">
       {/* Background glow visual */}
-      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.03),transparent_60%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.04),transparent_65%)] pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
+            className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground shadow-sm mb-4"
           >
-            <MessageSquare size={12} className="text-primary" />
-            <span>Client Endorsements</span>
+            <MessageSquare size={13} className="text-primary" />
+            <span>Peer &amp; Client Endorsements</span>
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight"
           >
             Client Testimonials
           </motion.h2>
-          <div className="h-[2px] w-24 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-4"></div>
 
           <motion.p
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-base sm:text-lg text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-4 text-sm sm:text-base text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed"
           >
-            What colleagues and direct stakeholders say about working with me.
+            What colleagues, product leaders, and direct stakeholders say about working with me.
           </motion.p>
         </div>
 
         {/* Infinite Scroll Testimonial Container */}
-        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,#000_15%,#000_85%,transparent_100%)] py-4">
+        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,#000_15%,#000_85%,transparent_100%)] py-6">
           <motion.div
-            animate={{ x: [0, -1000] }}
+            animate={{ x: [0, -1080] }}
             transition={{
               repeat: Infinity,
               ease: "linear",
               duration: 35,
             }}
-            className="flex gap-6 w-max"
+            className="flex gap-6 sm:gap-8 w-max hover:[animation-play-state:paused]"
           >
             {scrollItems.map((item, idx) => (
-              <Hover3DCard key={idx} className="w-[350px]" contentClassName="h-full rounded-2xl border border-border bg-white dark:bg-card/40 p-6 shadow-sm backdrop-blur-md flex flex-col justify-between group cursor-default">
+              <Hover3DCard
+                key={idx}
+                maxRotate={5}
+                depth={15}
+                className="w-[320px] sm:w-[380px]"
+                contentClassName="h-full rounded-3xl border border-border glass-panel p-7 shadow-sm hover:shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl flex flex-col justify-between group cursor-default"
+              >
                 <div>
                   {/* Rating Stars & Quote Icon */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="flex gap-0.5">
+                    <div className="flex gap-1">
                       {Array.from({ length: item.stars }).map((_, sIdx) => (
-                        <Star key={sIdx} size={12} className="fill-primary text-primary" />
+                        <Star key={sIdx} size={13} className="fill-primary text-primary" />
                       ))}
                     </div>
-                    <Quote size={18} className="text-foreground/10 group-hover:text-primary/30 transition-colors" />
+                    <Quote size={20} className="text-foreground/15 group-hover:text-primary/40 transition-colors" />
                   </div>
 
-                  <p className="text-xs text-muted-foreground font-light leading-relaxed mb-6 italic">
+                  <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed mb-6 italic">
                     "{item.text}"
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-border">
-                  <p className="text-sm font-bold text-foreground">{item.name}</p>
-                  <p className="text-[10px] font-mono text-muted-foreground mt-0.5">
-                    {item.role} @ {item.company}
-                  </p>
+                <div className="pt-4 border-t border-border/80 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{item.name}</p>
+                    <p className="text-[11px] font-mono text-muted-foreground mt-0.5">
+                      {item.role} @ {item.company}
+                    </p>
+                  </div>
                 </div>
               </Hover3DCard>
             ))}
@@ -125,3 +131,4 @@ export function Testimonials() {
     </Section>
   )
 }
+

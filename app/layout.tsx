@@ -2,15 +2,24 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
+import { Noto_Kufi_Arabic } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll"
+import { LanguageProvider } from "@/components/portfolio/language-context"
+
+const notoKufiArabic = Noto_Kufi_Arabic({
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-arabic",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
-  title: "Sinan Portfolio",
-  description: "Portfolio Of Mohammad Sinan",
+  title: "Mohammad Sinan | UI Engineer",
+  description: "Portfolio of Mohammad Sinan — UI Engineer, Frontend Developer & UI Designer based in Riyadh, Saudi Arabia.",
   generator: "Next.js",
   icons: {
     icon: "/favicon.ico",
@@ -23,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-      <body className="font-sans" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${notoKufiArabic.variable} antialiased`}>
+      <body className="font-sans antialiased selection:bg-primary/20 selection:text-primary" suppressHydrationWarning>
         <Suspense fallback={null}>
           <ThemeProvider
             attribute="class"
@@ -33,10 +42,11 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="theme"
           >
-            <SmoothScroll />
-            {children}
-            {/* Only load Analytics in production */}
-            {process.env.NODE_ENV === 'production' && <Analytics />}
+            <LanguageProvider>
+              <SmoothScroll />
+              {children}
+              {process.env.NODE_ENV === 'production' && <Analytics />}
+            </LanguageProvider>
           </ThemeProvider>
         </Suspense>
       </body>

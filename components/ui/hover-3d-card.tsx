@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 
 interface Hover3DCardProps {
@@ -8,27 +8,51 @@ interface Hover3DCardProps {
   className?: string
   contentClassName?: string
   glare?: boolean
+  maxRotate?: number
+  depth?: number
 }
 
-export function Hover3DCard({ children, className = "", contentClassName = "", glare = true }: Hover3DCardProps) {
+export function Hover3DCard({
+  children,
+  className = "",
+  contentClassName = "",
+  glare = true,
+  maxRotate = 5,
+  depth = 25,
+}: Hover3DCardProps) {
   const ref = useRef<HTMLDivElement>(null)
+  const [isReducedMotion, setIsReducedMotion] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setIsReducedMotion(mediaQuery.matches)
+    const handler = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches)
+    mediaQuery.addEventListener("change", handler)
+    return () => mediaQuery.removeEventListener("change", handler)
+  }, [])
 
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 })
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 })
+  const mouseXSpring = useSpring(x, { stiffness: 220, damping: 24, mass: 0.8 })
+  const mouseYSpring = useSpring(y, { stiffness: 220, damping: 24, mass: 0.8 })
 
-  // ⚠️ ALL hooks must be called unconditionally at the top level
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"])
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"])
-  const glareLeft = useTransform(mouseXSpring, [-0.5, 0.5], ["0%", "100%"])
-  const glareTop = useTransform(mouseYSpring, [-0.5, 0.5], ["0%", "100%"])
-
-  const [isHovered, setIsHovered] = useState(false)
+  const rotateX = useTransform(
+    mouseYSpring,
+    [-0.5, 0.5],
+    isReducedMotion ? ["0deg", "0deg"] : [`${maxRotate}deg`, `-${maxRotate}deg`]
+  )
+  const rotateY = useTransform(
+    mouseXSpring,
+    [-0.5, 0.5],
+    isReducedMotion ? ["0deg", "0deg"] : [`-${maxRotate}deg`, `${maxRotate}deg`]
+  )
+  const glareLeft = useTransform(mouseXSpring, [-0.5, 0.5], ["10%", "90%"])
+  const glareTop = useTransform(mouseYSpring, [-0.5, 0.5], ["10%", "90%"])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return
+    if (isReducedMotion || !ref.current) return
     const rect = ref.current.getBoundingClientRect()
     const xPct = (e.clientX - rect.left) / rect.width - 0.5
     const yPct = (e.clientY - rect.top) / rect.height - 0.5
@@ -47,7 +71,10 @@ export function Hover3DCard({ children, className = "", contentClassName = "", g
   }
 
   return (
-    <div className={className} style={{ perspective: 1200 }}>
+    <div
+      className={`perspective-1200 ${className}`}
+      style={{ perspective: 1200 }}
+    >
       <motion.div
         ref={ref}
         onMouseMove={handleMouseMove}
@@ -58,11 +85,11 @@ export function Hover3DCard({ children, className = "", contentClassName = "", g
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className={`relative w-full h-full transition-shadow duration-300 ${contentClassName}`}
+        className={`relative w-full h-full transition-all duration-300 ${contentClassName}`}
       >
         <div
           style={{
-            transform: "translateZ(30px)",
+            transform: isReducedMotion ? "none" : `translateZ(${depth}px)`,
             transformStyle: "preserve-3d",
           }}
           className="w-full h-full relative z-10"
@@ -70,18 +97,18 @@ export function Hover3DCard({ children, className = "", contentClassName = "", g
           {children}
         </div>
 
-        {/* Glare effect — only rendered when hovered, but hooks are always called above */}
-        {glare && isHovered && (
+        {/* Dynamic Studio Glare Reflection */}
+        {glare && isHovered && !isReducedMotion && (
           <div className="absolute inset-0 z-20 pointer-events-none rounded-[inherit] overflow-hidden">
             <motion.div
-              className="absolute opacity-20 mix-blend-overlay"
+              className="absolute opacity-15 dark:opacity-25 mix-blend-overlay pointer-events-none"
               style={{
-                background: "radial-gradient(circle at center, rgba(255,255,255,0.9) 0%, transparent 60%)",
+                background: "radial-gradient(circle at center, rgba(255,255,255,0.9) 0%, rgba(27,131,84,0.15) 30%, transparent 65%)",
                 left: glareLeft,
                 top: glareTop,
                 transform: "translate(-50%, -50%)",
-                width: "200%",
-                height: "200%",
+                width: "160%",
+                height: "160%",
               }}
             />
           </div>
@@ -90,3 +117,4 @@ export function Hover3DCard({ children, className = "", contentClassName = "", g
     </div>
   )
 }
+

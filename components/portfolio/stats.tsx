@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { Section } from "./section"
-import { Award, Code2, Users2, Sparkles, TrendingUp } from "lucide-react"
+import { Award, Code2, Sparkles, TrendingUp } from "lucide-react"
 import { Hover3DCard } from "@/components/ui/hover-3d-card"
 
 interface StatItem {
@@ -47,9 +47,9 @@ const stats: StatItem[] = [
 
 export function Achievements() {
   return (
-    <Section id="achievements" className="relative overflow-hidden bg-background py-20">
+    <Section id="achievements" className="relative overflow-hidden bg-background py-20 sm:py-24">
       {/* Background glow visual */}
-      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.04),transparent_60%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.05),transparent_65%)] pointer-events-none" />
 
       <div className="w-full max-w-6xl mx-auto px-6 relative z-10">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -65,14 +65,14 @@ export function Achievements() {
 function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
   const [count, setCount] = useState(0)
   const cardRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(cardRef, { once: true, margin: "-100px" })
+  const isInView = useInView(cardRef, { once: true, margin: "-60px" })
 
   useEffect(() => {
     if (!isInView) return
     let start = 0
     const end = stat.target
-    const duration = 2000
-    const stepTime = Math.abs(Math.floor(duration / end))
+    const duration = 1800
+    const stepTime = Math.max(16, Math.floor(duration / end))
     
     const timer = setInterval(() => {
       start += 1
@@ -89,21 +89,28 @@ function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 25 }}
+      initial={{ opacity: 0, y: 35 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: idx * 0.1 }}
-      className="relative"
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      className="relative w-full h-full"
     >
-      <Hover3DCard className="w-full" contentClassName="relative z-10 flex flex-col justify-between p-6 rounded-2xl border border-border bg-white dark:bg-card/40 backdrop-blur-md shadow-sm dark:shadow-2xl h-[280px]">
+      <Hover3DCard
+        maxRotate={6}
+        depth={20}
+        className="w-full h-full"
+        contentClassName="relative z-10 flex flex-col justify-between p-6 sm:p-7 rounded-3xl border border-border glass-panel shadow-sm hover:shadow-xl dark:shadow-[0_10px_30px_rgba(0,0,0,0.4)] min-h-[260px]"
+      >
         <div className="flex items-center justify-between">
-          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-muted/50 border border-transparent dark:border-border flex items-center justify-center text-primary shrink-0">
-            <stat.icon size={18} />
+          <div className="w-11 h-11 rounded-2xl bg-muted/50 border border-border/80 flex items-center justify-center text-primary shrink-0">
+            <stat.icon size={20} />
           </div>
-          <span className="text-[10px] font-mono text-muted-foreground/60">MILESTONE 0{idx + 1}</span>
+          <span className="text-[10px] font-mono font-bold text-muted-foreground/60 tracking-wider">
+            MILESTONE 0{idx + 1}
+          </span>
         </div>
 
-        <div>
+        <div className="mt-6">
           <h3 className="text-3xl sm:text-4xl font-mono font-bold text-foreground tracking-tight flex items-baseline">
             <span>{count}</span>
             <span className="text-primary">{stat.suffix}</span>
@@ -113,14 +120,15 @@ function StatCard({ stat, idx }: { stat: StatItem; idx: number }) {
             {stat.label}
           </p>
           
-          <p className="text-xs text-muted-foreground font-light mt-1">
+          <p className="text-xs text-muted-foreground font-light mt-1 leading-relaxed">
             {stat.desc}
           </p>
         </div>
 
-        {/* Cyberpunk corner indicator */}
-        <div className="absolute right-3 bottom-3 w-1.5 h-1.5 rounded-full bg-primary/40" />
+        {/* Ambient indicator */}
+        <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-4 self-end" />
       </Hover3DCard>
     </motion.div>
   )
 }
+

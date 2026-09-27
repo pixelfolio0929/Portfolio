@@ -2,473 +2,321 @@
 
 import { Section } from "./section"
 import Image from "next/image"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { ExternalLink, Github, FolderGit, Sparkles, LayoutDashboard } from "lucide-react"
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Hover3DCard } from "@/components/ui/hover-3d-card"
+import { ExternalLink, Github, Sparkles, LayoutDashboard, ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react"
+import { useState, useRef } from "react"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { useLanguage } from "./language-context"
 
 type Project = {
-  title: string
-  problemStatement: string
-  solution: string
-  techStack: string[]
-  keyFeatures: string[]
-  roleContribution: string
+  id: string
+  titleEn: string
+  titleAr: string
+  descriptionEn: string
+  descriptionAr: string
+  roleEn: string
+  roleAr: string
+  technologies: string[]
   image: string
   tags: string[]
   live?: string
-  repo?: string
+  github?: string
 }
 
 const projects: Project[] = [
   {
-    title: "AI Pixel Hub",
-    problemStatement: "Businesses needed a centralized platform to collect and analyze data from various AI tools and courses to make informed decisions about AI adoption.",
-    solution: "Built a comprehensive dashboard that aggregates data from multiple AI sources, providing analytics and insights to help businesses evaluate AI tools effectively.",
-    techStack: ["React.js", "Firebase", "Google Analytics", "API Integration"],
-    keyFeatures: [
-      "Real-time data aggregation from multiple AI tools",
-      "Interactive analytics dashboard with visual insights",
-      "Custom reporting capabilities",
-      "Responsive design for cross-device accessibility"
-    ],
-    roleContribution: "Implemented the frontend architecture, UI components, and data visualization features while ensuring seamless API integration.",
+    id: "pixelresume",
+    titleEn: "PixelResume — Bilingual Resume Builder",
+    titleAr: "بكسل ريزيومي — منشئ سيرة ذاتية ثنائي اللغة",
+    descriptionEn: "A modern resume builder with live editing, dual Arabic (RTL) and English support, and ATS-friendly PDF export.",
+    descriptionAr: "منشئ سيرة ذاتية تفاعلي مع تحرير مباشر، ودعم كامل للغتين العربية والإنجليزية (RTL)، وتصدير PDF متوافق مع أنظمة ATS.",
+    roleEn: "Frontend architecture, RTL implementation, responsive UI components, and PDF generator.",
+    roleAr: "معمارية الواجهة الأمامية، وتطبيق دعم RTL، وتصميم مكونات الواجهة، وتكامل توليد ملفات PDF.",
+    technologies: ["React.js", "Tailwind CSS", "i18n", "RTL Layouts", "PDF Export"],
+    image: "/pixelresume-preview.jpg",
+    tags: ["React.js", "Tailwind CSS", "RTL"],
+    live: "https://pixelresume.netlify.app/",
+  },
+  {
+    id: "aipixelhub",
+    titleEn: "AI Pixel Hub — Intelligence Dashboard",
+    titleAr: "بكسل هب — لوحة تحليلات الذكاء الاصطناعي",
+    descriptionEn: "An analytical platform aggregating AI tools data, metrics, and insights with interactive visual charts.",
+    descriptionAr: "منصة تحليلية تفاعلية تجمع بيانات أدوات الذكاء الاصطناعي وتوفر رسوم بيانية ومؤشرات أداء متقدمة.",
+    roleEn: "Frontend implementation, dashboard UI components, data visualization, and API integration.",
+    roleAr: "تنفيذ الواجهة الأمامية، ومكونات لوحة التحكم، وتصورات البيانات، وربط واجهات البرمجة APIs.",
+    technologies: ["React.js", "Firebase", "Analytics APIs", "Tailwind CSS"],
     image: "/ai-dashboard-preview.jpg",
-    tags: ["React.js", "AI", "Analytics", "Firebase", "Google Console"],
+    tags: ["React.js", "Analytics", "Firebase"],
     live: "https://aipixelhubb.netlify.app/",
   },
   {
-    title: "AI-Powered SaaS Landing Page",
-    problemStatement: "SaaS companies required a modern, conversion-focused landing page to showcase their AI-powered products and engage potential customers.",
-    solution: "Created a responsive landing page with interactive elements that effectively communicate product value propositions and drive conversions.",
-    techStack: ["React", "TailwindCSS", "GSAP Animations", "Responsive Design"],
-    keyFeatures: [
-      "Conversion-optimized layout with strategic call-to-actions",
-      "Smooth animations to enhance user engagement",
-      "Mobile-first responsive design",
-      "Performance optimized for fast loading"
-    ],
-    roleContribution: "Designed and implemented the entire frontend, focusing on UI/UX best practices and performance optimization.",
-    image: "/saas-builder-preview.jpg",
-    tags: ["React", "TailwindCSS", "UI/UX", "SaaS"],
-    live: "https://aipoweredbuilder.netlify.app/",
-  },
-  {
-    title: "PixelResume",
-    problemStatement: "Job seekers needed a professional resume builder that supports multilingual resumes with RTL compatibility and ATS-friendly exports.",
-    solution: "Developed a comprehensive resume builder supporting Arabic and English languages with real-time editing and ATS-compatible PDF generation.",
-    techStack: ["React.js", "Tailwind CSS", "PDF Generation", "i18n"],
-    keyFeatures: [
-      "Dual language support with Arabic RTL compatibility",
-      "Live editing with real-time preview",
-      "ATS-friendly PDF export",
-      "Multiple customizable resume templates"
-    ],
-    roleContribution: "Built the entire frontend, implemented RTL support, designed UI components, and integrated PDF generation functionality.",
-    image: "/pixelresume-preview.jpg",
-    tags: ["React.js", "Tailwind CSS", "RTL Support", "Arabic Localization", "Responsive UI"],
-    live: "https://pixelresume.netlify.app/"
-  },
-  {
-    title: "Portfolio UI/UX",
-    problemStatement: "Needed to showcase design and development capabilities through a modern, interactive portfolio that demonstrates UI/UX expertise.",
-    solution: "Created a portfolio interface using Framer to demonstrate advanced UI/UX skills with smooth interactions and modern design principles.",
-    techStack: ["Framer", "UI/UX Design", "Prototyping", "Interaction Design"],
-    keyFeatures: [
-      "Smooth, performance-optimized animations",
-      "Intuitive navigation and user flows",
-      "Modern design system implementation",
-      "Cross-platform compatibility"
-    ],
-    roleContribution: "Designed and developed the entire interface, focusing on UX best practices and implementing complex interactions.",
+    id: "portfolio-framer",
+    titleEn: "Portfolio UI/UX & Interaction System",
+    titleAr: "نظام تصميم الواجهات التفاعلية (Framer)",
+    descriptionEn: "An interactive portfolio interface showcasing fluid micro-interactions, responsive grids, and design tokens.",
+    descriptionAr: "واجهة تفاعلية حديثة تستعرض الحركات الدقيقة، والشبكات المتجاوبة، وتطبيق أنظمة التصميم العصرية.",
+    roleEn: "UI/UX design, interactive prototyping, layout system architecture, and motion curves.",
+    roleAr: "تصميم واجهات وتجربة المستخدم، والنماذج التفاعلية الأولية، وهندسة أنظمة التخطيط الحركي.",
+    technologies: ["Framer", "UI/UX Design", "Prototyping", "Design Systems"],
     image: "/ai-portfolio-generator-preview.jpg",
-    tags: ["Framer", "UI/UX", "Portfolio", "Design", "Interactive"],
+    tags: ["Framer", "UI/UX", "Interactive"],
     live: "https://mohammadsinan.framer.website/",
   },
   {
-    title: "Travel Hub",
-    problemStatement: "Travel enthusiasts required an engaging platform to explore destinations with rich interactive features and intuitive browsing.",
-    solution: "Built a travel-themed application using Vue.js that showcases destinations with interactive maps and detailed information.",
-    techStack: ["Vue.js", "Vuex", "API Integration", "Interactive Maps"],
-    keyFeatures: [
-      "Interactive destination discovery interface",
-      "Detailed location information and recommendations",
-      "Search and filtering capabilities",
-      "Responsive design for travel planning on any device"
-    ],
-    roleContribution: "Implemented the Vue.js frontend architecture, interactive components, and API integrations for destination data.",
+    id: "travel-hub",
+    titleEn: "Travel & Destination Explorer",
+    titleAr: "منصة استكشاف الوجهات السياحية (Vue.js)",
+    descriptionEn: "A travel discovery application built with Vue.js featuring interactive maps, destination filtering, and rich cards.",
+    descriptionAr: "تطبيق استكشاف سياحي مبني بـ Vue.js يتميز بخرائط تفاعلية، وتصفية الوجهات، ومكونات عرض متجاوبة.",
+    roleEn: "Vue.js component architecture, state management, UI styling, and destination API integration.",
+    roleAr: "معمارية مكونات Vue.js، وإدارة الحالة، وتنسيق الواجهات، وربط واجهات البيانات السياحية.",
+    technologies: ["Vue.js", "Vuex", "Interactive Maps", "Responsive UI"],
     image: "/wms-app-preview.jpg",
-    tags: ["Vue.js", "Frontend", "UI/UX", "Interactive"],
+    tags: ["Vue.js", "Frontend"],
     live: "https://travelfolio.netlify.app/",
   },
   {
-    title: "Foodies Heaven",
-    problemStatement: "Restaurant businesses needed an online platform to showcase their menu and accept orders with a focus on user experience.",
-    solution: "Created a food-themed e-commerce platform with payment integration and engaging UI to enhance customer ordering experience.",
-    techStack: ["React", "Payment Integration", "Stripe API", "Animations"],
-    keyFeatures: [
-      "Secure payment processing integration",
-      "Engaging food presentation with animations",
-      "Shopping cart functionality",
-      "Responsive design for mobile ordering"
-    ],
-    roleContribution: "Developed the frontend UI, implemented payment integration, and created interactive elements to enhance user experience.",
+    id: "saas-landing",
+    titleEn: "AI-Powered SaaS Product Interface",
+    titleAr: "واجهة منتج SaaS مدعوم بالذكاء الاصطناعي",
+    descriptionEn: "A high-conversion landing page with smooth motion, responsive layouts, and modern typography.",
+    descriptionAr: "صفحة هبوط تفاعلية لمنتج رقمي بحركات سلسة وتخطيط متجاوب وطباعة عصرية تعزز التفاعل.",
+    roleEn: "Frontend engineering, responsive auto-layout, micro-animations, and performance tuning.",
+    roleAr: "هندسة الواجهة الأمامية، والتخطيط المتجاوب، والتفاعلات الدقيقة، وتحسين سرعة التحميل.",
+    technologies: ["React.js", "Tailwind CSS", "GSAP Motion", "Responsive Design"],
+    image: "/saas-builder-preview.jpg",
+    tags: ["React.js", "Tailwind CSS", "UI/UX"],
+    live: "https://aipoweredbuilder.netlify.app/",
+  },
+  {
+    id: "foodies-heaven",
+    titleEn: "Interactive E-Commerce Store",
+    titleAr: "تطبيق متجر تجارة إلكترونية تفاعلي",
+    descriptionEn: "A responsive e-commerce web application with cart state management, checkout flows, and product catalog.",
+    descriptionAr: "تطبيق ويب متجاوب للتجارة الإلكترونية مع إدارة حالة سلة التسوق، ومسارات الدفع، وعرض المنتجات.",
+    roleEn: "Frontend UI development, shopping cart state logic, and mobile-first responsive layout.",
+    roleAr: "تطوير واجهة المستخدم، وبرمجة منطق سلة التسوق، وبناء التخطيط المتجاوب المخصص للهاتف.",
+    technologies: ["React.js", "State Management", "Tailwind CSS", "JavaScript"],
     image: "/foodies heaven.jpg",
-    tags: ["React", "Payment Integration", "HTML", "CSS", "JavaScript"],
+    tags: ["React.js", "Frontend"],
     live: "https://foodieshub12.netlify.app/",
-  },
-  {
-    title: "AI Weather Forecast",
-    problemStatement: "Users needed accurate, real-time weather forecasts with location-based services and intuitive data visualization.",
-    solution: "Built a weather application that provides real-time forecasts with location services and interactive data visualization.",
-    techStack: ["React", "Weather API", "Geolocation", "Chart.js"],
-    keyFeatures: [
-      "Real-time weather data visualization",
-      "Location-based weather forecasts",
-      "Interactive charts and graphs",
-      "Responsive design for on-the-go access"
-    ],
-    roleContribution: "Implemented the frontend architecture, API integration for weather data, geolocation services, and data visualization.",
-    image: "/realtime-chat-preview.jpg",
-    tags: ["React", "AI Weather checker", "API Integration", "Geolocation", "Data Visualization"],
-    live: "https://weatherchick.netlify.app/",
-  },
-  {
-    title: "Working on Project",
-    problemStatement: "Currently developing innovative solutions to address emerging market needs and technological challenges.",
-    solution: "Stay tuned for an exciting new project that demonstrates cutting-edge development capabilities and solves real-world problems.",
-    techStack: ["Coming Soon"],
-    keyFeatures: [
-      "Innovative solution to be announced",
-      "Cutting-edge technology implementation",
-      "User-centric design approach",
-      "Scalable architecture"
-    ],
-    roleContribution: "Leading the design and development of this upcoming project with focus on modern best practices.",
-    image: "/placeholder.svg",
-    tags: ["Coming Soon"],
-    live: "",
-  },
-  {
-    title: "Development Phase",
-    problemStatement: "Exploring new technologies and methodologies to expand development capabilities and solve complex problems.",
-    solution: "Building next-generation solutions that leverage emerging technologies to deliver exceptional user experiences.",
-    techStack: ["Coming Soon"],
-    keyFeatures: [
-      "Advanced features to be announced",
-      "Modern development practices",
-      "Performance-optimized solutions",
-      "Innovative user interfaces"
-    ],
-    roleContribution: "Architecting and developing upcoming projects with focus on scalability and maintainability.",
-    image: "/placeholder.svg",
-    tags: ["Coming Soon"],
-    live: "",
   },
 ]
 
+// 3D Tilt Project Card Component
+function ProjectCard3D({ project, index }: { project: Project; index: number }) {
+  const { isRTL, t } = useLanguage()
+  const cardRef = useRef<HTMLDivElement>(null)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const springConfig = { stiffness: 220, damping: 24, mass: 0.8 }
+  const mouseXSpring = useSpring(mouseX, springConfig)
+  const mouseYSpring = useSpring(mouseY, springConfig)
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["3.5deg", "-3.5deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-3.5deg", "3.5deg"])
+  const imageTranslateX = useTransform(mouseXSpring, [-0.5, 0.5], ["-6px", "6px"])
+  const imageTranslateY = useTransform(mouseYSpring, [-0.5, 0.5], ["-6px", "6px"])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const xPct = (e.clientX - rect.left) / rect.width - 0.5
+    const yPct = (e.clientY - rect.top) / rect.height - 0.5
+    mouseX.set(xPct)
+    mouseY.set(yPct)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
+  const title = isRTL ? project.titleAr : project.titleEn
+  const description = isRTL ? project.descriptionAr : project.descriptionEn
+  const role = isRTL ? project.roleAr : project.roleEn
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 35 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="perspective-1000 h-full"
+    >
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        className="group relative flex flex-col justify-between h-full rounded-3xl border border-border bg-card/85 dark:bg-card/45 backdrop-blur-xl p-5 sm:p-7 shadow-xs hover:border-primary/40 hover:shadow-xl transition-all duration-300 overflow-hidden"
+      >
+        <div>
+          {/* Project Preview Image */}
+          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/80 bg-muted/40 mb-5 group-hover:border-primary/30 transition-colors">
+            <motion.div
+              style={{
+                x: imageTranslateX,
+                y: imageTranslateY,
+                scale: 1.04,
+              }}
+              className="w-full h-full relative"
+            >
+              <Image
+                src={project.image || "/placeholder.svg"}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-50 group-hover:opacity-20 transition-opacity duration-300" />
+          </div>
+
+          {/* Project Title */}
+          <h3 className="text-lg sm:text-xl font-bold font-mono text-foreground tracking-tight group-hover:text-primary transition-colors mb-2">
+            {title}
+          </h3>
+
+          {/* Concise Description */}
+          <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed mb-4">
+            {description}
+          </p>
+
+          {/* Role Snippet */}
+          <div className="mb-4 p-2.5 rounded-xl bg-muted/30 border border-border/50 text-[11px] font-mono text-foreground/90">
+            <span className="text-primary font-bold">{t("projects.roleLabel")}: </span>
+            <span className="text-muted-foreground font-light">{role}</span>
+          </div>
+        </div>
+
+        <div>
+          {/* Technologies */}
+          <div className="flex flex-wrap gap-1.5 mb-5 pt-3 border-t border-border/50">
+            {project.technologies.map((tech) => (
+              <span
+                key={tech}
+                className="px-2 py-0.5 rounded-lg bg-background/70 border border-border/70 text-[10px] font-mono text-foreground/80"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          {/* Live & Code Links */}
+          <div className="flex items-center justify-between pt-1">
+            {project.live ? (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-all shadow-xs"
+              >
+                <span>{t("projects.openLive")}</span>
+                <ArrowUpRight size={13} />
+              </a>
+            ) : (
+              <span />
+            )}
+
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="p-2 rounded-xl border border-border bg-card hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                title="View Source Code"
+              >
+                <Github size={15} />
+              </a>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 export function Projects() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { t, isRTL } = useLanguage()
   const [filter, setFilter] = useState<string>("All")
 
-  const handleProjectClick = (project: Project) => {
-    setSelectedProject(project)
-    setIsDialogOpen(true)
-  }
+  const categories = isRTL
+    ? ["الكل", "React.js", "Vue.js", "Framer", "RTL"]
+    : ["All", "React.js", "Vue.js", "Framer", "RTL"]
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false)
-    setSelectedProject(null)
-  }
-
-  // Categories
-  const categories = ["All", "React.js", "Vue.js", "Framer", "AI"]
-
-  const filteredProjects = projects.filter(p => {
-    if (filter === "All") return true
-    if (filter === "AI") return p.tags.includes("AI") || p.title.toLowerCase().includes("ai")
-    return p.tags.includes(filter) || p.techStack.includes(filter)
+  const filteredProjects = projects.filter((p) => {
+    if (filter === "All" || filter === "الكل") return true
+    if (filter === "RTL") return p.tags.includes("RTL")
+    return p.tags.includes(filter) || p.technologies.includes(filter)
   })
 
   return (
-    <Section id="projects" className="relative overflow-hidden bg-background py-24" variant="project">
-      {/* Visual background details */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:30px_30px] opacity-20" />
-      <div className="absolute inset-0 hidden dark:block bg-[radial-gradient(circle_at_center,rgba(27,131,84,0.05),transparent_60%)] pointer-events-none" />
+    <Section id="projects" className="relative overflow-hidden bg-background py-20 sm:py-28 border-t border-border/60" variant="project">
+      {/* Background Architectural Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_30%,rgba(27,131,84,0.06),transparent_70%)] pointer-events-none" />
 
-      <div className="w-full max-w-6xl mx-auto px-6 relative z-10">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header Row */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-white dark:bg-card/80 px-4 py-1.5 text-xs font-mono font-medium text-muted-foreground backdrop-blur-md shadow-sm dark:shadow-2xl mb-4"
+              className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3.5 py-1.5 text-xs font-mono font-medium text-muted-foreground shadow-xs mb-3"
             >
-              <LayoutDashboard size={12} className="text-primary" />
-              <span>Showcase Showcase</span>
+              <LayoutDashboard size={13} className="text-primary" />
+              <span>{t("projects.badge")}</span>
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
-              Professional Projects
+              {t("projects.title")}
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-muted-foreground font-light max-w-2xl leading-relaxed">
-              Business-focused solutions demonstrating problem-solving and technical expertise.
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground font-light max-w-2xl leading-relaxed">
+              {t("projects.desc")}
             </p>
           </div>
-          <a href="#contact">
-            <Button className="h-11 px-6 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl shadow-md hover:shadow-lg dark:shadow-lg transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 shrink-0">
-              <span>Work With Me</span>
-              <ExternalLink size={12} />
-            </Button>
-          </a>
+
+          {/* Category Filter Pills */}
+          <div className="flex flex-wrap gap-1.5 p-1 rounded-2xl glass-pill border border-border self-start md:self-auto">
+            {categories.map((cat, idx) => {
+              const active = filter === cat || (idx === 0 && (filter === "All" || filter === "الكل"))
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setFilter(cat)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                    active
+                      ? "bg-primary text-primary-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {cat}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-2 mb-10 pb-2 border-b border-border">
-{categories.map((cat) => (
-           <button
-             key={cat}
-             onClick={() => setFilter(cat)}
-             suppressHydrationWarning
-             className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-300 ${
-                filter === cat
-                  ? "bg-primary text-primary-foreground shadow-md dark:shadow-[0_0_15px_rgba(27,131,84,0.3)]"
-                  : "bg-slate-100 dark:bg-muted/40 border border-transparent dark:border-border text-slate-700 dark:text-muted-foreground hover:bg-slate-200 dark:hover:bg-muted/40 hover:text-slate-900 dark:hover:text-foreground dark:hover:border-primary/30"
-              }`}
-            >
-              {cat}
-            </button>
+        {/* 3D Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch">
+          {filteredProjects.map((project, index) => (
+            <ProjectCard3D
+              key={project.id}
+              project={project}
+              index={index}
+            />
           ))}
         </div>
-
-        {/* Animated Project Grid */}
-        <motion.div
-          layout
-          className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                layout
-                key={project.title}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                className="w-full h-full cursor-pointer"
-                onClick={() => handleProjectClick(project)}
-              >
-                <Hover3DCard className="w-full h-full" contentClassName="group relative rounded-2xl border border-border bg-white dark:bg-gradient-to-b dark:from-card/80 dark:to-background/90 p-[1px] overflow-hidden shadow-sm hover:shadow-md dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)] backdrop-blur-md transition-all duration-300">
-                  {/* Visual Glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent pointer-events-none rounded-2xl group-hover:from-primary/10 transition-colors duration-500" />
-
-                {/* Card Body */}
-                <div className="relative h-full rounded-2xl bg-white dark:bg-card/95 flex flex-col justify-between overflow-hidden">
-                  <div className="relative aspect-video overflow-hidden">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      width={640}
-                      height={360}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      priority={index < 3}
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
-
-                    {/* Left/Right Accent */}
-                    <div className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-background/80 backdrop-blur-md flex items-center justify-center border border-border">
-                      <FolderGit size={14} className="text-primary" />
-                    </div>
-                  </div>
-
-                  {/* Header */}
-                  <div className="p-5 flex-grow">
-                    <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground font-light leading-relaxed line-clamp-3">
-                      {project.problemStatement}
-                    </p>
-                  </div>
-
-                  {/* Footer Tag Cloud */}
-                  <div className="px-5 pb-2">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tags.slice(0, 2).map((tag, tagIndex) => (
-                        <Badge
-                          key={`${project.title}-${tagIndex}`}
-                          className="bg-muted/50 border border-border text-muted-foreground text-[10px] font-mono font-medium rounded-full px-2 py-0.5"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Card Actions */}
-                  <div className="p-5 pt-3 flex gap-2 border-t border-border bg-slate-50 dark:bg-muted/30">
-                    {project.live && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 border border-transparent dark:border-border bg-slate-200/50 dark:bg-muted/50 hover:bg-slate-200 dark:hover:bg-primary/10 hover:text-slate-900 dark:hover:border-primary/40 dark:hover:text-foreground text-slate-700 dark:text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          window.open(project.live, "_blank")
-                        }}
-                      >
-                        <ExternalLink size={10} />
-                        <span>Live</span>
-                      </Button>
-                    )}
-                    {project.repo && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 border border-transparent dark:border-border bg-slate-200/50 dark:bg-muted/50 hover:bg-slate-200 dark:hover:bg-primary/10 hover:text-slate-900 dark:hover:border-primary/40 dark:hover:text-foreground text-slate-700 dark:text-muted-foreground font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 rounded-lg transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          window.open(project.repo, "_blank")
-                        }}
-                      >
-                        <Github size={10} />
-                        <span>Repo</span>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-                </Hover3DCard>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
       </div>
-
-      {/* Case-Study Dialog Detail */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-3xl border border-border bg-white dark:bg-card/95 backdrop-blur-xl shadow-2xl p-0 rounded-2xl overflow-hidden max-h-[85vh] flex flex-col">
-          {selectedProject && (
-            <>
-              {/* Header Banner */}
-              <div className="bg-background p-6 border-b border-border flex items-center justify-between shrink-0">
-                <DialogTitle className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <FolderGit className="text-primary" size={20} />
-                  <span>{selectedProject.title}</span>
-                </DialogTitle>
-                <div className="flex items-center gap-2">
-<button
-                     onClick={handleCloseDialog}
-                     suppressHydrationWarning
-                     className="w-8 h-8 rounded-lg bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors border border-border"
-                   >
-                    ✕
-                  </button>
-                </div>
-              </div>
-
-              {/* Scrollable Content */}
-              <div className="flex-grow overflow-y-auto p-6 space-y-6">
-                <div className="aspect-video relative rounded-xl overflow-hidden border border-border">
-                  <Image
-                    src={selectedProject.image || "/placeholder.svg"}
-                    alt={selectedProject.title}
-                    width={960}
-                    height={540}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-40" />
-                </div>
-
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-4">
-                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <Sparkles size={12} />
-                        <span>Problem Statement</span>
-                      </h4>
-                      <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.problemStatement}</p>
-                    </div>
-
-                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <Sparkles size={12} />
-                        <span>Solution</span>
-                      </h4>
-                      <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.solution}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Sparkles size={12} />
-                        <span>Key Features</span>
-                      </h4>
-                      <ul className="list-disc pl-4 space-y-1 text-xs text-muted-foreground font-light">
-                        {selectedProject.keyFeatures.map((f, i) => (
-                          <li key={i}>{f}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
-                      <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <Sparkles size={12} />
-                        <span>Role Contribution</span>
-                      </h4>
-                      <p className="text-xs text-muted-foreground font-light leading-relaxed">{selectedProject.roleContribution}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-xl border border-border bg-slate-50 dark:bg-muted/30 p-4">
-                  <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-wider mb-3">Technology Stack & Tags</h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedProject.techStack.map((tech) => (
-                      <Badge key={tech} className="bg-primary/10 border border-primary/20 hover:bg-primary/20 text-primary text-[10px] font-mono rounded-full px-2.5 py-0.5 transition-colors">
-                        {tech}
-                      </Badge>
-                    ))}
-                    {selectedProject.tags.map((tag) => (
-                      <Badge key={tag} className="bg-muted/50 border border-border text-muted-foreground text-[10px] font-mono rounded-full px-2.5 py-0.5">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Banner Footer Actions */}
-              <div className="bg-background p-6 border-t border-border flex justify-end gap-3 shrink-0">
-                {selectedProject.live && (
-                  <a href={selectedProject.live} target="_blank" rel="noreferrer">
-                    <Button className="h-10 px-5 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                      <ExternalLink size={12} />
-                      <span>Live Demo</span>
-                    </Button>
-                  </a>
-                )}
-                {selectedProject.repo && (
-                  <a href={selectedProject.repo} target="_blank" rel="noreferrer">
-                    <Button variant="outline" className="h-10 px-5 border-border bg-white dark:bg-muted/50 hover:bg-slate-50 dark:hover:bg-muted text-foreground rounded-lg font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                      <Github size={12} />
-                      <span>View Code</span>
-                    </Button>
-                  </a>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </Section>
   )
 }

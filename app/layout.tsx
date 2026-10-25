@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { Noto_Kufi_Arabic } from "next/font/google"
+import { Vazirmatn } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -10,9 +10,9 @@ import { Suspense } from "react"
 import { SmoothScroll } from "@/components/portfolio/smooth-scroll"
 import { LanguageProvider } from "@/components/portfolio/language-context"
 
-const notoKufiArabic = Noto_Kufi_Arabic({
+const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   variable: "--font-arabic",
   display: "swap",
 })
@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${notoKufiArabic.variable} antialiased`}>
+    <html lang="en" dir="ltr" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${vazirmatn.variable} antialiased`}>
       <body className="font-sans antialiased selection:bg-primary/20 selection:text-primary" suppressHydrationWarning>
         <Suspense fallback={null}>
           <ThemeProvider

@@ -89,8 +89,17 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
+  html[dir="rtl"] {
+    --font-sans: var(--font-arabic), var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  }
   html[dir="rtl"],
-  html[dir="rtl"] body {
+  html[dir="rtl"] body,
+  html[dir="rtl"] input,
+  html[dir="rtl"] textarea,
+  html[dir="rtl"] select,
+  html[dir="rtl"] button,
+  [dir="rtl"],
+  :lang(ar) {
     font-family: var(--font-arabic), var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   }
 }

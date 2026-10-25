@@ -112,8 +112,8 @@ export function DesignSystemPlayground() {
     {
       level: "Caption / Token",
       specs: "0.75rem (12px) · 500 Medium · Line-height: 1.4",
-      sampleEn: "WCAG 2.1 AA Compliant · Logical Properties · Noto Kufi Arabic",
-      sampleAr: "متوافق مع معايير WCAG 2.1 AA · خصائص CSS المنطقية · خط نو تو كوفي عربي",
+      sampleEn: "WCAG 2.1 AA Compliant · Logical Properties · Vazirmatn",
+      sampleAr: "متوافق مع معايير WCAG 2.1 AA · خصائص CSS المنطقية · خط وزير متن (Vazirmatn)",
     },
   ]
 
@@ -908,7 +908,7 @@ export function DesignSystemPlayground() {
                       {isPreviewRTL ? "سلم الخطوط والطباعة ثنائي اللغة" : "Bilingual Typography Hierarchy"}
                     </h3>
                     <p className="text-xs text-muted-foreground font-light">
-                      {isPreviewRTL ? "مقارنة دقة الخط العربي (Noto Kufi Arabic) والخط الإنجليزي" : "Displaying Geist Sans & Noto Kufi Arabic side-by-side with tokenized scales"}
+                      {isPreviewRTL ? "مقارنة دقة الخط العربي (Vazirmatn) والخط الإنجليزي" : "Displaying Geist Sans & Vazirmatn side-by-side with tokenized scales"}
                     </p>
                   </div>
 

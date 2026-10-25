@@ -166,6 +166,23 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.sendBtn": "Send Message",
     "contact.transmitting": "Sending...",
     "contact.success": "Thank you! Your message has been sent successfully.",
+
+    // 404 Not Found Page
+    "notFound.badge": "HTTP 404 • ROUTE NOT FOUND",
+    "notFound.title": "Lost in the Interface Tree?",
+    "notFound.desc": "The route you attempted to visit does not exist or has been refactored. Let's guide you back to the portfolio.",
+    "notFound.attemptedPath": "Attempted URL Path:",
+    "notFound.status": "STATUS: 404_PAGE_NOT_FOUND",
+    "notFound.suggestion": "The requested interface component could not be resolved in the application router.",
+    "notFound.backHome": "Back to Home",
+    "notFound.goBack": "Go Back",
+    "notFound.contact": "Contact Sinan",
+    "notFound.quickNavTitle": "Quick Navigation",
+    "notFound.quickNavDesc": "Jump directly to key sections of the portfolio",
+    "notFound.filterPlaceholder": "Quick jump (e.g. projects, gov, design system, contact)...",
+    "notFound.allSections": "All Sections",
+    "notFound.copyUrl": "Copy Path",
+    "notFound.copied": "Copied!",
   },
   ar: {
     // Navigation
@@ -319,6 +336,23 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.sendBtn": "إرسال الرسالة",
     "contact.transmitting": "جاري الإرسال...",
     "contact.success": "شكراً لك! تم استلام رسالتك بنجاح وسأتواصل معك قريباً.",
+
+    // 404 Not Found Page
+    "notFound.badge": "خطأ 404 • المسار غير موجود",
+    "notFound.title": "يبدو أنك وصلت إلى مسار غير متوفر",
+    "notFound.desc": "الصفحة أو الرابط الذي تبحث عنه غير موجود أو تم نقله. يمكنك العودة بسهولة لاستكشاف أعمالي والملف المهني.",
+    "notFound.attemptedPath": "المسار المطلوب:",
+    "notFound.status": "الحالة: 404_PAGE_NOT_FOUND",
+    "notFound.suggestion": "تعذر العثور على المكون البرمجي للمسار المطلوب في شجرة التوجيه.",
+    "notFound.backHome": "العودة للرئيسية",
+    "notFound.goBack": "الصفحة السابقة",
+    "notFound.contact": "تواصل مع سنان",
+    "notFound.quickNavTitle": "وجهات وأقسام مقترحة",
+    "notFound.quickNavDesc": "انتقل مباشرة إلى الأقسام الرئيسية في ملف الأعمال",
+    "notFound.filterPlaceholder": "انتقال سريع (مثل: الأعمال، الأنظمة الحكومية، نظام التصميم)...",
+    "notFound.allSections": "جميع الأقسام",
+    "notFound.copyUrl": "نسخ المسار",
+    "notFound.copied": "تم النسخ!",
   },
 }
 

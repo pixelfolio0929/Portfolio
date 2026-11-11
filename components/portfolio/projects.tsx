@@ -12,7 +12,10 @@ import {
   CheckCircle2,
   Code2,
   X,
-  ArrowUpRight
+  ArrowUpRight,
+  Building2,
+  MapPin,
+  Briefcase
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -32,6 +35,11 @@ interface ProjectDetail {
   technologies: string[]
   image: string
   isWorkMode?: boolean
+  isOfficialWork?: boolean
+  organizationEn?: string
+  organizationAr?: string
+  officeLocationEn?: string
+  officeLocationAr?: string
   workModeNoteEn?: string
   workModeNoteAr?: string
   live?: string
@@ -42,46 +50,58 @@ interface ProjectDetail {
 const detailedProjects: ProjectDetail[] = [
   {
     id: "sba-portal",
-    titleEn: "Saudi Broadcasting Authority (SBA) — Main Platform",
-    titleAr: "هيئة الإذاعة والتلفزيون — المنصة الرقمية الرسمية",
-    taglineEn: "National broadcast media portal engineered for Saudi DGA digital standards",
-    taglineAr: "البوابة الرقمية الرسمية للإعلام المرئي والمسموع وفق معايير DGA",
-    descEn: "Official government media portal delivering national live feeds, program libraries, and public media services across Saudi Arabia.",
-    descAr: "المنصة الرقمية الوطنية لهيئة الإذاعة والتلفزيون، تقدم البث المباشر للقنوات والمكتبة الرقمية والخدمات الإعلامية في المملكة.",
-    roleEn: "UI engineering, Arabic-first RTL architecture, DGA design tokens, and ASP.NET UI integration.",
-    roleAr: "هندسة واجهات المستخدم، وتطبيق معايير DGA، ودعم العربية RTL وتكامل ASP.NET.",
+    titleEn: "Saudi Broadcasting Authority (SBA) — Official Platform",
+    titleAr: "هيئة الإذاعة والتلفزيون — مشروع المنصة الرسمية",
+    taglineEn: "Official In-Office Government Workplace Project · UI Engineering (Riyadh HQ)",
+    taglineAr: "مشروع حكومي رسمي مباشر • هندسة وتطوير واجهات المستخدم بمقر الهيئة بالرياض",
+    descEn: "Actively working on-site as UI Engineer at Saudi Broadcasting Authority (SBA) in Riyadh. Engineering national broadcast interfaces, Saudi DGA design tokens, bidirectional Arabic RTL layout, and responsive enterprise architectures.",
+    descAr: "العمل الفعلي بمقر هيئة الإذاعة والتلفزيون بالرياض كمهندس ومطور واجهات مستخدم. أساهم في بناء الواجهات الرقمية الرسمية وفق معايير DGA وهندسة أنظمة RTL المتجاوبة وتكامل قوالب ASP.NET.",
+    roleEn: "Official In-Office UI Engineer / UI Developer (2026 — Present): Frontend architecture, Saudi DGA design tokens, bidirectional RTL layouts, and ASP.NET UI integration.",
+    roleAr: "المهندس الرسمي لواجهات المستخدم بمقر الهيئة (2026 — حتى الآن): معمارية الواجهات، وتطبيق معايير DGA، والطباعة العربية RTL، وتكامل واجهات ASP.NET.",
     category: "gov",
-    badgeEn: "Govt Work Mode",
-    badgeAr: "مشروع حكومي (قيد العمل)",
-    technologies: ["DGA Standards", "Arabic RTL", "ASP.NET UI", "JavaScript", "Responsive UI"],
+    badgeEn: "Official In-Office Project",
+    badgeAr: "مشروع رسمي مباشر بالهيئة",
+    isOfficialWork: true,
+    organizationEn: "Saudi Broadcasting Authority (SBA)",
+    organizationAr: "هيئة الإذاعة والتلفزيون",
+    officeLocationEn: "Riyadh Headquarters, Saudi Arabia",
+    officeLocationAr: "المقر الرئيسي بالرياض، المملكة العربية السعودية",
+    technologies: ["DGA Standards", "Arabic RTL", "ASP.NET UI", "JavaScript", "Responsive UI", "Figma"],
     image: "/Coding Workspace.png",
     isWorkMode: true,
-    workModeNoteEn: "Currently in active development and internal staging for Saudi Broadcasting Authority (SBA). In private work mode, not yet publicly published.",
-    workModeNoteAr: "مشروع منصة حكومية قيد العمل والتطوير النشط حالياً لهيئة الإذاعة والتلفزيون (SBA). في بيئة التطوير والتشغيل الداخلي — غير منشور رسمياً بعد.",
+    workModeNoteEn: "Official ongoing workplace assignment at Saudi Broadcasting Authority (SBA) Headquarters in Riyadh. Currently under active in-office development and staging (not yet publicly published).",
+    workModeNoteAr: "مشروع عمل رسمي مباشر بمقر هيئة الإذاعة والتلفزيون بالرياض. قيد التطوير البرمجي والتشغيل الداخلي في بيئة العمل الرسمية — غير منشور للعامة بعد.",
     highlightsEn: [
-      "Saudi Digital Government Authority (DGA) design standards compliance.",
-      "100% bidirectional Arabic (RTL) optical balance.",
-      "Reusable UI components built for enterprise scale.",
+      "Official workplace assignment at SBA Headquarters in Riyadh.",
+      "Strict compliance with Saudi Digital Government Authority (DGA) design standards.",
+      "100% bidirectional Arabic (RTL) optical balance and typography scaling.",
+      "Reusable UI component system built for national enterprise scale.",
     ],
     highlightsAr: [
-      "توافق كامل مع معايير هيئة الحكومة الرقمية السعودية (DGA).",
+      "مشروع عمل رسمي بمقر الهيئة الرئيسي في العاصمة الرياض.",
+      "توافق كامل مع معايير ومحددات هيئة الحكومة الرقمية السعودية (DGA).",
       "تصميم ثنائي اللغة مع ضبط متقدم للتوازن البصري والطباعة العربية (RTL).",
       "بناء مكتبة مكونات واجهات قابلة لإعادة الاستخدام للمنظومات المؤسسية.",
     ],
   },
   {
     id: "b2b-sba",
-    titleEn: "B2B.SBA.sa — Government Business Portal",
-    titleAr: "منصة الأعمال الرقمية B2B.SBA.sa — هيئة الإذاعة والتلفزيون",
-    taglineEn: "Government business & media clearance portal",
-    taglineAr: "بوابة الأعمال والشراكات الرقمية للتراخيص الإعلامية",
-    descEn: "Enterprise B2B digital portal enabling automated media permits, production clearances, and airtime reservations.",
-    descAr: "بوابة رقمية مخصصة لشركات الإنتاج وشركاء الأعمال لتسهيل تصاريح التصوير وحجوزات البث التلفزيوني.",
+    titleEn: "B2B.SBA.sa — Official Government Partner Portal",
+    titleAr: "منصة الأعمال الرسمية B2B.SBA.sa — هيئة الإذاعة والتلفزيون",
+    taglineEn: "Official Enterprise B2B Media & Clearance Portal · Active SBA Project",
+    taglineAr: "بوابة الأعمال والشراكات الرقمية الرسمية • مشروع رسمي بالهيئة",
+    descEn: "Official enterprise B2B portal serving production houses, media agencies, and business partners with SBA, enabling automated permits, clearances, and airtime reservations.",
+    descAr: "بوابة رقمية مخصصة لشركات الإنتاج وشركاء الأعمال لتسهيل تصاريح التصوير وحجوزات البث التلفزيوني والخدمات التجارية المؤتمتة.",
     roleEn: "Frontend UI engineering, data tables, multi-step workflow logic, and accessible forms.",
     roleAr: "تطوير الواجهة الأمامية، وجداول البيانات، وتدفقات النماذج المعقدة، والأنماط المتجاوبة.",
     category: "gov",
-    badgeEn: "Govt Work Mode",
-    badgeAr: "مشروع حكومي (قيد العمل)",
+    badgeEn: "Official Govt B2B",
+    badgeAr: "مشروع رسمي B2B",
+    isOfficialWork: true,
+    organizationEn: "Saudi Broadcasting Authority (SBA)",
+    organizationAr: "هيئة الإذاعة والتلفزيون",
+    officeLocationEn: "Riyadh HQ",
+    officeLocationAr: "الرياض",
     technologies: ["JavaScript", "ASP.NET UI", "Tailwind CSS", "REST APIs", "Design Systems"],
     image: "/wms-app-preview.jpg",
     isWorkMode: true,
@@ -228,6 +248,9 @@ export function Projects() {
     description: isRTL ? proj.descAr : proj.descEn,
     badge: isRTL ? proj.badgeAr : proj.badgeEn,
     isWorkMode: proj.isWorkMode,
+    isOfficialWork: proj.isOfficialWork,
+    organization: isRTL ? proj.organizationAr : proj.organizationEn,
+    officeLocation: isRTL ? proj.officeLocationAr : proj.officeLocationEn,
     live: proj.live,
   }))
 
@@ -255,8 +278,8 @@ export function Projects() {
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-muted-foreground font-light max-w-xl mx-auto leading-relaxed">
             {isRTL
-              ? "مرر بالصفحة للأسفل لمشاهدة بطاقات المشاريع تنزلق وتتداخل تباعاً واحداً تلو الآخر."
-              : "Scroll down to experience the stacked projects sliding and rotating in one by one."}
+              ? "استعرض المشاريع الرسمية وتطبيقات الويب — مرر للأسفل للتنقل التلقائي بين البطاقات."
+              : "Explore official workplace platforms and production applications — scroll to cycle cards."}
           </p>
 
           {/* Clean Filter Switcher */}
@@ -279,8 +302,8 @@ export function Projects() {
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-              <span>{isRTL ? "حكومية (قيد العمل)" : "Govt (Work Mode)"}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span>{isRTL ? "مشاريع رسمية (مقر العمل)" : "Official Govt Projects"}</span>
             </button>
             <button
               onClick={() => setFilter("live")}
@@ -343,14 +366,18 @@ export function Projects() {
 
               {/* Title & Badge */}
               <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-[11px] font-mono font-bold">
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold ${
+                    selectedModalProject.isOfficialWork
+                      ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                      : "bg-primary/10 text-primary border border-primary/20"
+                  }`}>
                     {isRTL ? selectedModalProject.badgeAr : selectedModalProject.badgeEn}
                   </span>
                   {selectedModalProject.isWorkMode && (
                     <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 text-[11px] font-mono font-bold flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-                      <span>{isRTL ? "قيد العمل والتطوير (غير منشور)" : "In Work Mode (Not Published)"}</span>
+                      <span>{isRTL ? "قيد العمل والتطوير الداخلي" : "Active In-Office Staging"}</span>
                     </span>
                   )}
                 </div>
@@ -362,13 +389,13 @@ export function Projects() {
                 </p>
               </div>
 
-              {/* Work Mode Notice for Government Platforms */}
-              {selectedModalProject.isWorkMode && (
-                <div className="mb-5 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 text-xs font-mono text-amber-600 dark:text-amber-400 flex items-start gap-2.5">
-                  <Clock size={16} className="shrink-0 mt-0.5 text-amber-500 animate-pulse" />
+              {/* Official Project & Organization Callout */}
+              {selectedModalProject.isOfficialWork && (
+                <div className="mb-5 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-start gap-2.5">
+                  <Building2 size={18} className="shrink-0 mt-0.5 text-emerald-500" />
                   <div>
                     <span className="font-bold block text-foreground">
-                      {isRTL ? "مشروع حكومي — قيد العمل والتشغيل الداخلي (غير منشور):" : "Govt Enterprise Project — In Work Mode (Not Published):"}
+                      {isRTL ? "مشروع حكومي رسمي بمقر العمل بالرياض:" : "Official Government Workplace Assignment (Riyadh):"}
                     </span>
                     <span className="text-[11px] font-light leading-relaxed block mt-0.5">
                       {isRTL ? selectedModalProject.workModeNoteAr : selectedModalProject.workModeNoteEn}
@@ -391,7 +418,7 @@ export function Projects() {
                 <p>{isRTL ? selectedModalProject.descAr : selectedModalProject.descEn}</p>
                 <div className="p-3 rounded-2xl bg-muted/40 border border-border/50 font-mono text-xs">
                   <span className="text-primary font-bold block mb-1">
-                    {isRTL ? "الدور والمسؤوليات:" : "Engineering Role:"}
+                    {isRTL ? "الدور والمسؤوليات الرسمية:" : "Official Engineering Role:"}
                   </span>
                   <span>{isRTL ? selectedModalProject.roleAr : selectedModalProject.roleEn}</span>
                 </div>
@@ -411,10 +438,10 @@ export function Projects() {
 
               {/* Action Buttons */}
               <div className="flex items-center justify-between pt-2">
-                {selectedModalProject.isWorkMode ? (
-                  <span className="text-xs font-mono text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                    <span>{isRTL ? "مشروع حكومي قيد العمل" : "Active Govt Work Mode"}</span>
+                {selectedModalProject.isOfficialWork ? (
+                  <span className="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
+                    <CheckCircle2 size={14} className="text-emerald-400" />
+                    <span>{isRTL ? "مشروع رسمي نشط بمقر الهيئة" : "Active In-Office Project at SBA"}</span>
                   </span>
                 ) : selectedModalProject.live ? (
                   <a

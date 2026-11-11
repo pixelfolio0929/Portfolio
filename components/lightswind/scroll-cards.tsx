@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
+import { Building2, MapPin, CheckCircle2 } from "lucide-react";
 
 export interface CardData {
   id: number | string;
@@ -15,6 +16,9 @@ export interface CardData {
   description?: string;
   badge?: string;
   isWorkMode?: boolean;
+  isOfficialWork?: boolean;
+  organization?: string;
+  officeLocation?: string;
   live?: string;
   onAction?: () => void;
 }
@@ -162,22 +166,49 @@ export function ScrollCards({
               }}
               onClick={() => onCardClick?.(card)}
               className={cn(
-                "absolute top-0 left-0 h-full w-full rounded-3xl overflow-hidden will-change-transform shadow-2xl border border-white/10 bg-[#14151a] flex flex-col justify-between cursor-pointer group",
+                "absolute top-0 left-0 h-full w-full rounded-3xl overflow-hidden will-change-transform shadow-2xl border bg-[#14151a] flex flex-col justify-between cursor-pointer group transition-colors",
+                card.isOfficialWork
+                  ? "border-emerald-500/40 hover:border-emerald-500/70"
+                  : card.isWorkMode
+                  ? "border-amber-500/40 hover:border-amber-500/70"
+                  : "border-white/10 hover:border-primary/40",
                 imageClassName
               )}
             >
               {/* Browser HUD Header */}
-              <div className="relative z-20 h-10 px-4 bg-black/60 backdrop-blur-md border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+              <div className="relative z-20 h-11 px-4 bg-black/65 backdrop-blur-md border-b border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  </div>
+                  <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-white/60 px-3 py-0.5 rounded-md bg-white/5 truncate max-w-[320px]">
+                    {card.isOfficialWork ? (
+                      <>
+                        <Building2 size={12} className="text-emerald-400" />
+                        <span className="text-emerald-400 font-bold">OFFICIAL PROJECT</span>
+                        <span className="text-white/40">//</span>
+                        <span>{card.organization || "SBA RIYADH"}</span>
+                      </>
+                    ) : card.isWorkMode ? (
+                      "govt-enterprise // internal-staging"
+                    ) : (
+                      card.id
+                    )}
+                  </div>
                 </div>
-                <div className="text-[11px] font-mono text-white/50 px-3 py-0.5 rounded-md bg-white/5 truncate max-w-[260px]">
-                  {card.isWorkMode ? "govt-enterprise // internal-staging" : card.id}
-                </div>
+
                 <div>
-                  {card.isWorkMode ? (
+                  {card.isOfficialWork ? (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] sm:text-[11px] font-mono font-bold shadow-xs">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      </span>
+                      <span>{isRTL ? "مشروع رسمي مباشر بالهيئة" : "Official In-Office Project"}</span>
+                    </span>
+                  ) : card.isWorkMode ? (
                     <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold">
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
                       <span>{isRTL ? "قيد العمل" : "Work Mode"}</span>
@@ -197,10 +228,23 @@ export function ScrollCards({
                   alt={card.alt || card.title || `Scroll card gallery image ${i}`}
                   className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent opacity-90" />
 
-                {/* Overlay Project Title and Summary */}
+                {/* Overlay Project Title, Organization & Summary */}
                 <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
+                  {/* Official Organization Pill */}
+                  {card.isOfficialWork && (
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-emerald-500/40 text-[11px] font-mono text-emerald-300 mb-2.5 shadow-md">
+                      <Building2 size={13} className="text-emerald-400" />
+                      <span className="font-bold">{card.organization || "Saudi Broadcasting Authority (SBA)"}</span>
+                      <span className="text-white/40">•</span>
+                      <span className="text-white/70 flex items-center gap-1">
+                        <MapPin size={11} />
+                        {card.officeLocation || (isRTL ? "الرياض" : "Riyadh HQ")}
+                      </span>
+                    </div>
+                  )}
+
                   {card.title && (
                     <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white tracking-tight drop-shadow-md">
                       {card.title}
@@ -212,7 +256,7 @@ export function ScrollCards({
                     </p>
                   )}
                   {card.description && (
-                    <p className="text-xs sm:text-sm text-white/70 font-light mt-1.5 line-clamp-2 max-w-2xl">
+                    <p className="text-xs sm:text-sm text-white/75 font-light mt-1.5 line-clamp-2 max-w-3xl">
                       {card.description}
                     </p>
                   )}
@@ -220,13 +264,18 @@ export function ScrollCards({
               </div>
 
               {/* Bottom Quick Action Strip */}
-              <div className="relative z-20 px-4 py-3 bg-black/70 backdrop-blur-md border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/60">
-                <span className="text-white/40">
+              <div className="relative z-20 px-4 py-3 bg-black/75 backdrop-blur-md border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/70">
+                <span className="text-white/50">
                   {`0${i + 1} / 0${cards.length}`}
                 </span>
 
                 <div className="flex items-center gap-2">
-                  {card.isWorkMode ? (
+                  {card.isOfficialWork ? (
+                    <span className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
+                      <CheckCircle2 size={13} className="text-emerald-400" />
+                      <span>{isRTL ? "مقر الهيئة بالرياض // عمل رسمي نشط" : "SBA Riyadh HQ // Active In-Office Project"}</span>
+                    </span>
+                  ) : card.isWorkMode ? (
                     <span className="text-[11px] text-amber-400 font-bold">
                       {isRTL ? "مشروع حكومي قيد العمل والتنفيذ" : "Govt Enterprise In Development"}
                     </span>
@@ -243,7 +292,9 @@ export function ScrollCards({
                   ) : null}
 
                   <span className="px-3 py-1 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors">
-                    {isRTL ? "تفاصيل المعمارية" : "Inspect Specs"}
+                    {card.isOfficialWork
+                      ? (isRTL ? "استعراض تفاصيل العمل الرسمي" : "Inspect Official Project")
+                      : (isRTL ? "تفاصيل المعمارية" : "Inspect Specs")}
                   </span>
                 </div>
               </div>
@@ -254,4 +305,3 @@ export function ScrollCards({
     </div>
   );
 }
-

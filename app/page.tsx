@@ -14,6 +14,7 @@ import { AITools } from "@/components/portfolio/ai-tools"
 import { Contact } from "@/components/portfolio/contact"
 import { Navbar } from "@/components/portfolio/navbar"
 import { ChatBubble } from "@/components/portfolio/chat-bubble"
+import { SlingshotScroll } from "@/components/portfolio/slingshot-scroll"
 import { CustomCursor } from "@/components/portfolio/custom-cursor"
 import { useLanguage } from "@/components/portfolio/language-context"
 import { Suspense } from "react"
@@ -128,6 +129,9 @@ export default function Page() {
 
       {/* Interactive Floating Assistant */}
       <ChatBubble />
+
+      {/* Interactive Slingshot Scroll-to-Top Navigator */}
+      <SlingshotScroll />
     </main>
   )
 }

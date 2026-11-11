@@ -20,6 +20,7 @@ import {
   Send
 } from "lucide-react"
 import { useLanguage } from "./language-context"
+import TechText from "@/components/ui/TechText"
 
 const ROLES_EN = [
   "UI Engineering",
@@ -179,20 +180,51 @@ export function Hero() {
         </motion.p>
 
         {/* Primary Role: UI Engineer · Frontend Developer */}
-        <div className="overflow-hidden mb-4">
-          <motion.h1
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground leading-[1.02]"
-          >
-            {isRTL ? "مهندس واجهات مستخدم" : "UI Engineer"}
-          </motion.h1>
+        <div className="w-full max-w-3xl mb-4 flex flex-col items-center">
+          <h1 className="w-full relative">
+            <span className="sr-only">
+              {isRTL ? "مهندس واجهات مستخدم" : "UI Engineer"}
+            </span>
+            {isRTL ? (
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground leading-[1.02] text-center"
+              >
+                مهندس واجهات مستخدم
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="w-full h-24 sm:h-32 md:h-40 lg:h-44 relative flex items-center justify-center"
+              >
+                <TechText
+                  text="UI Engineer"
+                  fontWeight={900}
+                  fontSize={140}
+                  letterSpacing={-0.04}
+                  color="currentColor"
+                  accentColor="#10b981"
+                  reveal="letter"
+                  dashLength={4}
+                  dashGap={2}
+                  specks={15}
+                  intro="none"
+                  introDuration={2}
+                  clickKick
+                  guides={false}
+                />
+              </motion.div>
+            )}
+          </h1>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-muted-foreground mt-1 tracking-tight"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-muted-foreground mt-2 tracking-tight text-center"
           >
             {isRTL ? "مطور واجهات أمامية" : "Frontend Developer"}
           </motion.div>

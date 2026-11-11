@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Section } from "./section"
 import { useLanguage } from "./language-context"
 import { ScrollCards, CardData } from "@/components/lightswind/scroll-cards"
 import {
@@ -251,87 +250,85 @@ export function Projects() {
     isOfficialWork: proj.isOfficialWork,
     organization: isRTL ? proj.organizationAr : proj.organizationEn,
     officeLocation: isRTL ? proj.officeLocationAr : proj.officeLocationEn,
+    technologies: proj.technologies,
     live: proj.live,
   }))
 
   return (
-    <Section
+    <section
       id="projects"
-      className="relative overflow-hidden bg-background py-16 sm:py-24 border-t border-border/60"
-      variant="project"
+      className="relative w-full bg-background pt-20 sm:pt-28 pb-8 border-t border-border/60"
     >
       {/* Background Architectural Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:48px_48px] opacity-15 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_50%_at_50%_30%,rgba(27,131,84,0.08),transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_50%_at_50%_25%,rgba(27,131,84,0.08),transparent_70%)] pointer-events-none" />
 
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        
-        {/* Simple & Clean Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3.5 py-1.5 text-xs font-mono font-medium text-muted-foreground shadow-xs mb-3">
-            <LayoutDashboard size={13} className="text-primary" />
-            <span>{t("projects.badge")}</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
-            {t("projects.title")}
-          </h2>
-          <p className="mt-2 text-xs sm:text-sm text-muted-foreground font-light max-w-xl mx-auto leading-relaxed">
-            {isRTL
-              ? "استعرض المشاريع الرسمية وتطبيقات الويب — مرر للأسفل للتنقل التلقائي بين البطاقات."
-              : "Explore official workplace platforms and production applications — scroll to cycle cards."}
-          </p>
-
-          {/* Clean Filter Switcher */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl glass-pill border border-border mt-6 max-w-fit mx-auto">
-            <button
-              onClick={() => setFilter("all")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                filter === "all"
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              {isRTL ? "جميع المشاريع" : "All Projects"}
-            </button>
-            <button
-              onClick={() => setFilter("gov")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                filter === "gov"
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              <span>{isRTL ? "مشاريع رسمية (مقر العمل)" : "Official Govt Projects"}</span>
-            </button>
-            <button
-              onClick={() => setFilter("live")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                filter === "live"
-                  ? "bg-primary text-primary-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              {isRTL ? "منشورة ومباشرة" : "Live Applications"}
-            </button>
-          </div>
+      {/* Header Container */}
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 relative z-10 text-center mb-6 sm:mb-10">
+        <div className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3.5 py-1.5 text-xs font-mono font-medium text-muted-foreground shadow-xs mb-3">
+          <LayoutDashboard size={13} className="text-primary" />
+          <span>{t("projects.badge")}</span>
         </div>
 
-        {/* Lightswind UI GSAP ScrollCards Component (One by One Scroll Stacking) */}
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
+          {t("projects.title")}
+        </h2>
+        <p className="mt-2 text-xs sm:text-sm text-muted-foreground font-light max-w-xl mx-auto leading-relaxed">
+          {isRTL
+            ? "استعرض المشاريع الرسمية وتطبيقات الويب — مرر للأسفل للتنقل التلقائي بين البطاقات."
+            : "Explore official workplace platforms and production applications — scroll to cycle cards."}
+        </p>
+
+        {/* Clean Filter Switcher */}
+        <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl glass-pill border border-border mt-6 max-w-fit mx-auto">
+          <button
+            onClick={() => setFilter("all")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+              filter === "all"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            }`}
+          >
+            {isRTL ? "جميع المشاريع" : "All Projects"}
+          </button>
+          <button
+            onClick={() => setFilter("gov")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              filter === "gov"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span>{isRTL ? "مشاريع رسمية (مقر العمل)" : "Official Govt Projects"}</span>
+          </button>
+          <button
+            onClick={() => setFilter("live")}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+              filter === "live"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            }`}
+          >
+            {isRTL ? "منشورة ومباشرة" : "Live Applications"}
+          </button>
+        </div>
+      </div>
+
+      {/* Full-width Lightswind UI GSAP ScrollCards Component */}
+      <div className="relative w-full">
         <ScrollCards
           key={filter}
           cards={scrollCardsData}
           direction="bottom"
-          cardScale={0.7}
-          cardRotation={5}
+          cardScale={0.72}
+          cardRotation={4}
           isRTL={isRTL}
           onCardClick={(card) => {
             const found = detailedProjects.find((p) => p.id === card.id)
             if (found) setSelectedModalProject(found)
           }}
         />
-
       </div>
 
       {/* Simplified In-Depth Details Modal */}
@@ -466,6 +463,6 @@ export function Projects() {
           </div>
         )}
       </AnimatePresence>
-    </Section>
+    </section>
   )
 }

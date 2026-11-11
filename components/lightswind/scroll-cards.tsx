@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Building2, MapPin, CheckCircle2 } from "lucide-react";
+import { Building2, MapPin, ArrowUpRight, Eye, CheckCircle2 } from "lucide-react";
 
 export interface CardData {
   id: number | string;
@@ -33,15 +33,7 @@ export interface ScrollCardsProps {
   className?: string;
   containerClassName?: string;
   imageClassName?: string;
-  /**
-   * The scale the current card scales down to.
-   * @default 0.7
-   */
   cardScale?: number;
-  /**
-   * The rotation the current card rotates to.
-   * @default 5
-   */
   cardRotation?: number;
   isRTL?: boolean;
   onCardClick?: (card: CardData) => void;
@@ -72,7 +64,6 @@ export function ScrollCards({
 
       gsap.set(cardElements[0], { x: "0%", y: "0%", scale: 1, rotation: 0, opacity: 1 });
 
-      // Determine initial offset based on direction
       const getInitialOffset = () => {
         switch (direction) {
           case "top":
@@ -166,42 +157,49 @@ export function ScrollCards({
               }}
               onClick={() => onCardClick?.(card)}
               className={cn(
-                "absolute top-0 left-0 h-full w-full rounded-3xl overflow-hidden will-change-transform shadow-2xl border bg-[#14151a] flex flex-col justify-between cursor-pointer group transition-colors",
+                "absolute inset-0 rounded-3xl overflow-hidden will-change-transform shadow-2xl border border-white/10 bg-[#0e0f14] cursor-pointer group transition-all duration-500",
                 card.isOfficialWork
-                  ? "border-emerald-500/40 hover:border-emerald-500/70"
+                  ? "hover:border-emerald-500/50"
                   : card.isWorkMode
-                  ? "border-amber-500/40 hover:border-amber-500/70"
-                  : "border-white/10 hover:border-primary/40",
+                  ? "hover:border-amber-500/50"
+                  : "hover:border-primary/50",
                 imageClassName
               )}
             >
-              {/* Browser HUD Header */}
-              <div className="relative z-20 h-11 px-4 bg-black/65 backdrop-blur-md border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5">
+              {/* Full Bleed Image (No Extra Dividing Borders) */}
+              <img
+                src={card.image}
+                alt={card.alt || card.title || `Project ${i + 1}`}
+                className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+              />
+
+              {/* Natural Smooth Vignette Overlay (Top & Bottom for text contrast) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30 pointer-events-none" />
+
+              {/* Top Floating Glass Header (No Harsh Dividing Line) */}
+              <div className="relative z-10 p-4 sm:p-6 flex items-center justify-between">
+                {/* Left Traffic Lights & Role Pill */}
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
                     <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
                   </div>
-                  <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-white/60 px-3 py-0.5 rounded-md bg-white/5 truncate max-w-[320px]">
-                    {card.isOfficialWork ? (
-                      <>
-                        <Building2 size={12} className="text-emerald-400" />
-                        <span className="text-emerald-400 font-bold">OFFICIAL PROJECT</span>
-                        <span className="text-white/40">//</span>
-                        <span>{card.organization || "SBA RIYADH"}</span>
-                      </>
-                    ) : card.isWorkMode ? (
-                      "govt-enterprise // internal-staging"
-                    ) : (
-                      card.id
-                    )}
-                  </div>
+
+                  {card.isOfficialWork && (
+                    <div className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md text-[11px] font-mono text-emerald-400">
+                      <Building2 size={13} className="text-emerald-400 shrink-0" />
+                      <span className="font-bold">{card.organization || "SBA"}</span>
+                      <span className="text-white/30">•</span>
+                      <span className="text-white/70">{card.officeLocation || "Riyadh HQ"}</span>
+                    </div>
+                  )}
                 </div>
 
+                {/* Right Status Badge */}
                 <div>
                   {card.isOfficialWork ? (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] sm:text-[11px] font-mono font-bold shadow-xs">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-bold shadow-xs">
                       <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -209,93 +207,78 @@ export function ScrollCards({
                       <span>{isRTL ? "مشروع رسمي مباشر بالهيئة" : "Official In-Office Project"}</span>
                     </span>
                   ) : card.isWorkMode ? (
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-bold">
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
                       <span>{isRTL ? "قيد العمل" : "Work Mode"}</span>
                     </span>
                   ) : (
-                    <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30 font-bold">
-                      {card.badge || (isRTL ? "مباشر" : "Live")}
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-bold">
+                      <span>{card.badge || (isRTL ? "مباشر" : "Live")}</span>
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* Central Screenshot Image */}
-              <div className="relative flex-1 w-full overflow-hidden bg-black/50">
-                <img
-                  src={card.image}
-                  alt={card.alt || card.title || `Scroll card gallery image ${i}`}
-                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent opacity-90" />
+              {/* Bottom Information & Action Area (No Extra Border Line) */}
+              <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-7 flex flex-col justify-end">
+                {/* Index Indicator */}
+                <div className="text-[11px] font-mono text-white/50 mb-1">
+                  {`0${i + 1} // 0${cards.length}`}
+                </div>
 
-                {/* Overlay Project Title, Organization & Summary */}
-                <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6">
-                  {/* Official Organization Pill */}
-                  {card.isOfficialWork && (
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md border border-emerald-500/40 text-[11px] font-mono text-emerald-300 mb-2.5 shadow-md">
-                      <Building2 size={13} className="text-emerald-400" />
-                      <span className="font-bold">{card.organization || "Saudi Broadcasting Authority (SBA)"}</span>
-                      <span className="text-white/40">•</span>
-                      <span className="text-white/70 flex items-center gap-1">
-                        <MapPin size={11} />
-                        {card.officeLocation || (isRTL ? "الرياض" : "Riyadh HQ")}
-                      </span>
-                    </div>
-                  )}
+                {/* Project Title */}
+                {card.title && (
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white tracking-tight drop-shadow-md">
+                    {card.title}
+                  </h3>
+                )}
 
-                  {card.title && (
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white tracking-tight drop-shadow-md">
-                      {card.title}
-                    </h3>
-                  )}
-                  {card.tagline && (
-                    <p className="text-xs sm:text-sm text-primary font-mono font-medium mt-1 drop-shadow-sm truncate">
-                      {card.tagline}
-                    </p>
-                  )}
+                {/* Tagline */}
+                {card.tagline && (
+                  <p className="text-xs sm:text-sm text-primary font-mono font-medium mt-1 drop-shadow-sm truncate">
+                    {card.tagline}
+                  </p>
+                )}
+
+                {/* Description & Action Buttons Row */}
+                <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                   {card.description && (
-                    <p className="text-xs sm:text-sm text-white/75 font-light mt-1.5 line-clamp-2 max-w-3xl">
+                    <p className="text-xs sm:text-sm text-white/75 font-light line-clamp-2 max-w-2xl">
                       {card.description}
                     </p>
                   )}
-                </div>
-              </div>
 
-              {/* Bottom Quick Action Strip */}
-              <div className="relative z-20 px-4 py-3 bg-black/75 backdrop-blur-md border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/70">
-                <span className="text-white/50">
-                  {`0${i + 1} / 0${cards.length}`}
-                </span>
+                  <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+                    {card.isOfficialWork ? (
+                      <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold">
+                        <CheckCircle2 size={13} className="text-emerald-400" />
+                        <span>{isRTL ? "عمل رسمي نشط بالهيئة" : "Active In-Office Project"}</span>
+                      </span>
+                    ) : card.live ? (
+                      <a
+                        href={card.live}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-colors shadow-xs"
+                      >
+                        <span>{isRTL ? "زيارة الموقع" : "Launch Live"}</span>
+                        <ArrowUpRight size={13} />
+                      </a>
+                    ) : null}
 
-                <div className="flex items-center gap-2">
-                  {card.isOfficialWork ? (
-                    <span className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
-                      <CheckCircle2 size={13} className="text-emerald-400" />
-                      <span>{isRTL ? "مقر الهيئة بالرياض // عمل رسمي نشط" : "SBA Riyadh HQ // Active In-Office Project"}</span>
-                    </span>
-                  ) : card.isWorkMode ? (
-                    <span className="text-[11px] text-amber-400 font-bold">
-                      {isRTL ? "مشروع حكومي قيد العمل والتنفيذ" : "Govt Enterprise In Development"}
-                    </span>
-                  ) : card.live ? (
-                    <a
-                      href={card.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="px-3 py-1 rounded-lg bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-colors"
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onCardClick?.(card);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-medium backdrop-blur-md transition-colors cursor-pointer"
                     >
-                      {isRTL ? "زيارة الموقع" : "Launch Live"}
-                    </a>
-                  ) : null}
-
-                  <span className="px-3 py-1 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors">
-                    {card.isOfficialWork
-                      ? (isRTL ? "استعراض تفاصيل العمل الرسمي" : "Inspect Official Project")
-                      : (isRTL ? "تفاصيل المعمارية" : "Inspect Specs")}
-                  </span>
+                      <Eye size={13} />
+                      <span>{isRTL ? "التفاصيل" : "Inspect"}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

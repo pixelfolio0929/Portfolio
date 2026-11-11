@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { Section } from "./section"
 import { useLanguage } from "./language-context"
-import { ScrollCards, CardData } from "@/components/lightswind/scroll-cards"
 import {
   LayoutDashboard,
   ShieldAlert,
@@ -13,13 +12,17 @@ import {
   Code2,
   X,
   ArrowUpRight,
+  ArrowLeft,
+  ArrowRight,
   Building2,
   MapPin,
-  Briefcase
+  ExternalLink,
+  Eye,
+  Sparkles
 } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion"
 
-interface ProjectDetail {
+export interface ProjectDetail {
   id: string
   titleEn: string
   titleAr: string
@@ -87,7 +90,7 @@ const detailedProjects: ProjectDetail[] = [
   {
     id: "b2b-sba",
     titleEn: "B2B.SBA.sa — Official Government Partner Portal",
-    titleAr: "منصة الأعمال الرسمية B2B.SBA.sa — هيئة الإذاعة والتلفزيون",
+    titleAr: "منصة الأعمال الرقمية الرسمية B2B.SBA.sa — هيئة الإذاعة والتلفزيون",
     taglineEn: "Official Enterprise B2B Media & Clearance Portal · Active SBA Project",
     taglineAr: "بوابة الأعمال والشراكات الرقمية الرسمية • مشروع رسمي بالهيئة",
     descEn: "Official enterprise B2B portal serving production houses, media agencies, and business partners with SBA, enabling automated permits, clearances, and airtime reservations.",
@@ -228,31 +231,272 @@ const detailedProjects: ProjectDetail[] = [
   },
 ]
 
+// 3D Spatial Interactive Card
+function ProjectCard3DSpatial({
+  project,
+  positionOffset,
+  isCenter,
+  isRTL,
+  onCardClick,
+  onInspect,
+}: {
+  project: ProjectDetail
+  positionOffset: number
+  isCenter: boolean
+  isRTL: boolean
+  onCardClick: () => void
+  onInspect: () => void
+}) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  const springConfig = { stiffness: 260, damping: 24, mass: 0.7 }
+  const mouseXSpring = useSpring(mouseX, springConfig)
+  const mouseYSpring = useSpring(mouseY, springConfig)
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isCenter || !cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const xPct = (e.clientX - rect.left) / rect.width - 0.5
+    const yPct = (e.clientY - rect.top) / rect.height - 0.5
+    mouseX.set(xPct)
+    mouseY.set(yPct)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
+  // 3D Spatial Transform calculations
+  const xTranslate = isCenter ? 0 : positionOffset * (isRTL ? -380 : 380)
+  const zTranslate = isCenter ? 0 : -220
+  const yRotation = isCenter ? 0 : positionOffset * (isRTL ? 28 : -28)
+  const scale = isCenter ? 1 : 0.84
+  const opacity = isCenter ? 1 : 0.4
+  const zIndex = isCenter ? 30 : 10
+
+  const title = isRTL ? project.titleAr : project.titleEn
+  const tagline = isRTL ? project.taglineAr : project.taglineEn
+  const description = isRTL ? project.descAr : project.descEn
+  const organization = isRTL ? project.organizationAr : project.organizationEn
+  const officeLocation = isRTL ? project.officeLocationAr : project.officeLocationEn
+
+  return (
+    <motion.div
+      animate={{
+        x: xTranslate,
+        z: zTranslate,
+        rotateY: yRotation,
+        scale,
+        opacity,
+        zIndex,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 26,
+        mass: 0.8,
+      }}
+      onClick={onCardClick}
+      style={{
+        position: "absolute",
+        transformStyle: "preserve-3d",
+      }}
+      className={`w-[92%] sm:w-[82%] md:w-[740px] lg:w-[820px] h-[400px] sm:h-[450px] md:h-[480px] rounded-3xl will-change-transform select-none ${
+        isCenter ? "cursor-default" : "cursor-pointer hover:opacity-75 transition-opacity"
+      }`}
+    >
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX: isCenter ? rotateX : 0,
+          rotateY: isCenter ? rotateY : 0,
+          transformStyle: "preserve-3d",
+        }}
+        className={`relative w-full h-full rounded-3xl overflow-hidden border border-white/10 bg-[#0e0f14] shadow-2xl transition-all duration-300 ${
+          project.isOfficialWork
+            ? "hover:border-emerald-500/50"
+            : project.isWorkMode
+            ? "hover:border-amber-500/50"
+            : "hover:border-primary/50"
+        }`}
+      >
+        {/* Full-Bleed Screenshot Image (Zero Extra Dividing Borders) */}
+        <img
+          src={project.image}
+          alt={title}
+          className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+        />
+
+        {/* Cinematic Vignette Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/35 pointer-events-none" />
+
+        {/* Ambient Halo Behind */}
+        <div
+          className={`absolute -top-24 right-1/4 w-72 h-72 rounded-full blur-3xl pointer-events-none opacity-25 ${
+            project.isOfficialWork ? "bg-emerald-500" : "bg-primary"
+          }`}
+        />
+
+        {/* Top Floating HUD Bar (3D Layered) */}
+        <div
+          style={{ transform: "translateZ(35px)" }}
+          className="relative z-10 p-4 sm:p-6 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+            </div>
+
+            {project.isOfficialWork && (
+              <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] font-mono text-emerald-400">
+                <Building2 size={13} className="text-emerald-400 shrink-0" />
+                <span className="font-bold">{organization || "SBA"}</span>
+                <span className="text-white/30">•</span>
+                <span className="text-white/70">{officeLocation || "Riyadh HQ"}</span>
+              </div>
+            )}
+          </div>
+
+          <div>
+            {project.isOfficialWork ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-bold shadow-xs">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span>{isRTL ? "مشروع رسمي مباشر بالهيئة" : "Official In-Office Project"}</span>
+              </span>
+            ) : project.isWorkMode ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                <span>{isRTL ? "قيد العمل والتطوير" : "Work Mode"}</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 text-primary backdrop-blur-md text-[10px] sm:text-[11px] font-mono font-bold">
+                <span>{isRTL ? project.badgeAr : project.badgeEn}</span>
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom Content & Controls (3D Layered translateZ 45px) */}
+        <div
+          style={{ transform: "translateZ(45px)" }}
+          className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-7 flex flex-col justify-end"
+        >
+          {/* Project Title */}
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-mono text-white tracking-tight drop-shadow-md">
+            {title}
+          </h3>
+
+          {/* Tagline */}
+          {tagline && (
+            <p className="text-xs sm:text-sm text-primary font-mono font-medium mt-1 drop-shadow-sm truncate">
+              {tagline}
+            </p>
+          )}
+
+          {/* Description & Action Bar */}
+          <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+            <p className="text-xs sm:text-sm text-white/75 font-light line-clamp-2 max-w-xl">
+              {description}
+            </p>
+
+            <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+              {project.isOfficialWork ? (
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold">
+                  <CheckCircle2 size={13} className="text-emerald-400" />
+                  <span>{isRTL ? "مقر الهيئة بالرياض" : "SBA Riyadh HQ"}</span>
+                </span>
+              ) : project.live ? (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-colors shadow-xs"
+                >
+                  <span>{isRTL ? "زيارة الموقع" : "Launch Live"}</span>
+                  <ArrowUpRight size={13} />
+                </a>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onInspect()
+                }}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-medium backdrop-blur-md transition-colors cursor-pointer"
+              >
+                <Eye size={13} />
+                <span>{isRTL ? "التفاصيل" : "Inspect"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 export function Projects() {
   const { t, isRTL } = useLanguage()
   const [filter, setFilter] = useState<"all" | "gov" | "live">("all")
+  const [activeIndex, setActiveIndex] = useState(0)
   const [selectedModalProject, setSelectedModalProject] = useState<ProjectDetail | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const filteredProjects = detailedProjects.filter((p) => {
     if (filter === "all") return true
     return p.category === filter
   })
 
-  // Convert to clean items for the GSAP ScrollCards component
-  const scrollCardsData: CardData[] = filteredProjects.map((proj) => ({
-    id: proj.id,
-    image: proj.image,
-    alt: isRTL ? proj.titleAr : proj.titleEn,
-    title: isRTL ? proj.titleAr : proj.titleEn,
-    tagline: isRTL ? proj.taglineAr : proj.taglineEn,
-    description: isRTL ? proj.descAr : proj.descEn,
-    badge: isRTL ? proj.badgeAr : proj.badgeEn,
-    isWorkMode: proj.isWorkMode,
-    isOfficialWork: proj.isOfficialWork,
-    organization: isRTL ? proj.organizationAr : proj.organizationEn,
-    officeLocation: isRTL ? proj.officeLocationAr : proj.officeLocationEn,
-    live: proj.live,
-  }))
+  // Ensure active index is within bounds on filter change
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [filter])
+
+  const total = filteredProjects.length
+
+  const handleNext = useCallback(() => {
+    setActiveIndex((prev) => (prev + 1) % total)
+  }, [total])
+
+  const handlePrev = useCallback(() => {
+    setActiveIndex((prev) => (prev - 1 + total) % total)
+  }, [total])
+
+  // Mouse wheel scroll to cycle 3D cards
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    let lastWheelTime = 0
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > 35) {
+        const now = Date.now()
+        if (now - lastWheelTime > 600) {
+          lastWheelTime = now
+          if (e.deltaY > 0) handleNext()
+          else handlePrev()
+        }
+      }
+    }
+
+    el.addEventListener("wheel", onWheel, { passive: true })
+    return () => el.removeEventListener("wheel", onWheel)
+  }, [handleNext, handlePrev])
 
   return (
     <Section
@@ -266,8 +510,8 @@ export function Projects() {
 
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Simple & Clean Header */}
-        <div className="text-center mb-8 sm:mb-12">
+        {/* Section Header */}
+        <div className="text-center mb-8 sm:mb-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3.5 py-1.5 text-xs font-mono font-medium text-muted-foreground shadow-xs mb-3">
             <LayoutDashboard size={13} className="text-primary" />
             <span>{t("projects.badge")}</span>
@@ -278,8 +522,8 @@ export function Projects() {
           </h2>
           <p className="mt-2 text-xs sm:text-sm text-muted-foreground font-light max-w-xl mx-auto leading-relaxed">
             {isRTL
-              ? "استعرض المشاريع الرسمية وتطبيقات الويب — مرر للأسفل للتنقل التلقائي بين البطاقات."
-              : "Explore official workplace platforms and production applications — scroll to cycle cards."}
+              ? "استعرض المشاريع عبر منظور 3D تفاعلي — مرر بعجلة الفأرة أو انقر على البطاقات الجانبية للتنقل."
+              : "Explore projects in true 3D spatial perspective — scroll or click side cards to navigate."}
           </p>
 
           {/* Clean Filter Switcher */}
@@ -318,19 +562,83 @@ export function Projects() {
           </div>
         </div>
 
-        {/* Lightswind UI GSAP ScrollCards Component (One by One Scroll Stacking) */}
-        <ScrollCards
-          key={filter}
-          cards={scrollCardsData}
-          direction="bottom"
-          cardScale={0.7}
-          cardRotation={5}
-          isRTL={isRTL}
-          onCardClick={(card) => {
-            const found = detailedProjects.find((p) => p.id === card.id)
-            if (found) setSelectedModalProject(found)
-          }}
-        />
+        {/* 3D Spatial Stage Showcase */}
+        <div
+          ref={containerRef}
+          className="relative w-full h-[460px] sm:h-[500px] md:h-[530px] flex items-center justify-center perspective-1200 overflow-hidden my-4"
+        >
+          {filteredProjects.map((proj, idx) => {
+            // Compute relative offset from active project
+            let offset = idx - activeIndex
+            // Normalize for wrap-around
+            if (offset > total / 2) offset -= total
+            if (offset < -total / 2) offset += total
+
+            // Only render visible cards (-1, 0, 1) for performance
+            if (Math.abs(offset) > 1) return null
+
+            const isCenter = offset === 0
+
+            return (
+              <ProjectCard3DSpatial
+                key={proj.id}
+                project={proj}
+                positionOffset={offset}
+                isCenter={isCenter}
+                isRTL={isRTL}
+                onCardClick={() => {
+                  if (!isCenter) setActiveIndex(idx)
+                }}
+                onInspect={() => setSelectedModalProject(proj)}
+              />
+            )
+          })}
+        </div>
+
+        {/* 3D Controls Bar */}
+        <div className="flex items-center justify-between max-w-2xl mx-auto px-4 mt-6 text-xs font-mono">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <span className="text-primary font-bold">
+              {String(activeIndex + 1).padStart(2, "0")}
+            </span>
+            <span>/</span>
+            <span>{String(total).padStart(2, "0")}</span>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex items-center gap-1.5">
+            {filteredProjects.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`h-2 rounded-full transition-all cursor-pointer ${
+                  i === activeIndex
+                    ? "w-7 bg-primary shadow-xs"
+                    : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/60"
+                }`}
+                aria-label={`Slide ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Arrows */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handlePrev}
+              className="p-2 rounded-xl bg-card border border-border/80 hover:bg-muted hover:border-primary/40 text-foreground transition-all cursor-pointer active:scale-95 shadow-2xs"
+              aria-label="Previous project"
+            >
+              {isRTL ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
+            </button>
+            <button
+              onClick={handleNext}
+              className="p-2 rounded-xl bg-card border border-border/80 hover:bg-muted hover:border-primary/40 text-foreground transition-all cursor-pointer active:scale-95 shadow-2xs"
+              aria-label="Next project"
+            >
+              {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+            </button>
+          </div>
+        </div>
 
       </div>
 

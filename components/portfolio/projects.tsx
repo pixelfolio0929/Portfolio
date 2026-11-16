@@ -228,6 +228,7 @@ export function Projects() {
   const { t, isRTL } = useLanguage()
   const [filter, setFilter] = useState<"all" | "gov" | "live">("all")
   const [selectedModalProject, setSelectedModalProject] = useState<ProjectDetail | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
 
   const sectionRef = useRef<HTMLDivElement>(null)
   const cardsContainerRef = useRef<HTMLDivElement>(null)
@@ -239,7 +240,7 @@ export function Projects() {
     return p.category === filter
   })
 
-  // GSAP ScrollTrigger Pinned Timeline: "One comes UP, current goes BACK"
+  // GSAP ScrollTrigger Pinned Timeline: Smooth one-by-one with intentional scroll distance
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger)
@@ -256,21 +257,26 @@ export function Projects() {
         gsap.set(cards[i], { yPercent: 100, scale: 1, filter: "brightness(1)", zIndex: i + 1, autoAlpha: 1 })
       }
 
-      // Smooth timeline pinned to sectionRef
+      // Smooth timeline pinned to sectionRef with comfortable scroll distance (140vh per card)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: `+=${Math.max(1, total - 1) * 75}vh`, // Snappy, effortless scroll distance
+          end: `+=${Math.max(1, total - 1) * 140}vh`, // Generous scroll distance for calm, non-rushed pacing
           pin: true,
-          scrub: 0.8,
+          scrub: 1.2, // Silky smooth deceleration
           anticipatePin: 1,
+          onUpdate: (self) => {
+            const idx = Math.min(
+              total - 1,
+              Math.floor(self.progress * (total - 1) + 0.4)
+            )
+            setActiveIndex(idx)
+          },
         },
       })
 
-      // One-by-one animation:
-      // In parallel: current card scales down (goes back in depth & dims),
-      // while the next card glides UP from bottom (yPercent 100 -> 0)
+      // One-by-one animation with smooth easing & resting holds between cards
       for (let i = 0; i < total - 1; i++) {
         const currentCard = cards[i]
         const nextCard = cards[i + 1]
@@ -278,24 +284,26 @@ export function Projects() {
         tl.to(
           currentCard,
           {
-            scale: 0.92,
-            yPercent: -3,
-            filter: "brightness(0.65)",
-            duration: 1,
+            scale: 0.91,
+            yPercent: -4,
+            filter: "brightness(0.6)",
+            duration: 1.4,
             ease: "power2.inOut",
           },
-          i
+          `step_${i}`
         ).to(
           nextCard,
           {
             yPercent: 0,
             scale: 1,
             filter: "brightness(1)",
-            duration: 1,
+            duration: 1.4,
             ease: "power2.inOut",
           },
-          i
+          `step_${i}`
         )
+        // Resting hold so each card can be read and appreciated comfortably
+        .to({}, { duration: 0.6 })
       }
 
       const ro = new ResizeObserver(() => ScrollTrigger.refresh())
@@ -559,10 +567,24 @@ export function Projects() {
           })}
         </div>
 
-        {/* Bottom Hint */}
-        <div className="w-full text-center shrink-0 z-20 pb-2">
+        {/* Bottom Progress Bar & Indicator */}
+        <div className="w-full flex flex-col items-center justify-center gap-2 shrink-0 z-20 pb-2">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 dark:bg-black/40 border border-border/60 backdrop-blur-md">
+            {filteredProjects.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === activeIndex
+                    ? "w-6 bg-primary"
+                    : "w-1.5 bg-muted-foreground/30"
+                }`}
+              />
+            ))}
+          </div>
           <span className="text-[10px] font-mono text-muted-foreground/60 tracking-wider">
-            {isRTL ? "مرر بعجلة الفأرة للتنقل بين بطاقات المشاريع" : "SCROLL TO CYCLE PROJECT CARDS"}
+            {isRTL
+              ? `المشروع ${String(activeIndex + 1).padStart(2, "0")} من ${String(filteredProjects.length).padStart(2, "0")} • مرر بسلاسة للتنقل`
+              : `PROJECT ${String(activeIndex + 1).padStart(2, "0")} OF ${String(filteredProjects.length).padStart(2, "0")} · SCROLL SMOOTHLY`}
           </span>
         </div>
       </div>

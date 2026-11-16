@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useLanguage } from "./language-context"
 import {
   LayoutDashboard,
@@ -16,7 +16,7 @@ import {
   ExternalLink,
   ShieldCheck
 } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useTransform, MotionValue } from "framer-motion"
 
 export interface ProjectDetail {
   id: string
@@ -85,27 +85,21 @@ const detailedProjects: ProjectDetail[] = [
   },
   {
     id: "b2b-sba",
-    titleEn: "B2B.SBA.sa — Official Government Partner Portal",
-    titleAr: "منصة الأعمال الرسمية B2B.SBA.sa — هيئة الإذاعة والتلفزيون",
-    taglineEn: "Official Enterprise B2B Media & Clearance Portal · Active SBA Project",
-    taglineAr: "بوابة الأعمال والشراكات الرقمية الرسمية • مشروع رسمي بالهيئة",
-    descEn: "Official enterprise B2B portal serving production houses, media agencies, and business partners with SBA, enabling automated permits, clearances, and airtime reservations.",
+    titleEn: "B2B.SBA.sa — Enterprise Partner Portal",
+    titleAr: "منصة الأعمال والشركاء B2B.SBA.sa",
+    taglineEn: "Enterprise B2B Media & Clearance Portal · Automated Workflows",
+    taglineAr: "بوابة الأعمال والشراكات الرقمية • أتمتة تصاريح وحجوزات البث",
+    descEn: "Enterprise B2B digital portal for media partners and production houses, streamlining broadcast clearance permits, commercial airtime reservations, and automated partner workflows.",
     descAr: "بوابة رقمية مخصصة لشركات الإنتاج وشركاء الأعمال لتسهيل تصاريح التصوير وحجوزات البث التلفزيوني والخدمات التجارية المؤتمتة.",
     roleEn: "Frontend UI engineering, data tables, multi-step workflow logic, and accessible forms.",
     roleAr: "تطوير الواجهة الأمامية، وجداول البيانات، وتدفقات النماذج المعقدة، والأنماط المتجاوبة.",
     category: "gov",
-    badgeEn: "Official Govt B2B",
-    badgeAr: "مشروع رسمي B2B",
-    isOfficialWork: true,
-    organizationEn: "Saudi Broadcasting Authority (SBA)",
-    organizationAr: "هيئة الإذاعة والتلفزيون",
-    officeLocationEn: "Riyadh HQ",
-    officeLocationAr: "الرياض",
+    badgeEn: "Enterprise B2B",
+    badgeAr: "منظومة أعمال B2B",
+    isOfficialWork: false,
+    isWorkMode: false,
     technologies: ["JavaScript", "ASP.NET UI", "Tailwind CSS", "REST APIs", "Design Systems"],
     image: "/wms-app-preview.jpg",
-    isWorkMode: true,
-    workModeNoteEn: "Enterprise B2B portal in active development under SBA. Manages automated partner workflows — currently in work mode, not yet published.",
-    workModeNoteAr: "منصة B2B مؤسسية قيد التطوير البرمجي والتشغيل الداخلي النشط تحت إشراف SBA. تدير طلبات الأعمال والشراكات — غير منشورة للعامة حالياً.",
     highlightsEn: [
       "Streamlined multi-step commercial verification pipelines.",
       "High-density responsive data tables with column filtering.",
@@ -227,14 +221,252 @@ const detailedProjects: ProjectDetail[] = [
   },
 ]
 
+/**
+ * StickyCard_001 Implementation (Inspired by Skiper 16 & Olivier Larose)
+ * As the user scrolls, each card sticks and scales down smoothly,
+ * allowing subsequent cards to stack directly on top one by one.
+ */
+interface StickyCardProps {
+  i: number
+  total: number
+  project: ProjectDetail
+  progress: MotionValue<number>
+  range: [number, number]
+  targetScale: number
+  isRTL: boolean
+  onInspect: () => void
+}
+
+const StickyCard_001 = ({
+  i,
+  total,
+  project,
+  progress,
+  range,
+  targetScale,
+  isRTL,
+  onInspect,
+}: StickyCardProps) => {
+  const container = useRef<HTMLDivElement>(null)
+  const isLast = i === total - 1
+
+  // Dynamic transforms derived from parent container scroll progress
+  const scale = useTransform(progress, range, [1, targetScale])
+  const overlayOpacity = useTransform(progress, range, [0, isLast ? 0 : 0.4])
+
+  const isSBA = project.isOfficialWork
+  const projectNum = String(i + 1).padStart(2, "0")
+
+  return (
+    <div
+      ref={container}
+      className="sticky top-0 flex items-center justify-center w-full min-h-[520px] sm:min-h-[580px] my-4 sm:my-6"
+    >
+      <motion.div
+        style={{
+          scale,
+          top: `calc(7vh + ${i * 26}px)`,
+        }}
+        className="relative origin-top w-[95%] sm:w-[92%] max-w-5xl rounded-3xl border border-border/80 dark:border-white/10 bg-card/95 dark:bg-[#0c0d14]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-colors hover:border-primary/40 group will-change-transform"
+      >
+        {/* Receding Dark Shade Overlay (dims smoothly as subsequent card stacks on top) */}
+        <motion.div
+          style={{ opacity: overlayOpacity }}
+          className="absolute inset-0 bg-black/60 pointer-events-none z-30 transition-opacity"
+        />
+
+        {/* Top Accent Strip */}
+        <div
+          className={`h-1 w-full relative z-10 ${
+            isSBA
+              ? "bg-gradient-to-r from-emerald-500 via-primary to-emerald-400"
+              : "bg-gradient-to-r from-primary via-emerald-400 to-primary"
+          }`}
+        />
+
+        {/* Card Body — 2-Column Split Layout */}
+        <div className="p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-20">
+          
+          {/* Left Column: Narrative, Metadata & Actions (7 cols) */}
+          <div className="lg:col-span-7 flex flex-col justify-between space-y-4 sm:space-y-5">
+            
+            {/* Header Row: Index & Badges */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold text-muted-foreground/80 tracking-wider">
+                  {`// ${projectNum}`}
+                </span>
+
+                {/* macOS subtle dots */}
+                <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/60 dark:bg-white/5 border border-border/50">
+                  <span className="w-2 h-2 rounded-full bg-red-500/70" />
+                  <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
+                </div>
+              </div>
+
+              {/* Status Badge: ONLY the first project displays the official SBA in-office badge */}
+              {isSBA ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                  </span>
+                  <span>{isRTL ? "مشروع حكومي رسمي بمقر الهيئة" : "Official In-Office Project"}</span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono font-bold">
+                  <span>{isRTL ? project.badgeAr : project.badgeEn}</span>
+                </span>
+              )}
+            </div>
+
+            {/* Title & Tagline */}
+            <div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                {isRTL ? project.titleAr : project.titleEn}
+              </h3>
+              <p className="mt-1.5 text-xs sm:text-sm font-mono text-primary font-medium">
+                {isRTL ? project.taglineAr : project.taglineEn}
+              </p>
+            </div>
+
+            {/* Official Government Callout (ONLY rendered on Project 1 / SBA) */}
+            {isSBA && (
+              <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/5 border border-emerald-500/25 text-xs font-mono text-emerald-700 dark:text-emerald-300 flex items-start gap-3">
+                <Building2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <span className="font-bold block">
+                    {isRTL
+                      ? "مقر العمل: هيئة الإذاعة والتلفزيون — الرياض، المملكة العربية السعودية"
+                      : "Workplace: Saudi Broadcasting Authority (SBA) — Riyadh HQ"}
+                  </span>
+                  <p className="text-[11px] font-light text-muted-foreground leading-relaxed">
+                    {isRTL ? project.workModeNoteAr : project.workModeNoteEn}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Brief Overview */}
+            <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed line-clamp-3">
+              {isRTL ? project.descAr : project.descEn}
+            </p>
+
+            {/* Role Callout */}
+            <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs font-mono text-foreground/90">
+              <span className="text-primary font-bold mr-1.5 inline-block">
+                {isRTL ? "الدور والمسؤوليات:" : "Engineering Role:"}
+              </span>
+              <span className="font-light">{isRTL ? project.roleAr : project.roleEn}</span>
+            </div>
+
+            {/* Tech Stack Chips */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {project.technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-1 rounded-lg bg-muted/60 dark:bg-white/5 border border-border/80 text-[11px] font-mono text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              {isSBA ? (
+                <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold border border-emerald-500/30">
+                  <CheckCircle2 size={14} className="text-emerald-400" />
+                  <span>{isRTL ? "نظام حكومي نشط بالهيئة" : "Active In-Office System"}</span>
+                </span>
+              ) : project.live ? (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-all shadow-sm"
+                >
+                  <span>{isRTL ? "زيارة الموقع الحي" : "Launch Live"}</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              ) : null}
+
+              <button
+                type="button"
+                onClick={onInspect}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-xs font-mono font-semibold transition-all border border-border cursor-pointer active:scale-98"
+              >
+                <Eye size={14} />
+                <span>{isRTL ? "تفاصيل المعمارية" : "Inspect Architecture"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column: Visual Frame Showcase (5 cols) */}
+          <div
+            onClick={onInspect}
+            className="lg:col-span-5 relative group/img cursor-pointer"
+          >
+            <div className="relative rounded-2xl overflow-hidden border border-border/80 dark:border-white/10 bg-muted/20 shadow-xl transition-all duration-300 group-hover/img:scale-[1.01] group-hover/img:shadow-2xl">
+              
+              {/* Browser Address Bar Chrome */}
+              <div className="px-3.5 py-2.5 bg-muted/80 dark:bg-[#14161f] border-b border-border/60 flex items-center justify-between text-[11px] font-mono text-muted-foreground select-none">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+                </div>
+                <span className="text-[10px] truncate max-w-[160px] opacity-75">
+                  {project.live ? new URL(project.live).hostname : isSBA ? "sba.gov.sa (internal)" : "pixel.internal"}
+                </span>
+                <ExternalLink size={12} className="opacity-50" />
+              </div>
+
+              {/* Image with Lazy & Async Decoding */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/10">
+                <img
+                  src={project.image}
+                  alt={isRTL ? project.titleAr : project.titleEn}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover object-top transition-transform duration-500 group-hover/img:scale-105"
+                />
+                
+                {/* Gentle Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end p-4">
+                  <span className="text-white text-xs font-mono font-medium flex items-center gap-1.5">
+                    <Eye size={13} />
+                    <span>{isRTL ? "انقر للمعاينة الموسعة" : "Click to view full preview"}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
 export function Projects() {
   const { t, isRTL } = useLanguage()
   const [filter, setFilter] = useState<"all" | "gov" | "live">("all")
   const [selectedModalProject, setSelectedModalProject] = useState<ProjectDetail | null>(null)
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
   const filteredProjects = detailedProjects.filter((p) => {
     if (filter === "all") return true
+    if (filter === "gov") return p.isOfficialWork === true
     return p.category === filter
+  })
+
+  // Skiper 16 scroll tracking on the cards stack container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
   })
 
   return (
@@ -283,7 +515,7 @@ export function Projects() {
             }`}
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>{isRTL ? "مشاريع رسمية (مقر العمل)" : "Govt (In-Office)"}</span>
+            <span>{isRTL ? "مشروع حكومي رسمي (مقر الهيئة)" : "Official Govt (In-Office)"}</span>
           </button>
           <button
             onClick={() => setFilter("live")}
@@ -298,203 +530,29 @@ export function Projects() {
         </div>
       </div>
 
-      {/* Ultra Smooth Stacking Project Cards Showcase */}
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10 space-y-8 sm:space-y-12">
-        {filteredProjects.map((project, idx) => {
-          const isSBA = project.isOfficialWork
-          const isWork = project.isWorkMode
-          const projectNum = String(idx + 1).padStart(2, "0")
+      {/* Skiper 16 Sticky Cards Stack (One comes up, previous scales down & goes back) */}
+      <div
+        ref={containerRef}
+        className="relative flex w-full flex-col items-center justify-center pb-[30vh] sm:pb-[50vh] pt-4"
+      >
+        {filteredProjects.map((project, i) => {
+          const total = filteredProjects.length
+          const targetScale = Math.max(0.72, 1 - (total - i - 1) * 0.045)
+          const rangeStart = total <= 1 ? 0 : i * (0.85 / total)
+          const range: [number, number] = [rangeStart, 1]
 
           return (
-            <motion.div
+            <StickyCard_001
               key={project.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                top: `calc(5.5rem + ${idx * 0.75}rem)`,
-              }}
-              className="sticky rounded-3xl border border-border/80 dark:border-white/10 bg-card/95 dark:bg-[#0c0d14]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-all hover:border-primary/40 group"
-            >
-              {/* Top Accent Strip */}
-              <div
-                className={`h-1 w-full ${
-                  isSBA
-                    ? "bg-gradient-to-r from-emerald-500 via-primary to-emerald-400"
-                    : isWork
-                    ? "bg-gradient-to-r from-amber-500 via-amber-400 to-primary"
-                    : "bg-gradient-to-r from-primary via-emerald-400 to-primary"
-                }`}
-              />
-
-              {/* Card Body — 2-Column Split Layout */}
-              <div className="p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                
-                {/* Left Column: Metadata & Narrative (7 cols) */}
-                <div className="lg:col-span-7 flex flex-col justify-between space-y-5">
-                  
-                  {/* Header Row: Index & Badges */}
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold text-muted-foreground/80 tracking-wider">
-                        {`// ${projectNum}`}
-                      </span>
-
-                      {/* macOS subtle dots */}
-                      <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/60 dark:bg-white/5 border border-border/50">
-                        <span className="w-2 h-2 rounded-full bg-red-500/70" />
-                        <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
-                        <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
-                      </div>
-                    </div>
-
-                    {/* Status Beacon Badge */}
-                    {isSBA ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                        </span>
-                        <span>{isRTL ? "مشروع حكومي رسمي بمقر الهيئة" : "Official In-Office Project"}</span>
-                      </span>
-                    ) : isWork ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs font-mono font-bold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-                        <span>{isRTL ? "قيد العمل والتطوير الداخلي" : "Work Mode (In-Office)"}</span>
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono font-bold">
-                        <span>{isRTL ? project.badgeAr : project.badgeEn}</span>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title & Tagline */}
-                  <div>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
-                      {isRTL ? project.titleAr : project.titleEn}
-                    </h3>
-                    <p className="mt-1.5 text-xs sm:text-sm font-mono text-primary font-medium">
-                      {isRTL ? project.taglineAr : project.taglineEn}
-                    </p>
-                  </div>
-
-                  {/* Official Government Callout (if SBA) */}
-                  {isSBA && (
-                    <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/5 border border-emerald-500/25 text-xs font-mono text-emerald-700 dark:text-emerald-300 flex items-start gap-3">
-                      <Building2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-                      <div className="space-y-0.5">
-                        <span className="font-bold block">
-                          {isRTL
-                            ? "مقر العمل: هيئة الإذاعة والتلفزيون — الرياض، المملكة العربية السعودية"
-                            : "Workplace: Saudi Broadcasting Authority (SBA) — Riyadh HQ"}
-                        </span>
-                        <p className="text-[11px] font-light text-muted-foreground leading-relaxed">
-                          {isRTL ? project.workModeNoteAr : project.workModeNoteEn}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Brief Overview */}
-                  <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed line-clamp-3">
-                    {isRTL ? project.descAr : project.descEn}
-                  </p>
-
-                  {/* Role Callout */}
-                  <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs font-mono text-foreground/90">
-                    <span className="text-primary font-bold mr-1.5 inline-block">
-                      {isRTL ? "الدور والمسؤوليات:" : "Engineering Role:"}
-                    </span>
-                    <span className="font-light">{isRTL ? project.roleAr : project.roleEn}</span>
-                  </div>
-
-                  {/* Tech Stack Chips */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2.5 py-1 rounded-lg bg-muted/60 dark:bg-white/5 border border-border/80 text-[11px] font-mono text-foreground/80 hover:text-foreground transition-colors"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    {isSBA ? (
-                      <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold border border-emerald-500/30">
-                        <CheckCircle2 size={14} className="text-emerald-400" />
-                        <span>{isRTL ? "نظام حكومي نشط بالهيئة" : "Active In-Office System"}</span>
-                      </span>
-                    ) : project.live ? (
-                      <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-all shadow-sm"
-                      >
-                        <span>{isRTL ? "زيارة الموقع الحي" : "Launch Live"}</span>
-                        <ArrowUpRight size={14} />
-                      </a>
-                    ) : null}
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedModalProject(project)}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-xs font-mono font-semibold transition-all border border-border cursor-pointer active:scale-98"
-                    >
-                      <Eye size={14} />
-                      <span>{isRTL ? "تفاصيل المعمارية" : "Inspect Architecture"}</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Right Column: Visual Frame Showcase (5 cols) */}
-                <div
-                  onClick={() => setSelectedModalProject(project)}
-                  className="lg:col-span-5 relative group/img cursor-pointer"
-                >
-                  <div className="relative rounded-2xl overflow-hidden border border-border/80 dark:border-white/10 bg-muted/20 shadow-xl transition-all duration-300 group-hover/img:scale-[1.01] group-hover/img:shadow-2xl">
-                    
-                    {/* Browser Address Bar Chrome */}
-                    <div className="px-3.5 py-2.5 bg-muted/80 dark:bg-[#14161f] border-b border-border/60 flex items-center justify-between text-[11px] font-mono text-muted-foreground select-none">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
-                      </div>
-                      <span className="text-[10px] truncate max-w-[160px] opacity-75">
-                        {project.live ? new URL(project.live).hostname : isSBA ? "sba.gov.sa (internal)" : "pixel.internal"}
-                      </span>
-                      <ExternalLink size={12} className="opacity-50" />
-                    </div>
-
-                    {/* Image with Lazy & Async Decoding */}
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/10">
-                      <img
-                        src={project.image}
-                        alt={isRTL ? project.titleAr : project.titleEn}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover/img:scale-105"
-                      />
-                      
-                      {/* Gentle Hover Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end p-4">
-                        <span className="text-white text-xs font-mono font-medium flex items-center gap-1.5">
-                          <Eye size={13} />
-                          <span>{isRTL ? "انقر للمعاينة الموسعة" : "Click to view full preview"}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
+              i={i}
+              total={total}
+              project={project}
+              progress={scrollYProgress}
+              range={range}
+              targetScale={targetScale}
+              isRTL={isRTL}
+              onInspect={() => setSelectedModalProject(project)}
+            />
           )
         })}
       </div>
@@ -536,9 +594,9 @@ export function Projects() {
                     {isRTL ? selectedModalProject.badgeAr : selectedModalProject.badgeEn}
                   </span>
                   {selectedModalProject.isWorkMode && (
-                    <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 text-[11px] font-mono font-bold flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-                      <span>{isRTL ? "قيد العمل والتطوير الداخلي" : "Active In-Office Staging"}</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 text-[11px] font-mono font-bold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                      <span>{isRTL ? "مشروع حكومي رسمي بمقر الهيئة" : "Active In-Office Assignment"}</span>
                     </span>
                   )}
                 </div>
@@ -550,7 +608,7 @@ export function Projects() {
                 </p>
               </div>
 
-              {/* Official Project & Organization Callout */}
+              {/* Official Project & Organization Callout (ONLY for Project 1) */}
               {selectedModalProject.isOfficialWork && (
                 <div className="mb-5 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono text-emerald-600 dark:text-emerald-400 flex items-start gap-2.5">
                   <Building2 size={18} className="shrink-0 mt-0.5 text-emerald-500" />
@@ -632,3 +690,4 @@ export function Projects() {
     </section>
   )
 }
+export { StickyCard_001 }

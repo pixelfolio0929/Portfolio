@@ -16,7 +16,10 @@ import {
   ExternalLink,
   ShieldCheck
 } from "lucide-react"
-import { motion, AnimatePresence, useScroll, useTransform, MotionValue } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 export interface ProjectDetail {
   id: string
@@ -221,241 +224,14 @@ const detailedProjects: ProjectDetail[] = [
   },
 ]
 
-/**
- * StickyCard_001 Implementation (Inspired by Skiper 16 & Olivier Larose)
- * As the user scrolls, each card sticks and scales down smoothly,
- * allowing subsequent cards to stack directly on top one by one.
- */
-interface StickyCardProps {
-  i: number
-  total: number
-  project: ProjectDetail
-  progress: MotionValue<number>
-  range: [number, number]
-  targetScale: number
-  isRTL: boolean
-  onInspect: () => void
-}
-
-const StickyCard_001 = ({
-  i,
-  total,
-  project,
-  progress,
-  range,
-  targetScale,
-  isRTL,
-  onInspect,
-}: StickyCardProps) => {
-  const container = useRef<HTMLDivElement>(null)
-  const isLast = i === total - 1
-
-  // Dynamic transforms derived from parent container scroll progress
-  const scale = useTransform(progress, range, [1, targetScale])
-  const overlayOpacity = useTransform(progress, range, [0, isLast ? 0 : 0.4])
-
-  const isSBA = project.isOfficialWork
-  const projectNum = String(i + 1).padStart(2, "0")
-
-  return (
-    <div
-      ref={container}
-      className="sticky top-0 flex items-center justify-center w-full min-h-[520px] sm:min-h-[580px] my-4 sm:my-6"
-    >
-      <motion.div
-        style={{
-          scale,
-          top: `calc(7vh + ${i * 26}px)`,
-        }}
-        className="relative origin-top w-[95%] sm:w-[92%] max-w-5xl rounded-3xl border border-border/80 dark:border-white/10 bg-card/95 dark:bg-[#0c0d14]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-colors hover:border-primary/40 group will-change-transform"
-      >
-        {/* Receding Dark Shade Overlay (dims smoothly as subsequent card stacks on top) */}
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 bg-black/60 pointer-events-none z-30 transition-opacity"
-        />
-
-        {/* Top Accent Strip */}
-        <div
-          className={`h-1 w-full relative z-10 ${
-            isSBA
-              ? "bg-gradient-to-r from-emerald-500 via-primary to-emerald-400"
-              : "bg-gradient-to-r from-primary via-emerald-400 to-primary"
-          }`}
-        />
-
-        {/* Card Body — 2-Column Split Layout */}
-        <div className="p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center relative z-20">
-          
-          {/* Left Column: Narrative, Metadata & Actions (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between space-y-4 sm:space-y-5">
-            
-            {/* Header Row: Index & Badges */}
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold text-muted-foreground/80 tracking-wider">
-                  {`// ${projectNum}`}
-                </span>
-
-                {/* macOS subtle dots */}
-                <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/60 dark:bg-white/5 border border-border/50">
-                  <span className="w-2 h-2 rounded-full bg-red-500/70" />
-                  <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
-                  <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
-                </div>
-              </div>
-
-              {/* Status Badge: ONLY the first project displays the official SBA in-office badge */}
-              {isSBA ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                  </span>
-                  <span>{isRTL ? "مشروع حكومي رسمي بمقر الهيئة" : "Official In-Office Project"}</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono font-bold">
-                  <span>{isRTL ? project.badgeAr : project.badgeEn}</span>
-                </span>
-              )}
-            </div>
-
-            {/* Title & Tagline */}
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
-                {isRTL ? project.titleAr : project.titleEn}
-              </h3>
-              <p className="mt-1.5 text-xs sm:text-sm font-mono text-primary font-medium">
-                {isRTL ? project.taglineAr : project.taglineEn}
-              </p>
-            </div>
-
-            {/* Official Government Callout (ONLY rendered on Project 1 / SBA) */}
-            {isSBA && (
-              <div className="p-3.5 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/5 border border-emerald-500/25 text-xs font-mono text-emerald-700 dark:text-emerald-300 flex items-start gap-3">
-                <Building2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-                <div className="space-y-0.5">
-                  <span className="font-bold block">
-                    {isRTL
-                      ? "مقر العمل: هيئة الإذاعة والتلفزيون — الرياض، المملكة العربية السعودية"
-                      : "Workplace: Saudi Broadcasting Authority (SBA) — Riyadh HQ"}
-                  </span>
-                  <p className="text-[11px] font-light text-muted-foreground leading-relaxed">
-                    {isRTL ? project.workModeNoteAr : project.workModeNoteEn}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Brief Overview */}
-            <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed line-clamp-3">
-              {isRTL ? project.descAr : project.descEn}
-            </p>
-
-            {/* Role Callout */}
-            <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs font-mono text-foreground/90">
-              <span className="text-primary font-bold mr-1.5 inline-block">
-                {isRTL ? "الدور والمسؤوليات:" : "Engineering Role:"}
-              </span>
-              <span className="font-light">{isRTL ? project.roleAr : project.roleEn}</span>
-            </div>
-
-            {/* Tech Stack Chips */}
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              {project.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-2.5 py-1 rounded-lg bg-muted/60 dark:bg-white/5 border border-border/80 text-[11px] font-mono text-foreground/80 hover:text-foreground transition-colors"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              {isSBA ? (
-                <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold border border-emerald-500/30">
-                  <CheckCircle2 size={14} className="text-emerald-400" />
-                  <span>{isRTL ? "نظام حكومي نشط بالهيئة" : "Active In-Office System"}</span>
-                </span>
-              ) : project.live ? (
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-all shadow-sm"
-                >
-                  <span>{isRTL ? "زيارة الموقع الحي" : "Launch Live"}</span>
-                  <ArrowUpRight size={14} />
-                </a>
-              ) : null}
-
-              <button
-                type="button"
-                onClick={onInspect}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-xs font-mono font-semibold transition-all border border-border cursor-pointer active:scale-98"
-              >
-                <Eye size={14} />
-                <span>{isRTL ? "تفاصيل المعمارية" : "Inspect Architecture"}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right Column: Visual Frame Showcase (5 cols) */}
-          <div
-            onClick={onInspect}
-            className="lg:col-span-5 relative group/img cursor-pointer"
-          >
-            <div className="relative rounded-2xl overflow-hidden border border-border/80 dark:border-white/10 bg-muted/20 shadow-xl transition-all duration-300 group-hover/img:scale-[1.01] group-hover/img:shadow-2xl">
-              
-              {/* Browser Address Bar Chrome */}
-              <div className="px-3.5 py-2.5 bg-muted/80 dark:bg-[#14161f] border-b border-border/60 flex items-center justify-between text-[11px] font-mono text-muted-foreground select-none">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
-                </div>
-                <span className="text-[10px] truncate max-w-[160px] opacity-75">
-                  {project.live ? new URL(project.live).hostname : isSBA ? "sba.gov.sa (internal)" : "pixel.internal"}
-                </span>
-                <ExternalLink size={12} className="opacity-50" />
-              </div>
-
-              {/* Image with Lazy & Async Decoding */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/10">
-                <img
-                  src={project.image}
-                  alt={isRTL ? project.titleAr : project.titleEn}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-full w-full object-cover object-top transition-transform duration-500 group-hover/img:scale-105"
-                />
-                
-                {/* Gentle Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end p-4">
-                  <span className="text-white text-xs font-mono font-medium flex items-center gap-1.5">
-                    <Eye size={13} />
-                    <span>{isRTL ? "انقر للمعاينة الموسعة" : "Click to view full preview"}</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </motion.div>
-    </div>
-  )
-}
-
 export function Projects() {
   const { t, isRTL } = useLanguage()
   const [filter, setFilter] = useState<"all" | "gov" | "live">("all")
   const [selectedModalProject, setSelectedModalProject] = useState<ProjectDetail | null>(null)
 
-  const containerRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const cardsContainerRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
 
   const filteredProjects = detailedProjects.filter((p) => {
     if (filter === "all") return true
@@ -463,98 +239,332 @@ export function Projects() {
     return p.category === filter
   })
 
-  // Skiper 16 scroll tracking on the cards stack container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  })
+  // GSAP ScrollTrigger Pinned Timeline: "One comes UP, current goes BACK"
+  useGSAP(
+    () => {
+      gsap.registerPlugin(ScrollTrigger)
+
+      const cards = cardRefs.current.filter(Boolean)
+      const total = cards.length
+      if (!total || !sectionRef.current) return
+
+      // Set initial states:
+      // First card active at center: scale 1, yPercent 0, full brightness
+      // Subsequent cards sit off-screen below: yPercent 100, full scale
+      gsap.set(cards[0], { yPercent: 0, scale: 1, filter: "brightness(1)", zIndex: 1, autoAlpha: 1 })
+      for (let i = 1; i < total; i++) {
+        gsap.set(cards[i], { yPercent: 100, scale: 1, filter: "brightness(1)", zIndex: i + 1, autoAlpha: 1 })
+      }
+
+      // Smooth timeline pinned to sectionRef
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: `+=${Math.max(1, total - 1) * 75}vh`, // Snappy, effortless scroll distance
+          pin: true,
+          scrub: 0.8,
+          anticipatePin: 1,
+        },
+      })
+
+      // One-by-one animation:
+      // In parallel: current card scales down (goes back in depth & dims),
+      // while the next card glides UP from bottom (yPercent 100 -> 0)
+      for (let i = 0; i < total - 1; i++) {
+        const currentCard = cards[i]
+        const nextCard = cards[i + 1]
+
+        tl.to(
+          currentCard,
+          {
+            scale: 0.92,
+            yPercent: -3,
+            filter: "brightness(0.65)",
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          i
+        ).to(
+          nextCard,
+          {
+            yPercent: 0,
+            scale: 1,
+            filter: "brightness(1)",
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          i
+        )
+      }
+
+      const ro = new ResizeObserver(() => ScrollTrigger.refresh())
+      if (sectionRef.current) ro.observe(sectionRef.current)
+
+      return () => {
+        ro.disconnect()
+        tl.kill()
+      }
+    },
+    { scope: sectionRef, dependencies: [filteredProjects.length, filter] }
+  )
 
   return (
-    <section
-      id="projects"
-      className="relative w-full bg-background pt-20 sm:pt-28 pb-20 border-t border-border/60 transition-colors"
-    >
+    <section id="projects" className="relative w-full bg-background border-t border-border/60 transition-colors">
       {/* Background Architectural Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:48px_48px] opacity-15 pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_40%_at_50%_15%,rgba(27,131,84,0.09),transparent_70%)] pointer-events-none" />
 
-      {/* Header Container */}
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 relative z-10 text-center mb-12 sm:mb-16">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3.5 py-1.5 text-xs font-mono font-medium text-muted-foreground shadow-xs mb-3">
-          <LayoutDashboard size={13} className="text-primary" />
-          <span>{t("projects.badge")}</span>
-        </div>
-
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
-          {t("projects.title")}
-        </h2>
-        <p className="mt-2.5 text-xs sm:text-sm text-muted-foreground font-light max-w-xl mx-auto leading-relaxed">
-          {isRTL
-            ? "مشاريع رقمية واقعية وهندسة واجهات معتمدة — تصفح المنظومات الحكومية والتطبيقات الحية."
-            : "Real-world engineering platforms and interactive products — explore government portals and live apps."}
-        </p>
-
-        {/* Snappy Filter Switcher */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl glass-pill border border-border mt-7 max-w-fit mx-auto">
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-              filter === "all"
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
-            }`}
-          >
-            {isRTL ? "جميع المشاريع" : "All Projects"} ({detailedProjects.length})
-          </button>
-          <button
-            onClick={() => setFilter("gov")}
-            className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-2 ${
-              filter === "gov"
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
-            }`}
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>{isRTL ? "مشروع حكومي رسمي (مقر الهيئة)" : "Official Govt (In-Office)"}</span>
-          </button>
-          <button
-            onClick={() => setFilter("live")}
-            className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-              filter === "live"
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
-            }`}
-          >
-            {isRTL ? "تطبيقات حية" : "Live Applications"}
-          </button>
-        </div>
-      </div>
-
-      {/* Skiper 16 Sticky Cards Stack (One comes up, previous scales down & goes back) */}
+      {/* GSAP Pinned Stage */}
       <div
-        ref={containerRef}
-        className="relative flex w-full flex-col items-center justify-center pb-[30vh] sm:pb-[50vh] pt-4"
+        ref={sectionRef}
+        className="relative w-full h-screen flex flex-col justify-between overflow-hidden pt-6 pb-6 px-4 sm:px-6"
       >
-        {filteredProjects.map((project, i) => {
-          const total = filteredProjects.length
-          const targetScale = Math.max(0.72, 1 - (total - i - 1) * 0.045)
-          const rangeStart = total <= 1 ? 0 : i * (0.85 / total)
-          const range: [number, number] = [rangeStart, 1]
+        {/* Compact Header & Filter Bar */}
+        <div className="w-full max-w-5xl mx-auto text-center shrink-0 z-20 pt-2 sm:pt-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3 py-1 text-[11px] font-mono font-medium text-muted-foreground shadow-xs mb-2">
+            <LayoutDashboard size={12} className="text-primary" />
+            <span>{t("projects.badge")}</span>
+          </div>
 
-          return (
-            <StickyCard_001
-              key={project.id}
-              i={i}
-              total={total}
-              project={project}
-              progress={scrollYProgress}
-              range={range}
-              targetScale={targetScale}
-              isRTL={isRTL}
-              onInspect={() => setSelectedModalProject(project)}
-            />
-          )
-        })}
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
+            {t("projects.title")}
+          </h2>
+
+          {/* Snappy Filter Switcher */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl glass-pill border border-border mt-3 max-w-fit mx-auto">
+            <button
+              onClick={() => setFilter("all")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                filter === "all"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              {isRTL ? "جميع المشاريع" : "All Projects"} ({detailedProjects.length})
+            </button>
+            <button
+              onClick={() => setFilter("gov")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                filter === "gov"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span>{isRTL ? "مشروع حكومي رسمي (مقر الهيئة)" : "Official Govt (In-Office)"}</span>
+            </button>
+            <button
+              onClick={() => setFilter("live")}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                filter === "live"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+            >
+              {isRTL ? "تطبيقات حية" : "Live Applications"}
+            </button>
+          </div>
+        </div>
+
+        {/* Center Cards Stage Frame (Holds all one-by-one cards stacked in place) */}
+        <div
+          ref={cardsContainerRef}
+          className="relative w-full max-w-5xl h-[490px] sm:h-[530px] md:h-[550px] mx-auto my-auto z-10 flex items-center justify-center"
+        >
+          {filteredProjects.map((project, idx) => {
+            const isSBA = project.isOfficialWork
+            const projectNum = String(idx + 1).padStart(2, "0")
+
+            return (
+              <div
+                key={project.id}
+                ref={(el) => {
+                  cardRefs.current[idx] = el
+                }}
+                className="absolute inset-0 w-full h-full rounded-3xl border border-border/80 dark:border-white/10 bg-card/95 dark:bg-[#0c0d14]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-colors hover:border-primary/40 group will-change-transform flex flex-col justify-between"
+              >
+                {/* Top Accent Strip */}
+                <div
+                  className={`h-1 w-full shrink-0 ${
+                    isSBA
+                      ? "bg-gradient-to-r from-emerald-500 via-primary to-emerald-400"
+                      : "bg-gradient-to-r from-primary via-emerald-400 to-primary"
+                  }`}
+                />
+
+                {/* Card Content: 2-Column Split Layout */}
+                <div className="p-5 sm:p-7 lg:p-9 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center h-full overflow-y-auto lg:overflow-hidden">
+                  
+                  {/* Left Column: Narrative, Metadata & Actions (7 cols) */}
+                  <div className="lg:col-span-7 flex flex-col justify-between space-y-3 sm:space-y-4">
+                    
+                    {/* Header Row: Index & Badges */}
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono font-bold text-muted-foreground/80 tracking-wider">
+                          {`// ${projectNum} OF 0${filteredProjects.length}`}
+                        </span>
+
+                        {/* macOS subtle dots */}
+                        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/60 dark:bg-white/5 border border-border/50">
+                          <span className="w-2 h-2 rounded-full bg-red-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
+                        </div>
+                      </div>
+
+                      {/* Status Badge: ONLY project 1 displays the official SBA in-office badge */}
+                      {isSBA ? (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                          </span>
+                          <span>{isRTL ? "مشروع حكومي رسمي بمقر الهيئة" : "Official In-Office Project"}</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono font-bold">
+                          <span>{isRTL ? project.badgeAr : project.badgeEn}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Title & Tagline */}
+                    <div>
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                        {isRTL ? project.titleAr : project.titleEn}
+                      </h3>
+                      <p className="mt-1 text-xs sm:text-sm font-mono text-primary font-medium">
+                        {isRTL ? project.taglineAr : project.taglineEn}
+                      </p>
+                    </div>
+
+                    {/* Official Government Callout (ONLY on Project 1 / SBA) */}
+                    {isSBA && (
+                      <div className="p-3 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/5 border border-emerald-500/25 text-xs font-mono text-emerald-700 dark:text-emerald-300 flex items-start gap-2.5">
+                        <Building2 size={15} className="text-emerald-500 shrink-0 mt-0.5" />
+                        <div className="space-y-0.5">
+                          <span className="font-bold block">
+                            {isRTL
+                              ? "مقر العمل: هيئة الإذاعة والتلفزيون — الرياض، المملكة العربية السعودية"
+                              : "Workplace: Saudi Broadcasting Authority (SBA) — Riyadh HQ"}
+                          </span>
+                          <p className="text-[11px] font-light text-muted-foreground leading-relaxed">
+                            {isRTL ? project.workModeNoteAr : project.workModeNoteEn}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Brief Overview */}
+                    <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed line-clamp-2 sm:line-clamp-3">
+                      {isRTL ? project.descAr : project.descEn}
+                    </p>
+
+                    {/* Role Callout */}
+                    <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60 text-xs font-mono text-foreground/90">
+                      <span className="text-primary font-bold mr-1.5 inline-block">
+                        {isRTL ? "الدور والمسؤوليات:" : "Engineering Role:"}
+                      </span>
+                      <span className="font-light">{isRTL ? project.roleAr : project.roleEn}</span>
+                    </div>
+
+                    {/* Tech Stack Chips */}
+                    <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                      {project.technologies.slice(0, 5).map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-0.5 rounded-lg bg-muted/60 dark:bg-white/5 border border-border/80 text-[10px] sm:text-[11px] font-mono text-foreground/80 hover:text-foreground transition-colors"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                      {isSBA ? (
+                        <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold border border-emerald-500/30">
+                          <CheckCircle2 size={13} className="text-emerald-400" />
+                          <span>{isRTL ? "نظام حكومي نشط بالهيئة" : "Active In-Office System"}</span>
+                        </span>
+                      ) : project.live ? (
+                        <a
+                          href={project.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-mono font-bold hover:bg-primary/90 transition-all shadow-sm"
+                        >
+                          <span>{isRTL ? "زيارة الموقع الحي" : "Launch Live"}</span>
+                          <ArrowUpRight size={13} />
+                        </a>
+                      ) : null}
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedModalProject(project)}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-xs font-mono font-semibold transition-all border border-border cursor-pointer active:scale-98"
+                      >
+                        <Eye size={13} />
+                        <span>{isRTL ? "تفاصيل المعمارية" : "Inspect Architecture"}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Visual Frame Showcase (5 cols) */}
+                  <div
+                    onClick={() => setSelectedModalProject(project)}
+                    className="lg:col-span-5 relative group/img cursor-pointer"
+                  >
+                    <div className="relative rounded-2xl overflow-hidden border border-border/80 dark:border-white/10 bg-muted/20 shadow-xl transition-all duration-300 group-hover/img:scale-[1.01] group-hover/img:shadow-2xl">
+                      
+                      {/* Browser Address Bar Chrome */}
+                      <div className="px-3.5 py-2 bg-muted/80 dark:bg-[#14161f] border-b border-border/60 flex items-center justify-between text-[11px] font-mono text-muted-foreground select-none">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-red-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
+                        </div>
+                        <span className="text-[10px] truncate max-w-[150px] opacity-75">
+                          {project.live ? new URL(project.live).hostname : isSBA ? "sba.gov.sa (internal)" : "pixel.internal"}
+                        </span>
+                        <ExternalLink size={11} className="opacity-50" />
+                      </div>
+
+                      {/* Image Preview with Lazy & Async Decoding */}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/10">
+                        <img
+                          src={project.image}
+                          alt={isRTL ? project.titleAr : project.titleEn}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover/img:scale-105"
+                        />
+                        
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end p-3">
+                          <span className="text-white text-[11px] font-mono font-medium flex items-center gap-1.5">
+                            <Eye size={12} />
+                            <span>{isRTL ? "انقر للمعاينة الموسعة" : "Click to view full preview"}</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Bottom Hint */}
+        <div className="w-full text-center shrink-0 z-20 pb-2">
+          <span className="text-[10px] font-mono text-muted-foreground/60 tracking-wider">
+            {isRTL ? "مرر بعجلة الفأرة للتنقل بين بطاقات المشاريع" : "SCROLL TO CYCLE PROJECT CARDS"}
+          </span>
+        </div>
       </div>
 
       {/* Lightweight & Accessible In-Depth Details Modal */}
@@ -690,4 +700,3 @@ export function Projects() {
     </section>
   )
 }
-export { StickyCard_001 }

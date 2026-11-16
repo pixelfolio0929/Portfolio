@@ -257,26 +257,29 @@ export function Projects() {
         gsap.set(cards[i], { yPercent: 100, scale: 1, filter: "brightness(1)", zIndex: i + 1, autoAlpha: 1 })
       }
 
-      // Smooth timeline pinned to sectionRef with comfortable scroll distance (140vh per card)
+      // Ultra-smooth, slow timeline pinned to sectionRef with generous 220vh per card
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: `+=${Math.max(1, total - 1) * 140}vh`, // Generous scroll distance for calm, non-rushed pacing
+          end: `+=${Math.max(1, total - 1) * 220}vh`, // Generous 220vh per card: very slow, deliberate scroll pacing
           pin: true,
-          scrub: 1.2, // Silky smooth deceleration
+          scrub: 1.8, // Velvety 1.8s scrub inertia for butter-smooth deceleration
           anticipatePin: 1,
           onUpdate: (self) => {
             const idx = Math.min(
               total - 1,
-              Math.floor(self.progress * (total - 1) + 0.4)
+              Math.round(self.progress * (total - 1))
             )
             setActiveIndex(idx)
           },
         },
       })
 
-      // One-by-one animation with smooth easing & resting holds between cards
+      // Initial rest hold so Card 0 stays comfortably in place when first pinned
+      tl.to({}, { duration: 0.8 })
+
+      // One-by-one calm transitions with gentle easing and resting holds
       for (let i = 0; i < total - 1; i++) {
         const currentCard = cards[i]
         const nextCard = cards[i + 1]
@@ -284,11 +287,11 @@ export function Projects() {
         tl.to(
           currentCard,
           {
-            scale: 0.91,
-            yPercent: -4,
-            filter: "brightness(0.6)",
-            duration: 1.4,
-            ease: "power2.inOut",
+            scale: 0.92,
+            yPercent: -3,
+            filter: "brightness(0.65)",
+            duration: 2.0,
+            ease: "power3.inOut",
           },
           `step_${i}`
         ).to(
@@ -297,13 +300,13 @@ export function Projects() {
             yPercent: 0,
             scale: 1,
             filter: "brightness(1)",
-            duration: 1.4,
-            ease: "power2.inOut",
+            duration: 2.0,
+            ease: "power3.inOut",
           },
           `step_${i}`
         )
-        // Resting hold so each card can be read and appreciated comfortably
-        .to({}, { duration: 0.6 })
+        // Generous resting hold so each project can be read and appreciated at a leisurely pace
+        .to({}, { duration: 1.2 })
       }
 
       const ro = new ResizeObserver(() => ScrollTrigger.refresh())

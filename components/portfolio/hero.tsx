@@ -3,19 +3,19 @@
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState, useRef } from "react"
-import { 
-  Sparkles, 
-  ArrowUpRight, 
-  Code2, 
-  MapPin, 
-  FileText, 
-  Layers, 
-  Component, 
-  Cpu, 
-  ArrowRight, 
+import {
+  Sparkles,
+  ArrowUpRight,
+  Code2,
+  MapPin,
+  FileText,
+  Layers,
+  Component,
+  Cpu,
+  ArrowRight,
   ArrowLeft,
-  Layout, 
-  CheckCircle2, 
+  Layout,
+  CheckCircle2,
   ShieldCheck,
   Send
 } from "lucide-react"
@@ -273,10 +273,10 @@ export function Hero() {
           </a>
 
           {/* 2. Download Resume */}
-          <a 
-            href="/Mohammad_Sinan_UI_Engineer_Resume.pdf" 
-            download="Mohammad_Sinan_UI_Engineer_Resume.pdf" 
-            target="_blank" 
+          <a
+            href="/Mohammad_Sinan_Resume.pdf"
+            download="Mohammad_Sinan_Resume.pdf"
+            target="_blank"
             rel="noreferrer"
             className="w-full sm:w-auto"
           >

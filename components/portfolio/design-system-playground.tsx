@@ -31,6 +31,7 @@ import {
   Info
 } from "lucide-react"
 import { useLanguage } from "./language-context"
+import { ButtonSystemShowcase } from "./button-system-showcase"
 
 type Category = "buttons" | "cards" | "inputs" | "chips" | "tabs" | "alerts" | "colors" | "typography"
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive"
@@ -321,7 +322,11 @@ export function DesignSystemPlayground() {
             isPreviewRTL ? "font-arabic" : "font-sans"
           }`}
         >
-          {activeSubTab === "code" ? (
+          {activeCategory === "buttons" ? (
+            <div className="w-full flex justify-center py-2">
+              <ButtonSystemShowcase isRTL={isPreviewRTL} activeSubTab={activeSubTab} />
+            </div>
+          ) : activeSubTab === "code" ? (
             <div className="w-full max-w-md text-center p-8 rounded-2xl bg-card/60 border border-border/80 space-y-3">
               <div className="w-12 h-12 rounded-2xl bg-[#074D31]/15 text-[#10B981] flex items-center justify-center mx-auto border border-[#074D31]/30">
                 <Code2 size={24} />
@@ -361,128 +366,6 @@ export function DesignSystemPlayground() {
             </div>
           ) : (
             <AnimatePresence mode="wait">
-              
-              {/* 1. BUTTONS & STATES SHOWCASE */}
-              {activeCategory === "buttons" && (
-                <motion.div
-                  key="buttons"
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  className="w-full max-w-3xl space-y-6 text-center"
-                >
-                  {/* Top DGA Style Quick Button Bar (As shown in Reference Image 1) */}
-                  <div className="p-4 rounded-2xl bg-card/60 border border-border/70 flex flex-wrap items-center justify-center gap-2.5 shadow-sm">
-                    <button className={getButtonClasses("primary", "default", "md")}>Primary</button>
-                    <button className={getButtonClasses("secondary", "default", "md")}>Secondary</button>
-                    <button className={getButtonClasses("outline", "default", "md")}>Outline</button>
-                    <button className={getButtonClasses("ghost", "default", "md")}>Ghost</button>
-                    <button className={getButtonClasses("destructive", "default", "md")}>Danger</button>
-                    <button className={getButtonClasses("primary", "default", "sm")}>Small</button>
-                    <button className={getButtonClasses("primary", "default", "lg")}>Large</button>
-                    <button className={getButtonClasses("primary", "disabled", "md")} disabled>Disabled</button>
-                    <button 
-                      onClick={handleCooldownClick}
-                      className={getButtonClasses("primary", cooldown ? "loading" : "default", "md")}
-                    >
-                      {cooldown ? <Loader2 size={13} className="animate-spin" /> : null}
-                      <span>{cooldown ? "Submitting..." : "Submit (2s cooldown)"}</span>
-                    </button>
-                  </div>
-
-                  {/* Interactive State & Variant Controls */}
-                  <div className="space-y-2.5 p-4 rounded-2xl bg-card/40 border border-border/60 text-xs text-start">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-                      <span className="text-[11px] font-mono text-muted-foreground uppercase">
-                        {isPreviewRTL ? "الحالة (State):" : "Active State:"}
-                      </span>
-                      <div className="flex flex-wrap gap-1 justify-center">
-                        {(["default", "hover", "focus", "active", "loading", "disabled"] as const).map((st) => (
-                          <button
-                            key={st}
-                            onClick={() => setBtnState(st)}
-                            className={`px-2.5 py-1 rounded-lg text-[11px] font-mono capitalize transition-all cursor-pointer ${
-                              btnState === st ? "bg-[#074D31] text-white font-bold shadow-xs" : "bg-muted/60 text-muted-foreground hover:text-foreground"
-                            }`}
-                          >
-                            {st}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t border-border/50">
-                      <span className="text-[11px] font-mono text-muted-foreground uppercase">
-                        {isPreviewRTL ? "المتغير (Variant):" : "Button Variant:"}
-                      </span>
-                      <div className="flex flex-wrap gap-1 justify-center">
-                        {(["primary", "secondary", "outline", "ghost", "destructive"] as const).map((v) => (
-                          <button
-                            key={v}
-                            onClick={() => setBtnVariant(v)}
-                            className={`px-2.5 py-1 rounded-lg text-[11px] font-mono capitalize transition-all cursor-pointer ${
-                              btnVariant === v ? "bg-foreground text-background font-bold" : "bg-muted/60 text-muted-foreground hover:text-foreground"
-                            }`}
-                          >
-                            {v}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-2 border-t border-border/50">
-                      <span className="text-[11px] font-mono text-muted-foreground uppercase">
-                        {isPreviewRTL ? "الحجم (Size):" : "Size Token:"}
-                      </span>
-                      <div className="flex flex-wrap gap-1 justify-center">
-                        {(["sm", "md", "lg"] as const).map((sz) => (
-                          <button
-                            key={sz}
-                            onClick={() => setBtnSize(sz)}
-                            className={`px-2.5 py-1 rounded-lg text-[11px] font-mono uppercase transition-all cursor-pointer ${
-                              btnSize === sz ? "bg-[#074D31] text-white font-bold" : "bg-muted/60 text-muted-foreground hover:text-foreground"
-                            }`}
-                          >
-                            {sz}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Live Playground Canvas */}
-                  <div className="p-6 rounded-2xl bg-background/80 border border-border/70 flex flex-col items-center justify-center gap-3">
-                    <button
-                      className={getButtonClasses(btnVariant, btnState, btnSize)}
-                      disabled={btnState === "disabled"}
-                    >
-                      {btnState === "loading" ? (
-                        <>
-                          <Loader2 size={14} className="animate-spin" />
-                          <span>{isPreviewRTL ? "جاري المعالجة..." : "Processing Request..."}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles size={14} />
-                          <span>
-                            {btnState === "disabled"
-                              ? (isPreviewRTL ? "زر معطل" : "Disabled Button")
-                              : (isPreviewRTL ? "زر الإجراء الحكومي" : "DGA Action Button")}
-                          </span>
-                          {isPreviewRTL ? <ArrowLeft size={13} /> : <ArrowRight size={13} />}
-                        </>
-                      )}
-                    </button>
-
-                    {btnState === "focus" && (
-                      <p className="text-[11px] font-mono text-[#10B981]">
-                        {isPreviewRTL ? "• حلقة التركيز المرئية نشطة (2px Ring) للتوافق مع معايير الوصول (WCAG 2.1 AA)" : "• Visible 2px outline focus ring active for WCAG 2.1 AA accessibility"}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-
               {/* 2. CARDS & SURFACES SHOWCASE (Matches DGA Reference Image 3) */}
               {activeCategory === "cards" && (
                 <motion.div

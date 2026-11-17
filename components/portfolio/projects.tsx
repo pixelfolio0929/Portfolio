@@ -240,7 +240,7 @@ export function Projects() {
     return p.category === filter
   })
 
-  // GSAP ScrollTrigger Pinned Timeline: Smooth one-by-one with intentional scroll distance
+  // GSAP ScrollTrigger Pinned Timeline: Ultra-Smooth & Calm One-by-One Transitions
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger)
@@ -257,14 +257,14 @@ export function Projects() {
         gsap.set(cards[i], { yPercent: 100, scale: 1, filter: "brightness(1)", zIndex: i + 1, autoAlpha: 1 })
       }
 
-      // Ultra-smooth, very slow timeline pinned to sectionRef with 350vh per card
+      // Ultra-smooth, calm timeline pinned to sectionRef
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: `+=${Math.max(1, total - 1) * 350}vh`, // 350vh per card: very slow, calm, and deliberate scroll pacing
+          end: `+=${Math.max(1, total - 1) * 260}vh`, // Generous 260vh per card: slow, relaxed, intentional pacing
           pin: true,
-          scrub: 2.5, // Velvety 2.5s scrub inertia for ultra-smooth cinematic deceleration
+          scrub: 2.0, // Silky 2.0s scrub inertia for smooth cinematic deceleration
           anticipatePin: 1,
           fastScrollEnd: true,
           preventOverlaps: true,
@@ -278,8 +278,8 @@ export function Projects() {
         },
       })
 
-      // Initial rest hold so Card 0 stays firmly parked when first pinned
-      tl.to({}, { duration: 1.5 })
+      // Initial rest hold so Card 0 stays firmly parked when first entering
+      tl.to({}, { duration: 1.2 })
 
       // One-by-one calm transitions with gentle sine easing and generous resting holds
       for (let i = 0; i < total - 1; i++) {
@@ -290,9 +290,9 @@ export function Projects() {
           currentCard,
           {
             scale: 0.93,
-            yPercent: -3,
+            yPercent: -2.5,
             filter: "brightness(0.65)",
-            duration: 3.0,
+            duration: 2.8,
             ease: "sine.inOut",
           },
           `step_${i}`
@@ -302,13 +302,13 @@ export function Projects() {
             yPercent: 0,
             scale: 1,
             filter: "brightness(1)",
-            duration: 3.0,
+            duration: 2.8,
             ease: "sine.inOut",
           },
           `step_${i}`
         )
-        // Generous resting hold so each project stays centered and comfortable to explore
-        .to({}, { duration: 2.0 })
+        // Generous resting hold so each card can be read and appreciated comfortably
+        .to({}, { duration: 1.5 })
       }
 
       const ro = new ResizeObserver(() => ScrollTrigger.refresh())
@@ -331,59 +331,60 @@ export function Projects() {
       {/* GSAP Pinned Stage */}
       <div
         ref={sectionRef}
-        className="relative w-full h-screen flex flex-col justify-between overflow-hidden pt-6 pb-6 px-4 sm:px-6"
+        className="relative w-full h-screen flex flex-col justify-between overflow-hidden py-4 sm:py-5 px-4 sm:px-6 lg:px-8"
       >
-        {/* Compact Header & Filter Bar */}
-        <div className="w-full max-w-5xl mx-auto text-center shrink-0 z-20 pt-2 sm:pt-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/80 glass-pill px-3 py-1 text-[11px] font-mono font-medium text-muted-foreground shadow-xs mb-2">
-            <LayoutDashboard size={12} className="text-primary" />
-            <span>{t("projects.badge")}</span>
+        {/* Sleek Integrated Studio Header HUD */}
+        <div className="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0 z-20 pt-1 sm:pt-2 pb-2.5 border-b border-border/40">
+          <div className="flex items-center gap-2.5">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-mono text-primary font-bold shadow-xs">
+              <Sparkles size={11} className="text-primary" />
+              <span>{t("projects.badge")}</span>
+            </div>
+            <h2 className="text-base sm:text-lg md:text-xl font-bold font-mono text-foreground tracking-tight">
+              {t("projects.title")}
+            </h2>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
-            {t("projects.title")}
-          </h2>
-
-          {/* Snappy Filter Switcher */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl glass-pill border border-border mt-3 max-w-fit mx-auto">
+          {/* Segmented Filter Pills */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-muted/60 dark:bg-white/5 border border-border/60 backdrop-blur-md">
             <button
               onClick={() => setFilter("all")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                 filter === "all"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {isRTL ? "جميع المشاريع" : "All Projects"} ({detailedProjects.length})
+              {isRTL ? "الكل" : "All"} ({detailedProjects.length})
             </button>
             <button
               onClick={() => setFilter("gov")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 filter === "gov"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-emerald-500 text-white shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              <span>{isRTL ? "مشروع حكومي رسمي (مقر الهيئة)" : "Official Govt (In-Office)"}</span>
+              <span>{isRTL ? "مشروع حكومي رسمي" : "Govt (In-Office)"}</span>
             </button>
             <button
               onClick={() => setFilter("live")}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                 filter === "live"
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {isRTL ? "تطبيقات حية" : "Live Applications"}
+              {isRTL ? "مباشر" : "Live Apps"}
             </button>
           </div>
         </div>
 
-        {/* Center Cards Stage Frame (Holds all one-by-one cards stacked in place) */}
+        {/* Center Cards Stage Frame (Engineered Viewport Fit: No Inner Scrollbar) */}
         <div
           ref={cardsContainerRef}
-          className="relative w-full max-w-5xl h-[490px] sm:h-[530px] md:h-[550px] mx-auto my-auto z-10 flex items-center justify-center"
+          className="relative w-full max-w-5xl h-[450px] sm:h-[480px] md:h-[500px] lg:h-[520px] mx-auto my-auto z-10 flex items-center justify-center"
         >
           {filteredProjects.map((project, idx) => {
             const isSBA = project.isOfficialWork
@@ -395,7 +396,7 @@ export function Projects() {
                 ref={(el) => {
                   cardRefs.current[idx] = el
                 }}
-                className="absolute inset-0 w-full h-full rounded-3xl border border-border/80 dark:border-white/10 bg-card/95 dark:bg-[#0c0d14]/95 backdrop-blur-xl shadow-2xl overflow-hidden transition-colors hover:border-primary/40 group will-change-transform flex flex-col justify-between"
+                className="absolute inset-0 w-full h-full rounded-3xl border border-white/10 dark:border-white/10 bg-[#0d0f17]/95 backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] overflow-hidden transition-colors hover:border-primary/40 group will-change-transform flex flex-col justify-between ring-1 ring-white/5"
               >
                 {/* Top Accent Strip */}
                 <div
@@ -406,11 +407,11 @@ export function Projects() {
                   }`}
                 />
 
-                {/* Card Content: 2-Column Split Layout */}
-                <div className="p-5 sm:p-7 lg:p-9 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center h-full overflow-y-auto lg:overflow-hidden">
+                {/* Card Content: 2-Column Balanced UI Grid */}
+                <div className="p-5 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center h-full">
                   
                   {/* Left Column: Narrative, Metadata & Actions (7 cols) */}
-                  <div className="lg:col-span-7 flex flex-col justify-between space-y-3 sm:space-y-4">
+                  <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-2.5 sm:space-y-3">
                     
                     {/* Header Row: Index & Badges */}
                     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -420,16 +421,16 @@ export function Projects() {
                         </span>
 
                         {/* macOS subtle dots */}
-                        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/60 dark:bg-white/5 border border-border/50">
-                          <span className="w-2 h-2 rounded-full bg-red-500/70" />
-                          <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
-                          <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
+                        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/5 border border-white/10">
+                          <span className="w-2 h-2 rounded-full bg-red-500/80" />
+                          <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
                         </div>
                       </div>
 
                       {/* Status Badge: ONLY project 1 displays the official SBA in-office badge */}
                       {isSBA ? (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold shadow-xs">
                           <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -445,25 +446,25 @@ export function Projects() {
 
                     {/* Title & Tagline */}
                     <div>
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-foreground tracking-tight group-hover:text-primary transition-colors leading-snug">
                         {isRTL ? project.titleAr : project.titleEn}
                       </h3>
-                      <p className="mt-1 text-xs sm:text-sm font-mono text-primary font-medium">
+                      <p className="mt-0.5 text-xs sm:text-sm font-mono text-primary font-medium truncate">
                         {isRTL ? project.taglineAr : project.taglineEn}
                       </p>
                     </div>
 
                     {/* Official Government Callout (ONLY on Project 1 / SBA) */}
                     {isSBA && (
-                      <div className="p-3 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/5 border border-emerald-500/25 text-xs font-mono text-emerald-700 dark:text-emerald-300 flex items-start gap-2.5">
-                        <Building2 size={15} className="text-emerald-500 shrink-0 mt-0.5" />
+                      <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-xs font-mono text-emerald-300 flex items-start gap-2.5">
+                        <Building2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
                         <div className="space-y-0.5">
-                          <span className="font-bold block">
+                          <span className="font-bold block text-foreground">
                             {isRTL
                               ? "مقر العمل: هيئة الإذاعة والتلفزيون — الرياض، المملكة العربية السعودية"
                               : "Workplace: Saudi Broadcasting Authority (SBA) — Riyadh HQ"}
                           </span>
-                          <p className="text-[11px] font-light text-muted-foreground leading-relaxed">
+                          <p className="text-[11px] font-light text-muted-foreground leading-tight line-clamp-1">
                             {isRTL ? project.workModeNoteAr : project.workModeNoteEn}
                           </p>
                         </div>
@@ -471,24 +472,24 @@ export function Projects() {
                     )}
 
                     {/* Brief Overview */}
-                    <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed line-clamp-2 sm:line-clamp-3">
+                    <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed line-clamp-2">
                       {isRTL ? project.descAr : project.descEn}
                     </p>
 
-                    {/* Role Callout */}
-                    <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60 text-xs font-mono text-foreground/90">
+                    {/* Engineering Role Callout */}
+                    <div className="px-3 py-2 rounded-xl bg-muted/40 border border-border/60 text-xs font-mono text-foreground/90">
                       <span className="text-primary font-bold mr-1.5 inline-block">
                         {isRTL ? "الدور والمسؤوليات:" : "Engineering Role:"}
                       </span>
-                      <span className="font-light">{isRTL ? project.roleAr : project.roleEn}</span>
+                      <span className="font-light truncate">{isRTL ? project.roleAr : project.roleEn}</span>
                     </div>
 
                     {/* Tech Stack Chips */}
-                    <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                    <div className="flex flex-wrap items-center gap-1.5">
                       {project.technologies.slice(0, 5).map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-0.5 rounded-lg bg-muted/60 dark:bg-white/5 border border-border/80 text-[10px] sm:text-[11px] font-mono text-foreground/80 hover:text-foreground transition-colors"
+                          className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[10px] sm:text-[11px] font-mono text-foreground/80 hover:text-foreground transition-colors"
                         >
                           {tech}
                         </span>
@@ -517,7 +518,7 @@ export function Projects() {
                       <button
                         type="button"
                         onClick={() => setSelectedModalProject(project)}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-xs font-mono font-semibold transition-all border border-border cursor-pointer active:scale-98"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-muted/80 hover:bg-muted text-foreground text-xs font-mono font-semibold transition-all border border-border cursor-pointer active:scale-98"
                       >
                         <Eye size={13} />
                         <span>{isRTL ? "تفاصيل المعمارية" : "Inspect Architecture"}</span>
@@ -528,25 +529,25 @@ export function Projects() {
                   {/* Right Column: Visual Frame Showcase (5 cols) */}
                   <div
                     onClick={() => setSelectedModalProject(project)}
-                    className="lg:col-span-5 relative group/img cursor-pointer"
+                    className="lg:col-span-5 relative group/img cursor-pointer h-full flex flex-col justify-center"
                   >
-                    <div className="relative rounded-2xl overflow-hidden border border-border/80 dark:border-white/10 bg-muted/20 shadow-xl transition-all duration-300 group-hover/img:scale-[1.01] group-hover/img:shadow-2xl">
+                    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#12141f] shadow-2xl transition-all duration-300 group-hover/img:scale-[1.01] group-hover/img:border-primary/40 ring-1 ring-white/5">
                       
                       {/* Browser Address Bar Chrome */}
-                      <div className="px-3.5 py-2 bg-muted/80 dark:bg-[#14161f] border-b border-border/60 flex items-center justify-between text-[11px] font-mono text-muted-foreground select-none">
+                      <div className="px-3 py-1.5 bg-[#161824] border-b border-white/10 flex items-center justify-between text-[11px] font-mono text-muted-foreground select-none">
                         <div className="flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-red-500/70" />
-                          <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
-                          <span className="w-2 h-2 rounded-full bg-emerald-500/70" />
+                          <span className="w-2 h-2 rounded-full bg-red-500/80" />
+                          <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
                         </div>
-                        <span className="text-[10px] truncate max-w-[150px] opacity-75">
+                        <span className="text-[10px] truncate max-w-[150px] opacity-75 font-mono">
                           {project.live ? new URL(project.live).hostname : isSBA ? "sba.gov.sa (internal)" : "pixel.internal"}
                         </span>
                         <ExternalLink size={11} className="opacity-50" />
                       </div>
 
                       {/* Image Preview with Lazy & Async Decoding */}
-                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/10">
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/20">
                         <img
                           src={project.image}
                           alt={isRTL ? project.titleAr : project.titleEn}
@@ -556,7 +557,7 @@ export function Projects() {
                         />
                         
                         {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end p-3">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity flex items-end p-3">
                           <span className="text-white text-[11px] font-mono font-medium flex items-center gap-1.5">
                             <Eye size={12} />
                             <span>{isRTL ? "انقر للمعاينة الموسعة" : "Click to view full preview"}</span>
@@ -573,8 +574,8 @@ export function Projects() {
         </div>
 
         {/* Bottom Progress Bar & Indicator */}
-        <div className="w-full flex flex-col items-center justify-center gap-2 shrink-0 z-20 pb-2">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 dark:bg-black/40 border border-border/60 backdrop-blur-md">
+        <div className="w-full flex flex-col items-center justify-center gap-1.5 shrink-0 z-20 pb-1">
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-card/80 dark:bg-black/40 border border-border/60 backdrop-blur-md">
             {filteredProjects.map((_, i) => (
               <div
                 key={i}
@@ -589,7 +590,7 @@ export function Projects() {
           <span className="text-[10px] font-mono text-muted-foreground/60 tracking-wider">
             {isRTL
               ? `المشروع ${String(activeIndex + 1).padStart(2, "0")} من ${String(filteredProjects.length).padStart(2, "0")} • مرر بسلاسة للتنقل`
-              : `PROJECT ${String(activeIndex + 1).padStart(2, "0")} OF ${String(filteredProjects.length).padStart(2, "0")} · SCROLL SMOOTHLY`}
+              : `PROJECT ${String(activeIndex + 1).padStart(2, "0")} OF ${String(filteredProjects.length).padStart(2, "0")} · SCROLL SLOWLY`}
           </span>
         </div>
       </div>

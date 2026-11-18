@@ -75,10 +75,8 @@ const skillCategories: SkillCategory[] = [
     borderColor: "hover:border-purple-500/40",
     skills: [
       { name: "ASP.NET (Basic / UI)", icon: "Server" },
-      { name: "Python", icon: "Terminal" },
       { name: "SQL", icon: "Database" },
       { name: "MySQL", icon: "HardDrive" },
-      { name: "REST APIs", icon: "Network" },
       { name: "Git & GitHub", icon: "GitBranch" },
     ],
   },

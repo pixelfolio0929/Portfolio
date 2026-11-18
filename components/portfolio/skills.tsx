@@ -116,10 +116,10 @@ const skillCategories: SkillCategory[] = [
     accentColor: "text-purple-500",
     skills: [
       { name: "ASP.NET (Basic / UI)", icon: Server, tag: "Enterprise UI" },
-      { name: "Python", icon: Terminal, tag: "Scripting" },
+
       { name: "SQL & Relational DBs", icon: Database, tag: "Queries" },
       { name: "MySQL", icon: HardDrive, tag: "Storage" },
-      { name: "REST APIs", icon: Network, tag: "Integration" },
+
       { name: "Git & GitHub", icon: GitBranch, tag: "Version Control" },
     ],
   },
@@ -199,9 +199,8 @@ function SkillCard3D({ category, index }: { category: SkillCategory; index: numb
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className={`group relative flex flex-col justify-between h-full rounded-3xl border border-border/80 bg-card/85 dark:bg-card/45 backdrop-blur-xl p-6 sm:p-8 shadow-xl transition-all duration-300 overflow-hidden ${category.borderColor} ${
-          category.isLearning ? "bg-amber-500/[0.02] border-amber-500/30" : ""
-        }`}
+        className={`group relative flex flex-col justify-between h-full rounded-3xl border border-border/80 bg-card/85 dark:bg-card/45 backdrop-blur-xl p-6 sm:p-8 shadow-xl transition-all duration-300 overflow-hidden ${category.borderColor} ${category.isLearning ? "bg-amber-500/[0.02] border-amber-500/30" : ""
+          }`}
       >
         {/* Ambient Top Glow reacting to 3D perspective */}
         <div
@@ -216,11 +215,10 @@ function SkillCard3D({ category, index }: { category: SkillCategory; index: numb
               {`${category.number} // ${category.id.toUpperCase()}`}
             </span>
             <span
-              className={`text-[10px] sm:text-[11px] font-mono px-3 py-1 rounded-full font-bold flex items-center gap-1.5 ${
-                category.isLearning
+              className={`text-[10px] sm:text-[11px] font-mono px-3 py-1 rounded-full font-bold flex items-center gap-1.5 ${category.isLearning
                   ? "bg-amber-500/10 text-amber-500 border border-amber-500/30"
                   : "bg-primary/10 text-primary border border-primary/20"
-              }`}
+                }`}
             >
               {category.isLearning ? <BookOpen size={12} /> : <Sparkles size={12} />}
               <span>{badge}</span>
@@ -295,9 +293,9 @@ export function Skills() {
       {/* Subtle Studio Architectural Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(27,131,84,0.06),transparent_70%)] pointer-events-none" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:48px_48px] opacity-15 pointer-events-none" />
-      
+
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        
+
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <motion.div

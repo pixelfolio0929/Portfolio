@@ -73,8 +73,7 @@ const skillCategories: SkillCategory[] = [
     description: "API integration, databases, and development workflow tools",
     skills: [
       { name: "Firebase", icon: "Database" },
-      { name: "REST APIs", icon: "Network" },
-      { name: "Python (Basics)", icon: "Terminal" },
+     
       { name: "MySQL (Basics)", icon: "Database" },
       { name: "Git & GitHub", icon: "GitBranch" },
       { name: "VS Code", icon: "Code2" },

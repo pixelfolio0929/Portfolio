@@ -70,10 +70,10 @@ const skillCategories: SkillCategory[] = [
     descAr: "ربط واجهات الأنظمة المؤسسية، ونماذج البيانات، وإدارة الإصدارات البرمجية.",
     skills: [
       { name: "ASP.NET (Basic / UI)", icon: "Server" },
-      { name: "Python", icon: "Terminal" },
+ 
       { name: "SQL", icon: "Database" },
       { name: "MySQL", icon: "HardDrive" },
-      { name: "REST APIs", icon: "Network" },
+    
       { name: "Git & GitHub", icon: "GitBranch" },
     ],
     color: "text-purple-500",

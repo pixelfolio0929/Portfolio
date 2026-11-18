@@ -79,20 +79,20 @@ export function CinematicIntro({ onComplete }: { onComplete?: () => void }) {
   useEffect(() => {
     if (!isVisible || prefersReducedMotion) return
 
-    // T = 2.4s: Text fades in
+    // T = 2.0s: "UI Engineer" slowly animates in
     const textTimer = setTimeout(() => {
       setTextVisible(true)
-    }, 2400)
+    }, 2000)
 
-    // T = 5.6s: Begin transition to hold
+    // T = 5.6s: Complete animation hold state
     const holdTimer = setTimeout(() => {
       setPhase("hold")
-    }, 4500)
+    }, 5600)
 
-    // T = 6.4s: Auto transition into homepage
+    // T = 6.6s: Smooth transition into homepage
     const exitTimer = setTimeout(() => {
       handleExit()
-    }, 6200)
+    }, 6600)
 
     return () => {
       clearTimeout(textTimer)
@@ -759,21 +759,13 @@ export function CinematicIntro({ onComplete }: { onComplete?: () => void }) {
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-between overflow-hidden bg-[#020605] select-none pointer-events-auto"
         >
           {/* Top Bar: Minimal Skip Option */}
-          <div className="w-full max-w-7xl px-6 pt-6 flex items-center justify-between z-20">
-            {/* Subtle Brand Tag */}
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-mono text-[11px] tracking-widest uppercase text-emerald-400/80">
-                System Interface
-              </span>
-            </div>
-
+          <div className="w-full max-w-7xl px-6 pt-6 flex items-center justify-end z-20">
             {/* Skip Intro Button */}
             <button
               onClick={handleExit}
               className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/25 hover:border-emerald-400/60 backdrop-blur-md transition-all duration-200 cursor-pointer text-xs font-mono text-emerald-300 hover:text-white"
             >
-              <span>Skip Intro</span>
+              <span>Skip</span>
               <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-mono bg-black/40 border border-emerald-500/30 rounded text-emerald-400/70 group-hover:text-emerald-300">
                 ESC
               </kbd>
@@ -798,7 +790,7 @@ export function CinematicIntro({ onComplete }: { onComplete?: () => void }) {
           <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none z-10" />
           <div className="absolute bottom-10 left-1/4 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none z-10" />
 
-          {/* Bottom Content: Clean Professional Text (Strictly no name, no photo, no loading bars) */}
+          {/* Bottom Content: Clean Professional Text (Only "UI Engineer" slowly animated + glowing animated bar) */}
           <div className="w-full max-w-4xl px-6 pb-12 sm:pb-16 flex flex-col items-center text-center z-20">
             <AnimatePresence>
               {textVisible && (
@@ -807,29 +799,41 @@ export function CinematicIntro({ onComplete }: { onComplete?: () => void }) {
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex flex-col items-center gap-3"
+                  className="flex flex-col items-center gap-4"
                 >
-                  {/* Title: UI Engineer */}
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_0_25px_rgba(0,255,135,0.45)]">
-                    <span className="bg-gradient-to-r from-emerald-300 via-white to-emerald-200 bg-clip-text text-transparent">
-                      UI Engineer
-                    </span>
+                  {/* Title: UI Engineer with slow, elegant letter-by-letter animation */}
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-[0_0_25px_rgba(0,255,135,0.45)] flex items-center justify-center">
+                    {"UI Engineer".split("").map((char, index) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        transition={{
+                          delay: index * 0.08,
+                          duration: 0.55,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className={`bg-gradient-to-r from-emerald-300 via-white to-emerald-200 bg-clip-text text-transparent inline-block ${
+                          char === " " ? "w-2.5 sm:w-3.5" : ""
+                        }`}
+                      >
+                        {char}
+                      </motion.span>
+                    ))}
                   </h1>
 
-                  {/* Subtitle: Frontend Developer | UI/UX Designer */}
-                  <p className="text-sm sm:text-base md:text-lg font-mono text-emerald-400/90 tracking-wide flex items-center justify-center gap-2.5">
-                    <span>Frontend Developer</span>
-                    <span className="text-emerald-500/60 font-light">•</span>
-                    <span>UI/UX Designer</span>
-                  </p>
-
-                  {/* Elegant Emerald Accent Glow Bar */}
-                  <motion.div
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: "140px", opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-                    className="h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_12px_#00ff87] mt-1"
-                  />
+                  {/* Sleek Animated Glowing Emerald Bar (matches reference image, text only, no extra labels) */}
+                  <div className="w-60 sm:w-72 h-1.5 sm:h-2 rounded-full bg-emerald-950/60 border border-emerald-500/30 overflow-hidden relative shadow-[0_0_15px_rgba(0,255,135,0.3)] mt-1">
+                    <motion.div
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{ delay: 0.4, duration: 2.8, ease: "easeInOut" }}
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-600 via-emerald-400 to-white shadow-[0_0_12px_#00ff87] relative"
+                    >
+                      {/* Leading edge glow pulse */}
+                      <span className="absolute right-0 top-0 bottom-0 w-3 bg-white/90 blur-[2px] rounded-full" />
+                    </motion.div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -16,6 +16,7 @@ import { Navbar } from "@/components/portfolio/navbar"
 import { ChatBubble } from "@/components/portfolio/chat-bubble"
 import { SlingshotScroll } from "@/components/portfolio/slingshot-scroll"
 import { CustomCursor } from "@/components/portfolio/custom-cursor"
+import { CinematicIntro, replayCinematicIntro } from "@/components/portfolio/cinematic-intro"
 import { useLanguage } from "@/components/portfolio/language-context"
 import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -46,6 +47,9 @@ export default function Page() {
 
   return (
     <main className="relative bg-slate-50 dark:bg-background transition-colors duration-300">
+      {/* Cinematic 3D Intro Experience (Shown once per session) */}
+      <CinematicIntro />
+
       {/* Studio Cursor Spotlight */}
       <CustomCursor />
 
@@ -120,6 +124,14 @@ export default function Page() {
             <a href="#contact" className="hover:text-primary text-muted-foreground transition-colors font-mono text-xs uppercase tracking-wider">
               {t("nav.contact")}
             </a>
+            <button
+              onClick={replayCinematicIntro}
+              className="hover:text-primary text-muted-foreground/75 hover:text-foreground transition-colors font-mono text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer ml-1"
+              title="Replay 3D Cinematic Intro"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{isRTL ? "العرض ثلاثي الأبعاد" : "3D Intro"}</span>
+            </button>
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-6 pb-8 text-center text-[10px] font-mono text-muted-foreground/60">

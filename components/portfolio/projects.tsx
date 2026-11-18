@@ -495,19 +495,15 @@ export function Projects() {
     <section
       id="projects"
       ref={sectionRef}
-      className="relative w-full bg-slate-50 dark:bg-[#07090e] text-slate-900 dark:text-foreground transition-colors duration-300 overflow-hidden border-t border-border/80 dark:border-white/10"
+      className="relative w-full bg-background text-foreground transition-colors duration-300 overflow-hidden border-t border-border/60"
     >
-      {/* Ambient Space Lighting for both Light and Dark themes */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-100px,rgba(7,77,49,0.06),transparent)] dark:bg-[radial-gradient(circle_800px_at_50%_-100px,rgba(27,131,84,0.18),transparent)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_90%_50%,rgba(16,185,129,0.03),transparent)] dark:bg-[radial-gradient(circle_600px_at_90%_50%,rgba(16,185,129,0.06),transparent)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_10%_80%,rgba(7,77,49,0.04),transparent)] dark:bg-[radial-gradient(circle_600px_at_10%_80%,rgba(7,77,49,0.15),transparent)] pointer-events-none" />
-      
-      {/* Perspective Geometric Grid Floor for both Light and Dark themes */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.04)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none" />
+      {/* Background Architectural Grid Pattern consistent with whole portfolio */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-[size:48px_48px] opacity-15 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_40%_at_50%_15%,rgba(27,131,84,0.08),transparent_70%)] pointer-events-none" />
 
       {/* Floating Interactive 3D Quick Navigation HUD (Desktop Floating Dock) */}
-      <div className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-2 p-2 rounded-2xl bg-white/85 dark:bg-black/70 border border-slate-200 dark:border-white/10 backdrop-blur-xl shadow-xl dark:shadow-2xl">
-        <span className="text-[9px] font-mono font-bold text-slate-500 dark:text-neutral-400 tracking-widest uppercase py-1">
+      <div className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-2 p-2 rounded-2xl bg-card/85 border border-border backdrop-blur-xl shadow-lg">
+        <span className="text-[9px] font-mono font-bold text-muted-foreground/70 tracking-widest uppercase py-1">
           {isRTL ? "فهرس" : "NAV"}
         </span>
         {[...SBA_PROJECTS, ...INDEPENDENT_PROJECTS].map((proj) => {
@@ -522,11 +518,11 @@ export function Projects() {
               <span
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   isActive
-                    ? "bg-emerald-600 dark:bg-emerald-400 scale-125 shadow-[0_0_12px_rgba(5,150,105,0.9)] dark:shadow-[0_0_12px_rgba(52,211,153,0.9)]"
-                    : "bg-slate-300 dark:bg-white/20 group-hover:bg-slate-500 dark:group-hover:bg-white/60"
+                    ? "bg-primary scale-125 shadow-[0_0_10px_var(--primary)]"
+                    : "bg-muted-foreground/30 group-hover:bg-muted-foreground/70"
                 }`}
               />
-              <span className="absolute right-6 px-2.5 py-1 rounded-md bg-slate-900 dark:bg-black/95 border border-slate-700 dark:border-white/15 text-[10px] font-mono font-bold text-white whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity shadow-lg">
+              <span className="absolute right-6 px-2.5 py-1 rounded-lg bg-popover text-popover-foreground border border-border text-[10px] font-mono font-bold whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity shadow-md">
                 {proj.number} · {isRTL ? proj.titleAr : proj.titleEn}
               </span>
             </button>
@@ -543,9 +539,9 @@ export function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-600/30 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-400 text-[11px] font-mono font-bold tracking-wider uppercase mb-4 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-[11px] font-mono font-bold tracking-wider uppercase mb-4 shadow-xs"
         >
-          <Sparkles size={11} className="text-emerald-600 dark:text-emerald-400 animate-pulse" />
+          <Sparkles size={11} className="text-primary animate-pulse" />
           <span>{isRTL ? "الأعمال المختارة / 2024 — 2026" : "SELECTED WORK / 2024 — 2026"}</span>
         </motion.div>
 
@@ -554,15 +550,15 @@ export function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white font-mono max-w-3xl mx-auto leading-tight"
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground font-mono max-w-3xl mx-auto leading-tight"
         >
           {isRTL ? (
             <>
-              بناء تجارب رقمية <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-500">تصنع الفارق</span>.
+              بناء تجارب رقمية <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-primary to-emerald-500 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-500">تصنع الفارق</span>.
             </>
           ) : (
             <>
-              Building Digital Experiences <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-700 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-500">That Matter</span>.
+              Building Digital Experiences <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-primary to-emerald-500 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-500">That Matter</span>.
             </>
           )}
         </motion.h2>
@@ -572,7 +568,7 @@ export function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-3.5 text-xs sm:text-sm md:text-base text-slate-600 dark:text-neutral-400 max-w-xl mx-auto font-light leading-relaxed"
+          className="mt-3.5 text-xs sm:text-sm md:text-base text-muted-foreground max-w-xl mx-auto font-light leading-relaxed"
         >
           {isRTL
             ? "استكشاف نقطة التقاء تصميم الواجهات، وهندسة النظم البرمجية، والتكنولوجيا التفاعلية عبر منصات حكومية ومشاريع مستقلة."
@@ -580,13 +576,13 @@ export function Projects() {
         </motion.p>
 
         {/* Chapter Switcher Tabs */}
-        <div className="mt-8 inline-flex items-center gap-1.5 p-1 rounded-xl bg-white/90 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm backdrop-blur-xl">
+        <div className="mt-8 inline-flex items-center gap-1.5 p-1 rounded-2xl bg-muted/60 dark:bg-card/40 border border-border backdrop-blur-xl shadow-xs">
           <button
             onClick={() => setActiveChapter("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
               activeChapter === "all"
-                ? "bg-emerald-600 dark:bg-emerald-500 text-white shadow-sm dark:shadow-[0_0_12px_rgba(16,185,129,0.3)]"
-                : "text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {isRTL ? "الكل (11)" : "All (11)"}
@@ -596,10 +592,10 @@ export function Projects() {
               setActiveChapter("sba")
               scrollToProject("sba-main")
             }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               activeChapter === "sba"
-                ? "bg-emerald-600 dark:bg-emerald-500 text-white shadow-sm dark:shadow-[0_0_12px_rgba(16,185,129,0.3)]"
-                : "text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
@@ -610,10 +606,10 @@ export function Projects() {
               setActiveChapter("independent")
               scrollToProject("pixelresume")
             }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               activeChapter === "independent"
-                ? "bg-emerald-600 dark:bg-emerald-500 text-white shadow-sm dark:shadow-[0_0_12px_rgba(16,185,129,0.3)]"
-                : "text-slate-600 dark:text-neutral-400 hover:text-slate-900 dark:hover:text-white"
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Boxes size={12} />
@@ -630,17 +626,17 @@ export function Projects() {
         <div className="relative max-w-6xl mx-auto px-6 space-y-20 sm:space-y-24 pb-20">
           
           {/* Chapter I Title Tag */}
-          <div className="pt-6 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="pt-6 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <span className="text-[11px] font-mono font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase block">
+              <span className="text-[11px] font-mono font-bold tracking-widest text-primary uppercase block">
                 {isRTL ? "// الفصل الأول • مشاريع العمل الرسمية" : "// CHAPTER I · GOVERNMENT DIGITAL PLATFORMS"}
               </span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-foreground font-mono">
                 {isRTL ? "مشاريع هيئة الإذاعة والتلفزيون (SBA)" : "Saudi Broadcasting Authority (SBA) Work"}
               </h3>
             </div>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-slate-600 dark:text-neutral-400">
-              <Building2 size={13} className="text-emerald-600 dark:text-emerald-400" />
+            <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
+              <Building2 size={13} className="text-primary" />
               <span>{isRTL ? "المقر الرئيسي بالرياض — السعودية" : "Riyadh HQ, Saudi Arabia"}</span>
             </div>
           </div>
@@ -666,14 +662,14 @@ export function Projects() {
         <div className="relative max-w-6xl mx-auto px-6 pt-12 pb-28">
           
           {/* Chapter II Divider & Heading */}
-          <div className="pt-10 border-t border-slate-200 dark:border-white/10 mb-10 text-center max-w-2xl mx-auto">
-            <span className="text-[11px] font-mono font-bold tracking-widest text-emerald-600 dark:text-emerald-400 uppercase block mb-1">
+          <div className="pt-10 border-t border-border mb-10 text-center max-w-2xl mx-auto">
+            <span className="text-[11px] font-mono font-bold tracking-widest text-primary uppercase block mb-1">
               {isRTL ? "// الفصل الثاني • ما وراء العمل المؤسسي" : "// CHAPTER II · EXPLORATORY CREATIVE WORK"}
             </span>
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground font-mono">
               {isRTL ? "ما وراء العمل الرسمي" : "Beyond Professional Work."}
             </h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-neutral-400 font-light leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
               {isRTL
                 ? "منتجات SaaS مستقلة، ومنصات ذكاء اصطناعي، ونظم تفاعل حركي من الفكرة إلى الكود."
                 : "Independent SaaS products, AI telemetry dashboards, and interactive engineering experiments."}
@@ -695,7 +691,7 @@ export function Projects() {
       )}
 
       {/* =========================================================================
-          PROJECT DETAILS MODAL OVERLAY (LIGHT & DARK THEME COMPATIBLE)
+          PROJECT DETAILS MODAL OVERLAY (THEME ALIGNED)
           ========================================================================= */}
       <AnimatePresence>
         {selectedModalProject && (
@@ -705,7 +701,7 @@ export function Projects() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedModalProject(null)}
-              className="fixed inset-0 bg-black/60 dark:bg-black/85 backdrop-blur-xl"
+              className="fixed inset-0 bg-background/80 backdrop-blur-md"
             />
 
             <motion.div
@@ -713,50 +709,50 @@ export function Projects() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 12 }}
               transition={{ duration: 0.2 }}
-              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl border border-slate-200 dark:border-white/15 bg-white dark:bg-[#0e111a] p-5 sm:p-7 shadow-2xl dark:shadow-[0_25px_70px_rgba(0,0,0,0.85)] z-10 text-slate-900 dark:text-white"
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl border border-border bg-card p-5 sm:p-7 shadow-2xl z-10 text-card-foreground"
             >
               <button
                 onClick={() => setSelectedModalProject(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 dark:bg-white/5 dark:hover:bg-white/10 dark:text-neutral-400 dark:hover:text-white transition-colors cursor-pointer"
+                className="absolute top-4 right-4 p-2 rounded-full bg-muted/60 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X size={16} />
               </button>
 
               <div className="flex flex-wrap items-center gap-2 mb-2 pr-6">
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-400 text-[11px] font-mono font-bold">
+                <span className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-mono font-bold">
                   {selectedModalProject.number} · {isRTL ? selectedModalProject.badgeAr : selectedModalProject.badgeEn}
                 </span>
                 {selectedModalProject.isUpcoming && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-500/30 text-amber-800 dark:text-amber-400 text-[11px] font-mono font-bold flex items-center gap-1">
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-mono font-bold flex items-center gap-1">
                     <Clock size={11} />
                     <span>{isRTL ? "مرحلة قادمة" : "Upcoming Phase"}</span>
                   </span>
                 )}
                 {selectedModalProject.isDesignOnly && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-purple-50 dark:bg-purple-500/15 border border-purple-200 dark:border-purple-500/30 text-purple-800 dark:text-purple-300 text-[11px] font-mono font-bold flex items-center gap-1">
+                  <span className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-mono font-bold flex items-center gap-1">
                     <Smartphone size={11} />
                     <span>{isRTL ? "تصميم Figma" : "Figma Design"}</span>
                   </span>
                 )}
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold font-mono text-slate-900 dark:text-white tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-bold font-mono text-foreground tracking-tight">
                 {isRTL ? selectedModalProject.titleAr : selectedModalProject.titleEn}
               </h3>
-              <p className="text-xs font-mono text-emerald-600 dark:text-emerald-400 mt-0.5">
+              <p className="text-xs font-mono text-primary mt-0.5">
                 {isRTL ? selectedModalProject.taglineAr : selectedModalProject.taglineEn}
               </p>
 
               {/* SBA Organization Callout */}
               {selectedModalProject.isSBA && (
-                <div className="mt-3 p-3 rounded-xl bg-emerald-50/80 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-xs font-mono text-emerald-900 dark:text-emerald-300 flex items-start gap-2">
-                  <Building2 size={15} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                <div className="mt-3 p-3 rounded-2xl bg-primary/10 border border-primary/25 text-xs font-mono text-primary flex items-start gap-2">
+                  <Building2 size={15} className="text-primary shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-slate-900 dark:text-white block">
+                    <span className="font-bold text-foreground block">
                       {isRTL ? selectedModalProject.organizationAr : selectedModalProject.organizationEn} — {isRTL ? selectedModalProject.locationAr : selectedModalProject.locationEn}
                     </span>
-                    <p className="text-[11px] font-light text-slate-600 dark:text-neutral-300 mt-0.5">
+                    <p className="text-[11px] font-light text-muted-foreground mt-0.5">
                       {isRTL ? selectedModalProject.noteAr : selectedModalProject.noteEn}
                     </p>
                   </div>
@@ -764,7 +760,7 @@ export function Projects() {
               )}
 
               {/* Actual Image in Modal */}
-              <div className="relative aspect-[16/9] w-full rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden my-4 bg-slate-100 dark:bg-black/60 shadow-md">
+              <div className="relative aspect-[16/9] w-full rounded-2xl border border-border overflow-hidden my-4 bg-muted/40 shadow-xs">
                 <img
                   src={selectedModalProject.image}
                   alt={selectedModalProject.titleEn}
@@ -775,35 +771,35 @@ export function Projects() {
               </div>
 
               {/* Overview & Contribution (Small Details) */}
-              <div className="mt-4 space-y-3 text-xs sm:text-sm text-slate-600 dark:text-neutral-300 font-light leading-relaxed">
+              <div className="mt-4 space-y-3 text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
                 <div>
-                  <h4 className="text-xs font-mono font-bold text-slate-900 dark:text-white mb-0.5">
+                  <h4 className="text-xs font-mono font-bold text-foreground mb-0.5">
                     {isRTL ? "نظرة سريعة:" : "Overview:"}
                   </h4>
                   <p>{isRTL ? selectedModalProject.descAr : selectedModalProject.descEn}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 font-mono text-xs">
-                  <span className="text-emerald-600 dark:text-emerald-400 font-bold block mb-0.5">
+                <div className="p-3 rounded-2xl bg-muted/40 border border-border font-mono text-xs">
+                  <span className="text-primary font-bold block mb-0.5">
                     {isRTL ? "مساهمتي والمسؤوليات:" : "My Contribution:"}
                   </span>
-                  <span className="text-slate-700 dark:text-neutral-200">{isRTL ? selectedModalProject.contributionAr : selectedModalProject.contributionEn}</span>
+                  <span className="text-foreground/90">{isRTL ? selectedModalProject.contributionAr : selectedModalProject.contributionEn}</span>
                 </div>
               </div>
 
               {/* Service Categories (for B2B) */}
               {selectedModalProject.serviceCategories && (
-                <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10">
-                  <h4 className="text-xs font-mono font-bold text-slate-900 dark:text-white mb-2">
+                <div className="mt-4 p-3 rounded-2xl bg-muted/30 border border-border">
+                  <h4 className="text-xs font-mono font-bold text-foreground mb-2">
                     {isRTL ? "مسارات الخدمات الرئيسية:" : "Business Service Tracks:"}
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
                     {selectedModalProject.serviceCategories.map((svc, i) => (
-                      <div key={i} className="flex items-start gap-2 text-slate-700 dark:text-neutral-300">
-                        <CheckCircle2 size={13} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <div key={i} className="flex items-start gap-2 text-muted-foreground">
+                        <CheckCircle2 size={13} className="text-primary shrink-0 mt-0.5" />
                         <div>
-                          <span className="text-slate-900 dark:text-white font-bold block">{isRTL ? svc.ar : svc.en}</span>
-                          <span className="text-[10px] text-slate-500 dark:text-neutral-400">{isRTL ? svc.descAr : svc.descEn}</span>
+                          <span className="text-foreground font-bold block">{isRTL ? svc.ar : svc.en}</span>
+                          <span className="text-[10px] text-muted-foreground/80">{isRTL ? svc.descAr : svc.descEn}</span>
                         </div>
                       </div>
                     ))}
@@ -813,14 +809,14 @@ export function Projects() {
 
               {/* Planned Areas (for Intranet) */}
               {selectedModalProject.plannedAreasEn && (
-                <div className="mt-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
-                  <h4 className="text-xs font-mono font-bold text-amber-800 dark:text-amber-400 mb-1.5">
+                <div className="mt-4 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                  <h4 className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 mb-1.5">
                     {isRTL ? "المحاور المخططة للمرحلة القادمة:" : "Planned Areas for Upcoming Phase:"}
                   </h4>
-                  <ul className="space-y-1 text-xs font-mono text-slate-700 dark:text-neutral-300">
+                  <ul className="space-y-1 text-xs font-mono text-muted-foreground">
                     {(isRTL ? selectedModalProject.plannedAreasAr : selectedModalProject.plannedAreasEn)?.map((area, i) => (
                       <li key={i} className="flex items-center gap-2">
-                        <Clock size={11} className="text-amber-600 dark:text-amber-400 shrink-0" />
+                        <Clock size={11} className="text-amber-500 shrink-0" />
                         <span>{area}</span>
                       </li>
                     ))}
@@ -830,13 +826,13 @@ export function Projects() {
 
               {/* Highlights */}
               <div className="mt-4 space-y-1">
-                <h4 className="text-xs font-mono font-bold text-slate-900 dark:text-white mb-0.5">
+                <h4 className="text-xs font-mono font-bold text-foreground mb-0.5">
                   {isRTL ? "أبرز النقاط:" : "Key Highlights:"}
                 </h4>
-                <ul className="space-y-1 text-xs text-slate-600 dark:text-neutral-300 font-light">
+                <ul className="space-y-1 text-xs text-muted-foreground font-light">
                   {(isRTL ? selectedModalProject.highlightsAr : selectedModalProject.highlightsEn).map((h, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-1.5 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                       <span>{h}</span>
                     </li>
                   ))}
@@ -844,11 +840,11 @@ export function Projects() {
               </div>
 
               {/* Tech Stack Chips */}
-              <div className="flex flex-wrap gap-1 pt-3.5 border-t border-slate-200 dark:border-white/10 my-4">
+              <div className="flex flex-wrap gap-1.5 pt-3.5 border-t border-border my-4">
                 {selectedModalProject.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300"
+                    className="px-2.5 py-1 rounded-xl bg-background border border-border text-[11px] font-mono text-foreground"
                   >
                     {tech}
                   </span>
@@ -862,21 +858,21 @@ export function Projects() {
                     href={selectedModalProject.live}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-black font-mono font-bold text-xs transition-all shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold text-xs transition-all shadow-xs"
                   >
                     <span>{isRTL ? "زيارة الموقع الحي" : "Launch Live App"}</span>
                     <ArrowUpRight size={13} />
                   </a>
                 ) : (
-                  <span className="text-xs font-mono text-slate-500 dark:text-neutral-400 flex items-center gap-1.5">
-                    <CheckCircle2 size={13} className="text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
+                    <CheckCircle2 size={13} className="text-primary" />
                     <span>{isRTL ? "مشروع مهني رسمي بالهيئة" : "Official SBA Project"}</span>
                   </span>
                 )}
 
                 <button
                   onClick={() => setSelectedModalProject(null)}
-                  className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-white/10 dark:hover:bg-white/15 dark:text-white font-mono text-xs transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-mono text-xs transition-colors cursor-pointer border border-border"
                 >
                   {isRTL ? "إغلاق" : "Close"}
                 </button>
@@ -910,37 +906,37 @@ function SbaMainWebsiteScene({
         {/* Narrative Side (5 cols) - Concise & Compact */}
         <div className="lg:col-span-5 space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">
+            <span className="text-[11px] font-mono font-bold text-primary tracking-wider">
               01 / 04 · {project.categoryEn}
             </span>
           </div>
 
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-slate-900 dark:text-white tracking-tight leading-snug">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-foreground tracking-tight leading-snug">
             {isRTL ? project.titleAr : project.titleEn}
           </h3>
 
-          <p className="text-xs font-mono text-emerald-600 dark:text-emerald-400">
+          <p className="text-xs font-mono text-primary font-medium">
             {isRTL ? project.taglineAr : project.taglineEn}
           </p>
 
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
             {isRTL ? project.descAr : project.descEn}
           </p>
 
           {/* Small compact contribution box */}
-          <div className="p-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono shadow-xs">
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold block mb-0.5">
+          <div className="p-3 rounded-2xl bg-muted/40 border border-border text-xs font-mono">
+            <span className="text-primary font-bold block mb-0.5">
               {isRTL ? "المسؤوليات الهندسية:" : "Engineering Role:"}
             </span>
-            <span className="text-slate-700 dark:text-neutral-300 text-[11px] leading-relaxed">
+            <span className="text-foreground/90 text-[11px] leading-relaxed">
               {isRTL ? project.contributionAr : project.contributionEn}
             </span>
           </div>
 
           {/* Tech tags */}
-          <div className="flex flex-wrap gap-1 pt-1">
+          <div className="flex flex-wrap gap-1.5 pt-1">
             {project.technologies.map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-md bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300">
+              <span key={t} className="px-2.5 py-0.5 rounded-lg bg-muted/60 border border-border text-[10px] font-mono text-muted-foreground">
                 {t}
               </span>
             ))}
@@ -950,12 +946,12 @@ function SbaMainWebsiteScene({
           <div className="pt-1 flex items-center gap-3">
             <button
               onClick={onInspect}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-black font-mono font-bold text-xs transition-all shadow-md dark:shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer active:scale-98"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-98"
             >
               <Eye size={13} />
               <span>{isRTL ? "استكشاف تفاصيل المشروع" : "Explore Project"}</span>
             </button>
-            <span className="text-[11px] font-mono text-slate-500 dark:text-neutral-400 flex items-center gap-1">
+            <span className="text-[11px] font-mono text-muted-foreground flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>{isRTL ? "الرياض • رسمي" : "Riyadh In-Office"}</span>
             </span>
@@ -971,24 +967,24 @@ function SbaMainWebsiteScene({
         >
           <motion.div
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative rounded-2xl border border-slate-200/90 dark:border-white/15 bg-white dark:bg-[#0b0e17] shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-300 hover:border-emerald-500/50 group"
+            className="relative rounded-3xl border border-border bg-card shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300 hover:border-primary/40 group"
           >
             {/* Top Browser Bar */}
-            <div className="px-3 py-2 bg-slate-100 dark:bg-[#121624] border-b border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-mono text-slate-600 dark:text-neutral-400">
+            <div className="px-3 py-2 bg-muted/70 border-b border-border flex items-center justify-between text-xs font-mono text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-red-500/80" />
                 <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
                 <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
               </div>
-              <div className="px-3 py-0.5 rounded-full bg-white dark:bg-black/50 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300 flex items-center gap-1.5 shadow-xs">
-                <Building2 size={11} className="text-emerald-600 dark:text-emerald-400" />
+              <div className="px-3 py-0.5 rounded-full bg-background/80 border border-border text-[10px] font-mono text-foreground/80 flex items-center gap-1.5 shadow-xs">
+                <Building2 size={11} className="text-primary" />
                 <span>sba.gov.sa · Saudi Broadcasting Authority</span>
               </div>
               <ExternalLink size={11} className="opacity-50" />
             </div>
 
             {/* Authentic SBA Image with 3D Depth Overlays */}
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 dark:bg-black/60">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted/40">
               <img
                 src="/SBA.png"
                 alt="Saudi Broadcasting Authority Main Website"
@@ -998,14 +994,14 @@ function SbaMainWebsiteScene({
               />
 
               {/* Floating 3D Badge 1 */}
-              <div className="absolute top-3 left-3 p-2 rounded-xl bg-white/90 dark:bg-black/75 border border-slate-200 dark:border-white/15 backdrop-blur-md shadow-md flex items-center gap-2 text-[10px] font-mono text-slate-800 dark:text-white">
+              <div className="absolute top-3 left-3 p-2 rounded-xl bg-card/90 dark:bg-background/85 border border-border text-foreground backdrop-blur-md shadow-md flex items-center gap-2 text-[10px] font-mono">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                 <span>RTL First · DGA Design Alignment</span>
               </div>
 
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3">
-                <span className="text-xs font-mono text-emerald-300 flex items-center gap-1.5">
+                <span className="text-xs font-mono text-white flex items-center gap-1.5">
                   <Eye size={12} />
                   <span>{isRTL ? "انقر للمعاينة والتفاصيل" : "Click to inspect details"}</span>
                 </span>
@@ -1049,26 +1045,26 @@ function B2bSbaServicesScene({
         >
           <motion.div
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative rounded-2xl border border-slate-200/90 dark:border-white/15 bg-white dark:bg-[#0b0e17] shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-300 hover:border-emerald-500/50 group"
+            className="relative rounded-3xl border border-border bg-card shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300 hover:border-primary/40 group"
           >
             {/* Top Browser Bar */}
-            <div className="px-3 py-2 bg-slate-100 dark:bg-[#121624] border-b border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-mono text-slate-600 dark:text-neutral-400">
+            <div className="px-3 py-2 bg-muted/70 border-b border-border flex items-center justify-between text-xs font-mono text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-red-500/80" />
                 <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
                 <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
               </div>
-              <div className="px-3 py-0.5 rounded-full bg-white dark:bg-black/50 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300 flex items-center gap-1.5 shadow-xs">
-                <Building2 size={11} className="text-emerald-600 dark:text-emerald-400" />
+              <div className="px-3 py-0.5 rounded-full bg-background/80 border border-border text-[10px] font-mono text-foreground/80 flex items-center gap-1.5 shadow-xs">
+                <Building2 size={11} className="text-primary" />
                 <span>b2b.sba.sa · Business Services Platform</span>
               </div>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-mono font-bold border border-emerald-200 dark:border-transparent">
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono font-bold border border-primary/20">
                 B2B Services
               </span>
             </div>
 
             {/* Authentic B2B Image with 3D Depth Overlays */}
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 dark:bg-black/60">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted/40">
               <img
                 src="/b2b.png"
                 alt="SBA B2B Business Services Platform"
@@ -1078,14 +1074,14 @@ function B2bSbaServicesScene({
               />
 
               {/* Floating Service Badge */}
-              <div className="absolute top-3 left-3 p-2 rounded-xl bg-white/90 dark:bg-black/80 border border-slate-200 dark:border-white/15 backdrop-blur-md shadow-md flex items-center gap-1.5 text-[10px] font-mono text-emerald-800 dark:text-emerald-300">
-                <CheckCircle2 size={12} className="text-emerald-600 dark:text-emerald-400" />
+              <div className="absolute top-3 left-3 p-2 rounded-xl bg-card/90 dark:bg-background/85 border border-border text-foreground backdrop-blur-md shadow-md flex items-center gap-1.5 text-[10px] font-mono">
+                <CheckCircle2 size={12} className="text-primary" />
                 <span>5 Service Categories · Bilingual UI</span>
               </div>
 
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3">
-                <span className="text-xs font-mono text-emerald-300 flex items-center gap-1.5">
+                <span className="text-xs font-mono text-white flex items-center gap-1.5">
                   <Eye size={12} />
                   <span>{isRTL ? "انقر للمعاينة والتفاصيل" : "Click to inspect details"}</span>
                 </span>
@@ -1096,10 +1092,10 @@ function B2bSbaServicesScene({
             </div>
 
             {/* 5 Service Categories Quick Pills Row Under Image */}
-            <div className="px-3 py-2 bg-slate-50 dark:bg-[#101422] border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono">
-              <span className="text-emerald-700 dark:text-emerald-400 font-bold">Services:</span>
+            <div className="px-3 py-2 bg-muted/40 border-t border-border flex flex-wrap items-center justify-between gap-1 text-[10px] font-mono">
+              <span className="text-primary font-bold">Services:</span>
               {["SBA SET", "SBA AD", "Digital Media", "Specialized Content", "Media Center"].map((s, i) => (
-                <span key={i} className="px-1.5 py-0.5 rounded bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-300">
+                <span key={i} className="px-2 py-0.5 rounded-lg bg-background border border-border text-muted-foreground">
                   {s}
                 </span>
               ))}
@@ -1110,37 +1106,37 @@ function B2bSbaServicesScene({
         {/* Narrative Side (5 cols) - Concise & Compact */}
         <div className="lg:col-span-5 space-y-3 order-1 lg:order-2">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-wider">
+            <span className="text-[11px] font-mono font-bold text-primary tracking-wider">
               02 / 04 · {project.categoryEn}
             </span>
           </div>
 
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-slate-900 dark:text-white tracking-tight leading-snug">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-foreground tracking-tight leading-snug">
             {isRTL ? project.titleAr : project.titleEn}
           </h3>
 
-          <p className="text-xs font-mono text-emerald-600 dark:text-emerald-400">
+          <p className="text-xs font-mono text-primary font-medium">
             {isRTL ? project.taglineAr : project.taglineEn}
           </p>
 
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
             {isRTL ? project.descAr : project.descEn}
           </p>
 
           {/* Small compact contribution box */}
-          <div className="p-2.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-mono shadow-xs">
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold block mb-0.5">
+          <div className="p-3 rounded-2xl bg-muted/40 border border-border text-xs font-mono">
+            <span className="text-primary font-bold block mb-0.5">
               {isRTL ? "مساهمة الواجهات والتصميم:" : "Frontend & UI Design:"}
             </span>
-            <span className="text-slate-700 dark:text-neutral-300 text-[11px] leading-relaxed">
+            <span className="text-foreground/90 text-[11px] leading-relaxed">
               {isRTL ? project.contributionAr : project.contributionEn}
             </span>
           </div>
 
           {/* Tech tags */}
-          <div className="flex flex-wrap gap-1 pt-1">
+          <div className="flex flex-wrap gap-1.5 pt-1">
             {project.technologies.map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-md bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300">
+              <span key={t} className="px-2.5 py-0.5 rounded-lg bg-muted/60 border border-border text-[10px] font-mono text-muted-foreground">
                 {t}
               </span>
             ))}
@@ -1150,7 +1146,7 @@ function B2bSbaServicesScene({
           <div className="pt-1 flex items-center gap-3">
             <button
               onClick={onInspect}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-black font-mono font-bold text-xs transition-all shadow-md dark:shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer active:scale-98"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-98"
             >
               <Eye size={13} />
               <span>{isRTL ? "استكشاف تفاصيل المشروع" : "Explore Project"}</span>
@@ -1184,37 +1180,37 @@ function AlAkhbariyaMobileScene({
         {/* Narrative Side (5 cols) */}
         <div className="lg:col-span-5 space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold text-purple-600 dark:text-purple-400 tracking-wider">
+            <span className="text-[11px] font-mono font-bold text-primary tracking-wider">
               03 / 04 · {project.categoryEn}
             </span>
           </div>
 
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-slate-900 dark:text-white tracking-tight leading-snug">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-foreground tracking-tight leading-snug">
             {isRTL ? project.titleAr : project.titleEn}
           </h3>
 
-          <p className="text-xs font-mono text-purple-600 dark:text-purple-400">
+          <p className="text-xs font-mono text-primary font-medium">
             {isRTL ? project.taglineAr : project.taglineEn}
           </p>
 
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
             {isRTL ? project.descAr : project.descEn}
           </p>
 
           {/* Figma Design Disclaimer Box */}
-          <div className="p-2.5 rounded-xl bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/25 text-xs font-mono text-purple-900 dark:text-purple-300 shadow-xs">
-            <span className="font-bold block text-purple-950 dark:text-white mb-0.5">
+          <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-xs font-mono text-primary">
+            <span className="font-bold block text-foreground mb-0.5">
               {isRTL ? "مساهمة تصميمية في Figma:" : "Figma UI/UX Design Contribution:"}
             </span>
-            <span className="text-[11px] leading-relaxed">
+            <span className="text-muted-foreground text-[11px] leading-relaxed">
               {isRTL ? project.contributionAr : project.contributionEn}
             </span>
           </div>
 
           {/* Tools */}
-          <div className="flex flex-wrap gap-1 pt-1">
+          <div className="flex flex-wrap gap-1.5 pt-1">
             {project.technologies.map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-md bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300">
+              <span key={t} className="px-2.5 py-0.5 rounded-lg bg-muted/60 border border-border text-[10px] font-mono text-muted-foreground">
                 {t}
               </span>
             ))}
@@ -1224,7 +1220,7 @@ function AlAkhbariyaMobileScene({
           <div className="pt-1 flex items-center gap-3">
             <button
               onClick={onInspect}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-400 text-white font-mono font-bold text-xs transition-all shadow-md dark:shadow-[0_0_20px_rgba(168,85,247,0.3)] cursor-pointer active:scale-98"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-98"
             >
               <Eye size={13} />
               <span>{isRTL ? "استكشاف تفاصيل التصميم" : "Explore Project"}</span>
@@ -1241,7 +1237,7 @@ function AlAkhbariyaMobileScene({
         >
           <motion.div
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative w-full max-w-[270px] aspect-[9/18] rounded-[36px] border-4 border-slate-300 dark:border-white/20 bg-slate-950 dark:bg-[#0c0f17] shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.9)] p-2.5 flex flex-col justify-between overflow-hidden ring-1 ring-slate-200 dark:ring-white/10 group hover:border-purple-500/50 transition-colors"
+            className="relative w-full max-w-[270px] aspect-[9/18] rounded-[36px] border-4 border-border bg-[#0c0f17] shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.85)] p-2.5 flex flex-col justify-between overflow-hidden ring-1 ring-border group hover:border-primary/50 transition-colors"
           >
             {/* Dynamic Island Notch */}
             <div className="w-24 h-4 bg-black rounded-full mx-auto flex items-center justify-center gap-1.5 mb-1.5 z-10">
@@ -1263,7 +1259,7 @@ function AlAkhbariyaMobileScene({
             {/* Mobile App Screen Content */}
             <div className="p-2 space-y-2 flex-1 flex flex-col justify-center">
               <div className="p-2 rounded-xl bg-white/5 border border-white/10 space-y-1.5">
-                <span className="text-[9px] font-mono text-purple-400 font-bold block uppercase">
+                <span className="text-[9px] font-mono text-emerald-400 font-bold block uppercase">
                   Figma Mobile Wireframe
                 </span>
                 <div className="h-2.5 w-5/6 bg-white/40 rounded-md" />
@@ -1271,7 +1267,7 @@ function AlAkhbariyaMobileScene({
               </div>
 
               <div className="grid grid-cols-2 gap-1.5">
-                <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20 text-center font-mono text-[9px] text-purple-300">
+                <div className="p-2 rounded-lg bg-primary/20 border border-primary/30 text-center font-mono text-[9px] text-primary-foreground">
                   البث المباشر
                 </div>
                 <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-center font-mono text-[9px] text-neutral-300">
@@ -1279,7 +1275,7 @@ function AlAkhbariyaMobileScene({
                 </div>
               </div>
 
-              <div className="p-2 rounded-xl bg-gradient-to-r from-purple-950/40 to-black/60 border border-purple-500/20">
+              <div className="p-2 rounded-xl bg-gradient-to-r from-emerald-950/40 to-black/60 border border-primary/20">
                 <span className="text-[9px] font-mono text-neutral-400 block">Al Akhbariya UI/UX</span>
                 <span className="text-[11px] font-bold text-white block">Visual Hierarchy & Prototyping</span>
               </div>
@@ -1287,7 +1283,7 @@ function AlAkhbariyaMobileScene({
 
             {/* Mobile Bottom Navigation Bar */}
             <div className="px-3 py-2 bg-black/80 rounded-xl border border-white/10 flex items-center justify-around text-[9px] text-neutral-400">
-              <span className="text-purple-400 font-bold">الرئيسية</span>
+              <span className="text-emerald-400 font-bold">الرئيسية</span>
               <span>الأخبار</span>
               <span>البث</span>
               <span>المزيد</span>
@@ -1327,31 +1323,31 @@ function SbaIntranetScene({
         >
           <motion.div
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            className="relative rounded-2xl border border-slate-200/90 dark:border-white/15 bg-white dark:bg-[#0b0e17] shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-300 hover:border-amber-500/50 group p-4 space-y-3"
+            className="relative rounded-3xl border border-border bg-card shadow-xl dark:shadow-[0_25px_80px_rgba(0,0,0,0.6)] overflow-hidden transition-all duration-300 hover:border-primary/40 group p-4 space-y-3"
           >
             {/* Top Intranet Staging Banner */}
-            <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-white/10 text-xs font-mono">
-              <div className="flex items-center gap-1.5 text-amber-700 dark:text-amber-400">
-                <Clock size={12} className="text-amber-600 dark:text-amber-400" />
+            <div className="flex items-center justify-between pb-2 border-b border-border text-xs font-mono">
+              <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+                <Clock size={12} className="text-amber-500" />
                 <span className="font-bold text-[11px]">intranet.sba.internal (Staging Architecture)</span>
               </div>
-              <span className="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[9px] font-mono font-bold border border-amber-200 dark:border-transparent">
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[9px] font-mono font-bold border border-amber-500/20">
                 Upcoming Phase
               </span>
             </div>
 
             {/* 5 Planned Modules Display */}
             <div className="space-y-1.5">
-              <span className="text-[9px] font-mono uppercase tracking-wider text-slate-500 dark:text-neutral-400 block">
+              <span className="text-[9px] font-mono uppercase tracking-wider text-muted-foreground block">
                 {isRTL ? "المحاور المؤسسية المخططة للمرحلة القادمة:" : "Planned Focus Areas for Upcoming Phase:"}
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono">
                 {(isRTL ? project.plannedAreasAr : project.plannedAreasEn)?.map((area, i) => (
                   <div
                     key={i}
-                    className="p-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-200 flex items-center gap-1.5 text-[11px]"
+                    className="p-2.5 rounded-xl bg-muted/40 border border-border text-foreground/90 flex items-center gap-1.5 text-[11px]"
                   >
-                    <Clock size={11} className="text-amber-600 dark:text-amber-400 shrink-0" />
+                    <Clock size={11} className="text-amber-500 shrink-0" />
                     <span className="truncate">{area}</span>
                   </div>
                 ))}
@@ -1359,9 +1355,9 @@ function SbaIntranetScene({
             </div>
 
             {/* Intranet Quick Status Callout */}
-            <div className="p-3 rounded-xl bg-amber-50/70 dark:bg-gradient-to-r dark:from-amber-950/30 dark:to-black/50 border border-amber-200 dark:border-amber-500/20 flex items-center justify-between text-[11px] font-mono">
-              <span className="text-slate-700 dark:text-neutral-300">معمارية ثنائية اللغة لموظفي الهيئة (AR/EN)</span>
-              <span className="text-amber-700 dark:text-amber-400 font-bold">ASP.NET WebForms</span>
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-between text-[11px] font-mono">
+              <span className="text-foreground/90">معمارية ثنائية اللغة لموظفي الهيئة (AR/EN)</span>
+              <span className="text-primary font-bold">ASP.NET WebForms</span>
             </div>
           </motion.div>
         </div>
@@ -1369,37 +1365,37 @@ function SbaIntranetScene({
         {/* Narrative Side (5 cols) */}
         <div className="lg:col-span-5 space-y-3 order-1 lg:order-2">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold text-amber-700 dark:text-amber-400 tracking-wider">
+            <span className="text-[11px] font-mono font-bold text-amber-600 dark:text-amber-400 tracking-wider">
               04 / 04 · {project.categoryEn}
             </span>
           </div>
 
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-slate-900 dark:text-white tracking-tight leading-snug">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-mono text-foreground tracking-tight leading-snug">
             {isRTL ? project.titleAr : project.titleEn}
           </h3>
 
-          <p className="text-xs font-mono text-amber-700 dark:text-amber-400">
+          <p className="text-xs font-mono text-amber-600 dark:text-amber-400 font-medium">
             {isRTL ? project.taglineAr : project.taglineEn}
           </p>
 
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 font-light leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground font-light leading-relaxed">
             {isRTL ? project.descAr : project.descEn}
           </p>
 
           {/* Upcoming Status Alert */}
-          <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/25 text-xs font-mono text-amber-900 dark:text-amber-300 shadow-xs">
-            <span className="font-bold block text-amber-950 dark:text-white mb-0.5">
+          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs font-mono text-amber-700 dark:text-amber-300">
+            <span className="font-bold block text-foreground mb-0.5">
               {isRTL ? "مرحلة قادمة قيد التجهيز:" : "Upcoming Phase · In Progress:"}
             </span>
-            <span className="text-[11px] leading-relaxed">
+            <span className="text-[11px] leading-relaxed text-muted-foreground">
               {isRTL ? project.contributionAr : project.contributionEn}
             </span>
           </div>
 
           {/* Tech tags */}
-          <div className="flex flex-wrap gap-1 pt-1">
+          <div className="flex flex-wrap gap-1.5 pt-1">
             {project.technologies.map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-md bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-700 dark:text-neutral-300">
+              <span key={t} className="px-2.5 py-0.5 rounded-lg bg-muted/60 border border-border text-[10px] font-mono text-muted-foreground">
                 {t}
               </span>
             ))}
@@ -1409,7 +1405,7 @@ function SbaIntranetScene({
           <div className="pt-1 flex items-center gap-3">
             <button
               onClick={onInspect}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 dark:bg-amber-500 dark:hover:bg-amber-400 text-black font-mono font-bold text-xs transition-all shadow-md dark:shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer active:scale-98"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-mono font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-98"
             >
               <Eye size={13} />
               <span>{isRTL ? "استكشاف تفاصيل المشروع" : "Explore Project"}</span>
@@ -1423,7 +1419,7 @@ function SbaIntranetScene({
 }
 
 // =============================================================================
-// CHAPTER II — INDEPENDENT 3D CARD COMPONENT (COMPACT & CLEAN FOR BOTH THEMES)
+// CHAPTER II — INDEPENDENT 3D CARD COMPONENT (THEME ALIGNED)
 // =============================================================================
 function IndependentProject3DCard({
   project,
@@ -1446,45 +1442,45 @@ function IndependentProject3DCard({
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="relative h-full rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white dark:bg-[#0e111a] hover:border-emerald-500/50 transition-all duration-300 p-4 flex flex-col justify-between shadow-md dark:shadow-[0_15px_40px_rgba(0,0,0,0.6)] group"
+        className="relative h-full rounded-3xl border border-border bg-card/85 dark:bg-card/45 backdrop-blur-xl hover:border-primary/50 transition-all duration-300 p-5 flex flex-col justify-between shadow-xs hover:shadow-xl group"
       >
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {/* Top row: Number & Badge */}
           <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold tracking-wider">// {project.number}</span>
-            <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-neutral-300 text-[10px]">
+            <span className="text-primary font-bold tracking-wider">// {project.number}</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted border border-border text-muted-foreground text-[10px]">
               {isRTL ? project.badgeAr : project.badgeEn}
             </span>
           </div>
 
           {/* Title */}
-          <h4 className="text-base font-bold font-mono text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug">
+          <h4 className="text-base font-bold font-mono text-foreground group-hover:text-primary transition-colors leading-snug">
             {isRTL ? project.titleAr : project.titleEn}
           </h4>
 
           {/* Description */}
-          <p className="text-xs text-slate-600 dark:text-neutral-400 font-light line-clamp-2 leading-relaxed">
+          <p className="text-xs text-muted-foreground font-light line-clamp-2 leading-relaxed">
             {isRTL ? project.descAr : project.descEn}
           </p>
         </div>
 
         {/* Tech Stack & Action */}
-        <div className="pt-3 border-t border-slate-200 dark:border-white/10 space-y-2.5 mt-3">
+        <div className="pt-3.5 border-t border-border/70 space-y-2.5 mt-3.5">
           <div className="flex flex-wrap gap-1">
             {project.technologies.slice(0, 3).map((t) => (
-              <span key={t} className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[9px] font-mono text-slate-700 dark:text-neutral-300">
+              <span key={t} className="px-2 py-0.5 rounded-lg bg-muted/60 border border-border text-[9px] font-mono text-muted-foreground">
                 {t}
               </span>
             ))}
           </div>
 
           <div className="flex items-center justify-between pt-0.5">
-            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+            <span className="text-xs font-mono text-primary font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
               <span>{isRTL ? "استعراض المشروع" : "Explore Project"}</span>
               <ArrowUpRight size={12} />
             </span>
             {project.live && (
-              <span className="text-[10px] font-mono text-slate-500 dark:text-neutral-400">
+              <span className="text-[10px] font-mono text-muted-foreground">
                 {new URL(project.live).hostname}
               </span>
             )}
